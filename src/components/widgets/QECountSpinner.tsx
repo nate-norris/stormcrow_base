@@ -1,6 +1,6 @@
 import { useState } from "react";
 
-export default function QeCountSpinner() {
+export default function QECountSpinner() {
   const [value, setValue] = useState("1");
 
   function qeUp() {
