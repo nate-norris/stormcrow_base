@@ -9,7 +9,6 @@ const dodicRegex: RegExp[] = [
     /^[0-9]$/
 ];
 
-// TODO pass dodic as object from caller say formVals.dodic
 export default function Dodic() {
     const [dodic, setDodic] = useState("");
 
@@ -24,10 +23,10 @@ export default function Dodic() {
     }
 
     return (
-        <div>
+        <>
             <label htmlFor="dodic">DODIC</label>
             <input type="text" id="dodic" value={dodic} onChange={handleChange} 
                 placeholder="A062" maxLength={4} />
-        </div>
-    )
+        </>
+    );
 }
