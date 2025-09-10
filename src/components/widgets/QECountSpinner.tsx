@@ -1,7 +1,8 @@
-import { useState } from "react";
+import { useAtom } from "jotai";
+import { qeCountAtom } from "@/atoms/logQEAtom";
 
 export default function QECountSpinner() {
-  const [value, setValue] = useState("1");
+  const [value, setValue] = useAtom(qeCountAtom);
 
   function qeUp() {
     const v = parseInt(value) + 1;

@@ -1,11 +1,13 @@
-
+import { useAtom } from "jotai";
+import { lotAtom } from "@/atoms/logQEAtom";
 
 import Dodic from "@/components/widgets/DodicInput";
 import QETypeSelector from "@/components/widgets/QETypeSelector";
 import QECountSpinner from "@/components/widgets/QECountSpinner";
-import LogQEButton from "@/components/widgets/LogQEButton";
 
 export default function QEForm() {
+
+    const [lot, setLot] = useAtom(lotAtom);
 
     function handleSubmit() {
         alert("clicked")
@@ -16,7 +18,8 @@ export default function QEForm() {
             <Dodic />
             <div>
                 <label htmlFor="lot">LOT</label>
-                <input type="text" id="lot" />
+                <input type="text" id="lot" value={lot}
+                    onChange={(e) => setLot(e.target.value)} />
             </div>
             <QETypeSelector />
             <QECountSpinner />
@@ -24,7 +27,6 @@ export default function QEForm() {
             <button className="bg-amber-400" id="logqe" onClick={handleSubmit}>
                 Log QE
             </button>
-            <LogQEButton />
         </div>
         
     );

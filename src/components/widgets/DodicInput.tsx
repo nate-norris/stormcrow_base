@@ -1,5 +1,5 @@
-
-import { useState } from "react";
+import { useAtom } from "jotai";
+import { dodicAtom } from "@/atoms/logQEAtom";
 
 // character matching for dodic regex
 const dodicRegex: RegExp[] = [
@@ -10,7 +10,7 @@ const dodicRegex: RegExp[] = [
 ];
 
 export default function Dodic() {
-    const [dodic, setDodic] = useState("");
+    const [dodic, setDodic] = useAtom(dodicAtom);
 
     function handleChange(e: React.ChangeEvent<HTMLInputElement>) {
         let typed = e.target.value.toUpperCase();

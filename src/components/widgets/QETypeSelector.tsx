@@ -1,7 +1,8 @@
-import { useState } from "react";
+import { useAtom } from "jotai";
+import { qeTypeAtom } from "@/atoms/logQEAtom";
 
 export default function QETypeSelector() {
-  const [qet, setQet] = useState("");
+  const [qet, setQet] = useAtom(qeTypeAtom);
 
   return (
     <>
