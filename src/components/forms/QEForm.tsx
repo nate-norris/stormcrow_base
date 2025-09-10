@@ -7,7 +7,9 @@ import LogQEButton from "@/components/widgets/LogQEButton";
 
 export default function QEForm() {
 
-
+    function handleSubmit() {
+        alert("clicked")
+    }
 
     return (
         <div className="bg-zinc-400">
@@ -18,6 +20,10 @@ export default function QEForm() {
             </div>
             <QETypeSelector />
             <QECountSpinner />
+            <label htmlFor="logqe">OVERWRITING</label>
+            <button className="bg-amber-400" id="logqe" onClick={handleSubmit}>
+                Log QE
+            </button>
             <LogQEButton />
         </div>
         
