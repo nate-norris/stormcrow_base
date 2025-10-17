@@ -1,52 +1,40 @@
 //! All database queries for the app.
 //! 
 //! all return Result<T, sqlx::Error>
+//! all take either tx: &mut sqlx::Transaction<'_, DbPool> or pool: &DbPool as first parameter
 
-use sqlx::{Error, Transaction};
+use sqlx::{Error, Transaction, Sqlite};
 use super::{DbPool, NewTest, Test, TestConfiguration, NewWeather};
 
-// why result<option return
-// should I even have Some(existing) here?
-// Traits as parameters with Future return type
-// what is async move?
-pub async fn get_test_by_name(pool: &DbPool, test_name: &str) -> 
-	Result<Option<Test>, sqlx::Error> {
-	// if test exists return existing test
-    if let Some(existing) = sqlx::query_as!(
+pub async fn get_test_by_name<'e, E>(executor: E, test_name: &str) ->
+	Result<Option<Test>, sqlx::Error> 
+	where E: Executor<'e, Database=Sqlite> {
+
+	sqlx::query_as!(
     	Test,
         "SELECT id, name, time FROM tests WHERE name = ?",
         test_name
     )
-    .fetch_optional(pool)
-    .await?
+    .fetch_optional(executor)
+    .await
 }
 
-// pub async fn get_test_by_id(pool: &DbPool, test_id: i64) ->
-// 	Result<Option<Test>, sqlx::Error> {
-	
-// 	if let Some(existing) = sqlx::query_as!(
-// 		Test,
-// 		"Select id, name, time, FROM tests where id = ?",
-// 		test_id
-// 	)
-// 	.fetch_optional(pool)
-// 	.await?
-// }
-
-pub async fn get_test_config_by_id(pool: &DbPool, test_id: i64) ->
-	Result<Option<TestConfiguration>, sqlx::Error>{
-
-	if let Some(config) = sqlx::query_as!(
+pub async fn get_test_config_by_id<'e, E>(executor: E, test_id: i64) ->
+	Result<Option<TestConfiguration>, sqlx::Error> 
+	where E: Executor<'e, Database=Sqlite> {
+	sqlx::query_as!(
 		TestConfiguration,
-		"SELECT id, cross, cross_type, tail, tail_type, gun_orient, tolerance WHERE id = ?",
+		"SELECT id, cross, cross_type, tail, tail_type, gun_orient, tolerance 
+		FROM test_configs WHERE id = ?",
 		test_id
 	)
-	.fetch_optional(pool)
-	.await?
+	.fetch_optional(executor)
+	.await
 }
 
-pub async fn insert_test(tx: &mut sqlx::Transaction<'_, DbPool>, 
-	new_test: &NewTest) -> Result<Option<Test>, sqlx::Error> {
+pub async fn insert_test<'e, E>(executor: E, new_test: &NewTest) -> 
+	Result<Test, sqlx::Error> 
+	where E: Executor<'e, Database=Sqlite> {
 	// Insert the new session
     sqlx::query_as!(
         Test,
@@ -58,12 +46,13 @@ pub async fn insert_test(tx: &mut sqlx::Transaction<'_, DbPool>,
         new_test.name,
         new_test.time
     )
-    .fetch_one(&mut **tx)
-    .await?
+    .fetch_one(executor)
+    .await
 }
 
-pub async fn insert_default_test_config(tx: &mut sqlx::Transaction<'_, DbPool>,
-    test_id: i64) -> Result<Option<TestConfiguration>, sqlx::Error> {
+pub async fn insert_default_test_config<'e, E>(executor: E, test_id: i64) -> 
+	Result<TestConfiguration, sqlx::Error> 
+	where E: Executor<'e, Database=Sqlite> {
     sqlx::query_as!(
         TestConfiguration,
         r#"
@@ -76,17 +65,27 @@ pub async fn insert_default_test_config(tx: &mut sqlx::Transaction<'_, DbPool>,
         "#,
         test_id
     )
-    .fetch_one(&mut **tx)
-    .await?
+    .fetch_one(executor)
+    .await
 }
+
+pub async fn update_last_test<'e, E>(executor: E, test_id: i64) ->
+	Result<(), sqlx::Error> 
+	where E: Executor<'e, Database=Sqlite> {
+
+	sqlx::query("UPDATE last_test SET last_test_id = ?")
+	.bind(test_id)
+	.execute(executor)
+	.await?;
+	Ok(())
+}
+
 
 pub async fn get_last_test
 
-// get last test id
 
 
-
-
+// Use .fetch_all() → return Result<Vec<T>, E>
 
 
 
