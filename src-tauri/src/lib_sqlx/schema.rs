@@ -3,6 +3,7 @@
 //! Will create the database, any required tables, and return a sqlx::Pool
 //! for future database calls. 
 
+use sqlx::{Pool, Sqlite, Executor}
 use sqlx::Pool;
 use sqlx::sqlite::Sqlite;
 use sqlx::migrate::MigrateDatabase;
@@ -10,6 +11,7 @@ use std::path::PathBuf;
 
 pub type DbPool = Pool<Sqlite>; // pool type
 const DB_SCHEME: &str = "sqlite"; //uri type can be swapped
+pub type DbExec<'e, E> = E where E: Executor<'e, Database=Sqlite>;
 
 /// Initializes the database and returns a connection pool.
 ///

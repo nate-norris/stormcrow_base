@@ -4,11 +4,10 @@
 //! all take either tx: &mut sqlx::Transaction<'_, DbPool> or pool: &DbPool as first parameter
 
 use sqlx::{Error, Transaction, Sqlite};
-use super::{DbPool, NewTest, Test, TestConfiguration, NewWeather};
+use super::{DbPool, DbExec, NewTest, Test, TestConfiguration, NewWeather};
 
-pub async fn get_test_by_name<'e, E>(executor: E, test_name: &str) ->
-	Result<Option<Test>, sqlx::Error> 
-	where E: Executor<'e, Database=Sqlite> {
+pub async fn get_test_by_name<'e, E: DbExec<'e>>(executor: E, test_name: &str) ->
+	Result<Option<Test>, sqlx::Error> {
 
 	sqlx::query_as!(
     	Test,
@@ -19,9 +18,8 @@ pub async fn get_test_by_name<'e, E>(executor: E, test_name: &str) ->
     .await
 }
 
-pub async fn get_test_config_by_id<'e, E>(executor: E, test_id: i64) ->
-	Result<Option<TestConfiguration>, sqlx::Error> 
-	where E: Executor<'e, Database=Sqlite> {
+pub async fn get_test_config_by_id<'e, E: DbExec<'e>>(executor: E, test_id: i64) ->
+	Result<Option<TestConfiguration>, sqlx::Error> {
 	sqlx::query_as!(
 		TestConfiguration,
 		"SELECT id, cross, cross_type, tail, tail_type, gun_orient, tolerance 
@@ -32,9 +30,8 @@ pub async fn get_test_config_by_id<'e, E>(executor: E, test_id: i64) ->
 	.await
 }
 
-pub async fn insert_test<'e, E>(executor: E, new_test: &NewTest) -> 
-	Result<Test, sqlx::Error> 
-	where E: Executor<'e, Database=Sqlite> {
+pub async fn insert_test<'e, E: DbExec<'e>>(executor: E, new_test: &NewTest) -> 
+	Result<Test, sqlx::Error> {
 	// Insert the new session
     sqlx::query_as!(
         Test,
@@ -50,9 +47,8 @@ pub async fn insert_test<'e, E>(executor: E, new_test: &NewTest) ->
     .await
 }
 
-pub async fn insert_default_test_config<'e, E>(executor: E, test_id: i64) -> 
-	Result<TestConfiguration, sqlx::Error> 
-	where E: Executor<'e, Database=Sqlite> {
+pub async fn insert_default_test_config<'e, E: DbExec<'e>>(executor: E, test_id: i64) -> 
+	Result<TestConfiguration, sqlx::Error> {
     sqlx::query_as!(
         TestConfiguration,
         r#"
@@ -69,9 +65,8 @@ pub async fn insert_default_test_config<'e, E>(executor: E, test_id: i64) ->
     .await
 }
 
-pub async fn update_last_test<'e, E>(executor: E, test_id: i64) ->
-	Result<(), sqlx::Error> 
-	where E: Executor<'e, Database=Sqlite> {
+pub async fn update_last_test<'e, E: DbExec<'e>>(executor: E, test_id: i64) ->
+	Result<(), sqlx::Error> {
 
 	sqlx::query("UPDATE last_test SET last_test_id = ?")
 	.bind(test_id)

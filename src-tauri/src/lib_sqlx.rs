@@ -16,7 +16,7 @@ pub mod handler;
 
 //internal module imports
 use queries::*;
-use schema::DbPool;
+use schema::{DbPool, DbExec};
 use models::{NewSession, Session};
 
 // public module imports
