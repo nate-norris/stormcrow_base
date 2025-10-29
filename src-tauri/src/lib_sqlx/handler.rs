@@ -22,8 +22,7 @@ pub async fn initiate_test(pool: &DbPool, name: &str) ->
     //returns existing test and configs if already created
     if let Some(existing) = q_tests::get_test_by_name(pool, &new_test.name).await? {
         if let Some(config) = q_configs::get_test_config_by_id(pool, existing.id).await? {
-            q_tests::update_last_test(pool, &existing.name).await?;
-            println!("returning existing");
+            q_tests::update_last_test(pool, Some(&existing.name)).await?;
             return Ok((existing, config));
         }
     }
@@ -37,10 +36,9 @@ pub async fn initiate_test(pool: &DbPool, name: &str) ->
     let config = q_configs::insert_default_test_config(
         &mut *tx, test.id).await?;
     // update last test active
-    q_tests::update_last_test(&mut *tx, &test.name).await?;
+    q_tests::update_last_test(&mut *tx, Some(&test.name)).await?;
     //finalize transaction
     tx.commit().await?;
-    println!("making new one");
     
     Ok((test, config))
 }
@@ -62,8 +60,29 @@ pub async fn get_tests(pool: &DbPool) -> Result<Vec<Test>, sqlx::Error> {
 }
 
 
-// #[tauri::command]
-// pub async fn retrieve_tests(pool: tauri::State<'_, DbPool>) ->
-//     DbResponse<Vec<Test>> {
-//     DbResponse::Ok(try_resp!(q_tests::get_tests(&pool).await))
-// }
+pub async fn delete_test(pool: &DbPool, name: &str) -> Result<(), sqlx::Error> {
+
+    if let Some(existing) = q_tests::get_test_by_name(pool, name).await? {
+
+        // initiate transaction for all queries executed simultaneous
+        let mut tx = pool.begin().await?;
+
+        // wipe last test if it is for this current test
+        if let Some(last) = q_tests::get_last_test_name(pool)
+            .await? {
+            if last == name {
+                q_tests::update_last_test(&mut *tx, None)
+                    .await?;
+                println!("was last and is no longer");
+            }
+        }
+        
+        //remove test configuration
+        q_configs::delete_config_by_id(&mut *tx, existing.id).await?;
+        //remove test
+        q_tests::delete_test_by_id(&mut *tx, existing.id).await?;
+        //finalize transaction
+        tx.commit().await?;
+    }
+    Ok(())
+}

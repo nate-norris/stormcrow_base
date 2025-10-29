@@ -34,7 +34,6 @@ pub(crate) async fn get_tests<'e, E>(executor: E) ->
     Ok(tests)
 }
 
-
 pub(crate) async fn insert_test<'e, E>(executor: E, new_test: &NewTest) -> 
 	Result<Test, sqlx::Error> 
     where E: DbExec<'e> {
@@ -65,7 +64,7 @@ pub(crate) async fn get_last_test_name<'e, E>(executor: E) ->
     .await
 }
 
-pub(crate) async fn update_last_test<'e, E>(executor: E, test_name: &str) ->
+pub(crate) async fn update_last_test<'e, E>(executor: E, test_name: Option<&str>) ->
 	Result<(), sqlx::Error> 
     where E: DbExec<'e> {
 
@@ -73,5 +72,14 @@ pub(crate) async fn update_last_test<'e, E>(executor: E, test_name: &str) ->
 	.bind(test_name)
 	.execute(executor)
 	.await?;
+	Ok(())
+}
+
+pub(crate) async fn delete_test_by_id<'e, E>(executor: E, test_id: i64) ->
+    Result<(), sqlx::Error>
+    where E: DbExec<'e> {
+    sqlx::query!("DELETE FROM tests WHERE id = ?", test_id)
+        .execute(executor)
+        .await?;
 	Ok(())
 }

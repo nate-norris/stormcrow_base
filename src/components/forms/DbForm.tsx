@@ -21,21 +21,30 @@ type TestConfiguration = {
 export default function DbForm() {
 
     const [name, setName] = useState("");
+    const [deleteName, setDeleteName] = useState("");
 
     async function handleInitDb() {
         setName("");
         try {
             const [test, testConfig]: [Test, TestConfiguration] = await invoke("initiate_test_command", { name: name.toUpperCase() });
-            // console.log(result);
             alert(JSON.stringify(test));
             alert(JSON.stringify(testConfig));
-            // invoke('login', { user: 'tauri', password: '0j4rijw8=' })
-            //     .then((message) => console.log(message))
-            //     .catch((error) => console.error(error));
         } catch (error) {
             alert('error');
             console.log("db error: ", error);
         }
+    }
+
+    async function handleDeleteTest() {
+        // setDeleteName("");
+        // delete_test_command
+        invoke('delete_test_command', { name: deleteName.toUpperCase() })
+            .then(() => {
+                alert("Test deleted successfully!");
+        })
+        .catch((err) => {
+            console.error("Failed to delete test:", err);
+        });
     }
 
     async function handleLastTest() {
@@ -72,6 +81,14 @@ export default function DbForm() {
             <div>
                 <label htmlFor="tests">All Tests</label>
                 <button id="tests" className="bg-amber-400" onClick={handleAllTests}>
+                    Go
+                </button>
+            </div>
+            <div className="bg-zinc-400">
+                <label htmlFor="init">Delete Test</label>
+                <input type="text" id="delete" value={deleteName}
+                        onChange={(e) => setDeleteName(e.target.value)} />
+                <button className="bg-amber-400" onClick={handleDeleteTest}>
                     Go
                 </button>
             </div>

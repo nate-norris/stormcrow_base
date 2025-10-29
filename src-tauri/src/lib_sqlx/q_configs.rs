@@ -82,9 +82,11 @@ pub(crate) async fn get_test_config_by_id<'e, E>(executor: E, test_id: i64) ->
 	.await
 }
 
-// pub(crate) async fn delete_config_by_id<E: DbExec>(executor: E, test_id: i64) ->
-//     Result<(), sqlx:Error> {
-//         sqlx::query!(
-
-//         )
-// }
+pub(crate) async fn delete_config_by_id<'e, E>(executor: E, test_id: i64) ->
+    Result<(), sqlx::Error>
+    where E: DbExec<'e> {
+    sqlx::query!("DELETE FROM test_configs WHERE id = ?", test_id)
+        .execute(executor)
+        .await?;
+	Ok(())
+}
