@@ -3,7 +3,6 @@
 
 // use tauri::{AppHandle, Manager};
 
-
 fn main() {
     chinook_lib::run()
 }

@@ -3,15 +3,20 @@
 //! Will create the database, any required tables, and return a sqlx::Pool
 //! for future database calls. 
 
-use sqlx::{Pool, Sqlite, Executor}
-use sqlx::Pool;
-use sqlx::sqlite::Sqlite;
+use sqlx::{Pool, Sqlite, Executor};
 use sqlx::migrate::MigrateDatabase;
 use std::path::PathBuf;
 
 pub type DbPool = Pool<Sqlite>; // pool type
+
 const DB_SCHEME: &str = "sqlite"; //uri type can be swapped
-pub type DbExec<'e, E> = E where E: Executor<'e, Database=Sqlite>;
+// bounded type group
+//      all queries can accept either tx: &mut sqlx::Transaction<'_, DbPool> 
+//      or pool: &DbPool as the first parameter
+// Handles the lifeline internally
+pub trait DbExec<'e>: Executor<'e, Database = Sqlite> {}
+impl<'e, T> DbExec<'e> for T where T: Executor<'e, Database = Sqlite> {}
+    
 
 /// Initializes the database and returns a connection pool.
 ///
@@ -30,7 +35,7 @@ pub async fn init_db() -> Result<DbPool, sqlx::Error> {
     // create database if needed
     maybe_create_database(&db_url).await?;
     // connect to the pool
-    let pool = DbPool::connect(&db_url).await?;
+    let pool: DbPool = DbPool::connect(&db_url).await?;
     // Create tables if they don’t exist
     create_tables(&pool).await?;
 
@@ -49,9 +54,11 @@ pub async fn init_db() -> Result<DbPool, sqlx::Error> {
 fn get_db_path() -> (PathBuf, String) {
     #[cfg(debug_assertions)]
     {
-        // Dev mode: local file
-        let path = PathBuf::from("weather.sqlite");
-        let url = format!("{}://{}", DB_SCHEME, path.display());
+        let mut path = PathBuf::from(env!("CARGO_MANIFEST_DIR")); // guaranteed project root
+        path.pop(); // go up one level from .toml
+        path.push("data/weather.sqlite");
+        let url: String = format!("{}://{}", DB_SCHEME, path.display());
+        println!("{}", url);
         (path, url)
     }
 
@@ -89,7 +96,7 @@ async fn maybe_create_database(database_path: &str) -> Result<(), sqlx::Error> {
     Ok(())
 }
 
-/// Create tables if the do not exists.
+/// Create tables if they do not exists.
 ///
 /// Initializes the following tables:
 /// - **tests** – Contains test metadata such as `id`, `name`, and `time`.
@@ -115,14 +122,14 @@ async fn maybe_create_database(database_path: &str) -> Result<(), sqlx::Error> {
 /// ```
 async fn create_tables(pool: &DbPool) -> Result<(), sqlx::Error> {
 
-    let mut tx = pool.begin().await?;
+    let mut tx: sqlx::Transaction<'static, Sqlite> = pool.begin().await?;
     // Tests table
     sqlx::query(
         r#"
         CREATE TABLE IF NOT EXISTS tests (
             id INTEGER PRIMARY KEY AUTOINCREMENT,
             name VARCHAR(30) NOT NULL UNIQUE,
-            time DATETIME NOT NULL
+            time INTEGER NOT NULL
         );
         "#,
     )
@@ -167,7 +174,7 @@ async fn create_tables(pool: &DbPool) -> Result<(), sqlx::Error> {
             temp REAL NOT NULL,
             humidity REAL NOT NULL,
             baro REAL NOT NULL,
-            time DATETIME NOT NULL,
+            time INTEGER NOT NULL,
             test_id INTEGER NOT NULL,
             FOREIGN KEY(test_id) REFERENCES tests(id)
         );
@@ -181,7 +188,7 @@ async fn create_tables(pool: &DbPool) -> Result<(), sqlx::Error> {
         r#"
         CREATE TABLE IF NOT EXISTS last_test (
             id INTEGER PRIMARY KEY CHECK (id = 1),
-            last_test_id INTEGER
+            last_test_name VARCHAR(30)
         );
         "#,
     )
@@ -191,7 +198,7 @@ async fn create_tables(pool: &DbPool) -> Result<(), sqlx::Error> {
     // add last_test single row if needed
     sqlx::query(
         r#"
-        INSERT INTO last_test (id, last_test_id)
+        INSERT INTO last_test (id, last_test_name)
         VALUES (1, NULL)
         ON CONFLICT(id) DO NOTHING
         "#,

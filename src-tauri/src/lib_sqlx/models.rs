@@ -4,9 +4,21 @@
 //! table itself. The sqlx::Type and sqlx::FromRow are used for conveneince
 //! matching data to tables.
 
-use sqlx::FromRow;
-use chrono::NaiveDateTime;
+// use sqlx::FromRow;
+use chrono::{DateTime, Utc};
 use serde::{Serialize, Deserialize};
+
+use std::ops::Deref;
+use std::error::Error;
+// use sqlx::sqlite::{Sqlite, SqliteTypeInfo,  SqliteArgumentValue};
+// use sqlx::{Type, FromRow, Encode};
+// use sqlx::encode::IsNull;
+
+use sqlx::sqlite::{Sqlite, SqliteArgumentValue, SqliteValueRef, SqliteTypeInfo};
+use sqlx::encode::{Encode, IsNull};
+use sqlx::{Type, Decode, error::BoxDynError, FromRow};
+
+
 
 /// a valid degree (0-359) in a circle
 #[derive(Debug, Clone, Copy, PartialEq, Eq, Serialize, Deserialize)]
@@ -25,6 +37,7 @@ impl DegreesCircle {
     /// ```
     /// let deg = DegreesCircle::new(180);
     /// ```
+    #[allow(dead_code)]
     pub fn new(value: u16) ->Option<Self> {
         if value < 360 {
             Some(Self(value))
@@ -34,8 +47,38 @@ impl DegreesCircle {
     }
 
     // Returns the degree value
+    #[allow(dead_code)]
     pub fn value(self) -> u16 {
         self.0
+    }
+}
+impl Deref for DegreesCircle {
+    type Target = u16;
+    fn deref(&self) -> &Self::Target {
+        &self.0
+    }
+}
+impl Type<Sqlite> for DegreesCircle {
+    fn type_info() -> SqliteTypeInfo {
+        <u16 as Type<Sqlite>>::type_info()
+    }
+}
+impl<'q> Encode<'q, Sqlite> for DegreesCircle {
+    fn encode_by_ref(
+        &self,
+        buf: &mut Vec<SqliteArgumentValue<'q>>
+    ) -> Result<IsNull, Box<dyn Error + Send + Sync>> {
+        // Safe cast because DegreesCircle is always 0..359
+        let val: i32 = self.0.try_into().unwrap();
+        buf.push(SqliteArgumentValue::Int(val));
+        Ok(IsNull::No)
+    }
+}
+impl<'r> Decode<'r, Sqlite> for DegreesCircle {
+    fn decode(value: SqliteValueRef<'r>) -> Result<Self, BoxDynError> {
+        // tell Rust explicitly we want Sqlite decode
+        let raw: i64 = <i64 as Decode<Sqlite>>::decode(value)?;
+        Ok(Self(raw as u16))
     }
 }
 
@@ -48,6 +91,7 @@ impl Percent {
     /// ```
     /// let p = Percent::new(7);
     /// ```
+    #[allow(dead_code)]
     pub fn new(value: u8) -> Option<Self> {
         if value <= 100 {
             Some(Self(value))
@@ -57,8 +101,38 @@ impl Percent {
     }
 
     // Returns percent value
+    #[allow(dead_code)]
     pub fn value(self) -> u8 {
         self.0
+    }
+}
+impl Deref for Percent {
+    type Target = u8;
+    fn deref(&self) -> &Self::Target {
+        &self.0
+    }
+}
+impl Type<Sqlite> for Percent {
+    fn type_info() -> SqliteTypeInfo {
+        <u8 as Type<Sqlite>>::type_info()
+    }
+}
+impl<'q> Encode<'q, Sqlite> for Percent {
+    fn encode_by_ref(
+        &self,
+        buf: &mut Vec<SqliteArgumentValue<'q>>
+    ) -> Result<IsNull, Box<dyn Error + Send + Sync>> {
+        // Safe cast because DegreesCircle is always 0..359
+        let val: i32 = self.0.try_into().unwrap();
+        buf.push(SqliteArgumentValue::Int(val));
+        Ok(IsNull::No)
+    }
+}
+impl<'r> Decode<'r, Sqlite> for Percent {
+    fn decode(value: SqliteValueRef<'r>) -> Result<Self, BoxDynError> {
+        // tell Rust explicitly we want Sqlite decode
+        let raw: i64 = <i64 as Decode<Sqlite>>::decode(value)?;
+        Ok(Self(raw as u8)) // safe since prior check for value outside u8
     }
 }
 
@@ -93,19 +167,25 @@ pub enum QEType {
 /// - `id` - primary key for row
 /// - `name` - name of the test
 /// - `time` - timestamp test was created
+#[allow(dead_code)]
 #[derive(Debug, Clone, FromRow, Serialize)]
 pub struct Test {
     pub id: i64,
     pub name: String,
-    pub time: NaiveDateTime
+    // #[serde(with = "chrono::serde::ts_seconds")]
+    // pub time: DateTime<Utc>,
+    pub time: i64,
 }
 /// Represents a new entry in `test`` table
 /// 
 /// Struct is deserialized from JSON
+#[allow(dead_code)]
 #[derive(Debug, Clone, Deserialize)]
 pub struct NewTest {
     pub name: String,
-    pub time: NaiveDateTime
+    // #[serde(with = "chrono::serde::ts_seconds")]
+    // pub time: DateTime<Utc>,
+    pub time: i64,
 }
 
 /// Represents a row in `test_configs`
@@ -126,11 +206,15 @@ pub struct NewTest {
 pub struct TestConfiguration {
     pub id: i64,
     pub cross: i64,
-    pub cross_type: VelocityType,
+    pub cross_type: String,
+    // pub cross_type: VelocityType,
     pub tail: i64,
-    pub tail_type: VelocityType,
-    pub gun_orient: DegreesCircle,
-    pub tolerance: Percent
+    pub tail_type: String,
+    // pub tail_type: VelocityType,
+    // pub gun_orient: DegreesCircle,
+    // pub tolerance: Percent
+    pub gun_orient: i64,
+    pub tolerance: i64
 }
 
 /// Represents a weather measurement associated with a `test` entry.
@@ -177,6 +261,7 @@ pub struct NewWeather {
     pub temp: f64, //degrees farenheit
     pub humidity: f64, //percent
     pub baro: f64, //inHg
-    pub time: NaiveDateTime,
+    #[serde(with = "chrono::serde::ts_seconds")]
+    pub time: DateTime<Utc>,
     pub test_id: i64, //FK
 }

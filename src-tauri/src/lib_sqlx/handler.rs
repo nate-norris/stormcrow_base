@@ -1,83 +1,43 @@
-//! Define tauri commands that are available for this module.
-use super::queries;
-use super::models;
+use chrono::{Utc};
 
-#[tauri::command]
-pub async fn initiate_test(pool: tauri::State<'_, DbPool>, name: String,) -> 
+
+use super::models::{NewTest, Test, TestConfiguration};//, VelocityType, DegreesCircle, Percent};
+use super::schema::DbPool;
+use crate::lib_sqlx::q_tests;
+use crate::lib_sqlx::q_configs;
+
+
+pub async fn initiate_test(pool: &DbPool, name: &str) -> 
     Result<(Test, TestConfiguration), sqlx::Error> {
-
-    // create new test for insertion
-    let new_test = NewTest {
-        name,
-        time: chrono::Utc::now().naive_utc(),
+    
+    // test reference
+    let new_test: NewTest = NewTest {
+        name: name.to_string(),
+        time: Utc::now().timestamp(),
     };
-    // returns existing test and configs if already created
-    if let Some(existing) = get_test_by_name(&pool, &new_test.name).await? {
-        if let Some(config) = get_test_config_by_id(&pool, existing.id).await? {
-            //TODO update last test
-            update_last_test(&pool, existing.id).await?
+
+    //returns existing test and configs if already created
+    if let Some(existing) = q_tests::get_test_by_name(pool, &new_test.name).await? {
+        if let Some(config) = q_configs::get_test_config_by_id(pool, existing.id).await? {
+            q_tests::update_last_test(pool, &existing.name).await?;
+            println!("returning existing");
             return Ok((existing, config));
         }
     }
 
     // test name not entered insert into db
+    // initiate transaction for all queries executed simultaneous
     let mut tx = pool.begin().await?;
-    let test = insert_test(&mut tx, &new_test).await?;
-    let config = insert_default_test_config(&mut tx, test.id).await?;
-    //TODO update last_test
+    // insert and retrieve the Test
+    let test = q_tests::insert_test(&mut *tx, &new_test).await?;
+    // insert and retrieve the TestConfiguration
+    let config = q_configs::insert_default_test_config(
+        &mut *tx, test.id).await?;
+    // update last test active
+    q_tests::update_last_test(&mut *tx, &test.name).await?;
+    //finalize transaction
     tx.commit().await?;
-    Ok((test, config))
-}
-
-// test session actions
-// get list of all tests for dropdown
-// insert new test when user types in a unique one (and update last test)
-// select a previous test that existed from a drop down list (and update last test)
-// select a previous test that existed from the last test used (no last test update)
-// delete a test not needed (and update last test and settings)
-// update test settings configs
-
-// weather actions
-// get all weather data for putting in table/or export to csv (probably same)
-// 
-
-
-
-/// Creates a new [`Test`] record or retrieves an existing one by name.
-///
-/// # Arguments
-/// * `pool` - The Tauri-managed [`sqlx::SqlitePool`] state used for database access.
-/// * `name` - The unique name of the test to insert or retrieve.
-///
-/// # Returns
-/// * `Ok(Test)` - The existing or newly inserted [`Test`] record.
-/// * `Err(String)` - If a database or SQL error occurs, converted to a string for frontend use.
-///
-/// # Notes
-/// - Designed to be called from the frontend via Tauri’s `invoke` API.
-/// - Uses the current UTC time (`chrono::Utc::now()`) when creating a new test.
-/// - Wraps the SQLx error into a string to avoid leaking database types to the frontend.
-#[tauri::command]
-pub async fn initiate_testOLD(pool: tauri::State<'_, sqlx::SqlitePool>, name: String)
-    -> Result<models::Session, String> {
-    let new_test = models::NewTest {
-        name,
-        time: chrono::Utc::now().naive_utc(),
-    };
+    println!("making new one");
     
-    queries::insert_test_if_not_exists(&pool, new_test)
-        .await
-        .map_err(|e| e.to_string())
-}
-
-
-
-
-
-
-
-// This is the "command export" that Tauri can call from the frontend.
-#[tauri::command]
-pub async fn get_users_command() -> Vec<String> {
-    queries::get_users().await
+    Ok((test, config))
 }
