@@ -2,7 +2,7 @@
 //! 
 
 use crate::t_state::DbState;
-use crate::lib_sqlx::{initiate_test, Test, TestConfiguration};
+use crate::lib_sqlx::{initiate_test, get_last_test, get_tests, Test, TestConfiguration};
 
 #[tauri::command]
 pub fn greet(name: &str) -> String {
@@ -25,4 +25,21 @@ pub async fn initiate_test_command(state: tauri::State<'_, DbState>, name: Strin
         .map_err(|e| e.to_string())?;
 
     Ok(result)
+}
+
+#[tauri::command]
+pub async fn get_last_test_command(state: tauri::State<'_, DbState>) ->
+    Result<Option<Test>, String> {
+    let pool = state.0.as_ref();
+
+    get_last_test(pool).await
+        .map_err(|e| e.to_string())
+}
+
+#[tauri::command]
+pub async fn get_tests_command(state: tauri::State<'_, DbState>) ->
+    Result<Vec<Test>, String> {
+    let pool = state.0.as_ref();
+    get_tests(pool).await
+        .map_err(|e| e.to_string())
 }

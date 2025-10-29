@@ -1,5 +1,8 @@
-use chrono::{Utc};
+//! Define tauri commands that are available for this module.
+//! returns Result<T, sqlx::Error>
+//! 
 
+use chrono::{Utc};
 
 use super::models::{NewTest, Test, TestConfiguration};//, VelocityType, DegreesCircle, Percent};
 use super::schema::DbPool;
@@ -41,3 +44,26 @@ pub async fn initiate_test(pool: &DbPool, name: &str) ->
     
     Ok((test, config))
 }
+
+
+pub async fn get_last_test(pool: &DbPool) -> Result<Option<Test>, sqlx::Error> {
+
+    if let Some(name) = q_tests::get_last_test_name(pool).await? {
+        // will unwrap since test must exist if was used last
+        let test = q_tests::get_test_by_name(pool, &name).await?.unwrap();
+        Ok(Some(test))
+    } else {
+        Ok(None)
+    }
+}
+
+pub async fn get_tests(pool: &DbPool) -> Result<Vec<Test>, sqlx::Error> {
+    q_tests::get_tests(pool).await
+}
+
+
+// #[tauri::command]
+// pub async fn retrieve_tests(pool: tauri::State<'_, DbPool>) ->
+//     DbResponse<Vec<Test>> {
+//     DbResponse::Ok(try_resp!(q_tests::get_tests(&pool).await))
+// }

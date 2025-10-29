@@ -38,15 +38,45 @@ export default function DbForm() {
         }
     }
 
+    async function handleLastTest() {
+        try {
+            const test: Test = await invoke("get_last_test_command");
+            alert(JSON.stringify(test));
+        } catch (error) {
+            alert("error");
+        }
+    }
+
+    async function handleAllTests() {
+        invoke<Test[]>("get_tests_command")
+            .then((tests) => {alert(JSON.stringify(tests, null, 2));})
+            .catch((error) => console.error(error));
+    }
+
     return (
-        <div className="bg-zinc-400">
-            <label htmlFor="init">Initiate DB</label>
-            <input type="text" id="init" value={name}
-                    onChange={(e) => setName(e.target.value)} />
-            <button className="bg-amber-400" onClick={handleInitDb}>
-                Go
-            </button>
-        </div>
+        <>
+            <div className="bg-zinc-400">
+                <label htmlFor="init">Initiate DB</label>
+                <input type="text" id="init" value={name}
+                        onChange={(e) => setName(e.target.value)} />
+                <button className="bg-amber-400" onClick={handleInitDb}>
+                    Go
+                </button>
+            </div>
+            <div>
+                <label htmlFor="last_test">Last Test</label>
+                <button id="last_test" className="bg-amber-400" onClick={handleLastTest}>
+                    Go
+                </button>
+            </div>
+            <div>
+                <label htmlFor="tests">All Tests</label>
+                <button id="tests" className="bg-amber-400" onClick={handleAllTests}>
+                    Go
+                </button>
+            </div>
+        </>
+        
         
     );
 }
