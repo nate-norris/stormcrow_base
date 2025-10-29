@@ -25,6 +25,7 @@ dist-ssr
 
 # database
 .sqlx*
-*.sqlite
+data/
+
 # rust analyzer checks
 target/rust-analyzer/
