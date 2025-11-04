@@ -22,4 +22,4 @@ use models::NewTest;
 // Re-export tauri commands that are library specific via handlers
 pub use schema::{DbPool, init_db};
 pub use models::{Test, TestConfiguration};
-pub use handler::{initiate_test, get_last_test, get_tests, delete_test};
+pub use handler::{initiate_test, get_last_test, get_tests, delete_test, update_configuration};

@@ -33,40 +33,35 @@ pub(crate) async fn insert_default_test_config<'e, E>(executor: E, test_id: i64)
     .await
 }
 
-// pub(crate) async fn update_test_config<E: DbExec>(executor: E, config: &TestConfiguration) ->
-// 	Result<(), sqlx::Error> {
 
-// 	sqlx::query!(
-//         r#"
-//         UPDATE test_configs SET 
-//             cross = ?,
-//             cross_type = ?,
-//             tail = ?,
-//             tail_type = ?,
-//             gun_orient = ?,
-//             tolerance = ?
-//         WHERE id = ?
-//         "#,
-//         config.cross,
-//         config.cross_type as _,
-//         config.tail,
-//         config.tail_type as _,
-//         config.gun_orient as _,
-//         config.tolerance as _,
-//         config.id
-//     )
-// 	.execute(executor)
-// 	.await?;
+pub(crate) async fn update_test_config<'e, E>(executor: E, config: TestConfiguration) ->
+    Result<(), sqlx::Error> 
+    where E: DbExec<'e> {
 
-// 	Ok(())
-// }
+    sqlx::query!(
+        r#"UPDATE test_configs SET 
+        cross = ?,
+        cross_type = ?,
+        tail = ?,
+        tail_type = ?,
+        gun_orient = ?,
+        tolerance = ?
+        WHERE id = ?
+        "#,
+        config.cross,
+        config.cross_type,
+        config.tail,
+        config.tail_type,
+        config.gun_orient,
+        config.tolerance,
+        config.id
+        )
+        .execute(executor)
+        .await?;
+	Ok(())
 
-// pub(crate) async fn insert_default_test_config<'e, E>(executor: E, test_id: i64) -> 
-// 	Result<TestConfiguration, sqlx::Error> 
-//     where E: DbExec<'e> {
+}
 
-// pub(crate) async fn get_test_config_by_id<E: DbExec>(executor: E, test_id: i64) ->
-// 	Result<Option<TestConfiguration>, sqlx::Error> {
 pub(crate) async fn get_test_config_by_id<'e, E>(executor: E, test_id: i64) ->
 	Result<Option<TestConfiguration>, sqlx::Error> 
     where E: DbExec<'e> {

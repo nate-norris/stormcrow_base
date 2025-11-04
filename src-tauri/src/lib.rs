@@ -15,7 +15,8 @@ mod t_state;
 use t_state::DbState;
 use lib_sqlx::init_db;
 use commands::{greet, get_users_command,
-    initiate_test_command, get_last_test_command, get_tests_command, delete_test_command};
+    initiate_test_command, get_last_test_command, get_tests_command, 
+    delete_test_command, update_configuration_command};
 
 #[cfg_attr(mobile, tauri::mobile_entry_point)]
 pub fn run() {
@@ -56,7 +57,8 @@ pub fn run() {
             initiate_test_command,
             get_last_test_command,
             get_tests_command,
-            delete_test_command
+            delete_test_command,
+            update_configuration_command
         ])
         .run(tauri::generate_context!())
         .expect("error while running tauri application");

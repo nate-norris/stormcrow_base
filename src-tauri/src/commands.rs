@@ -2,7 +2,8 @@
 //! 
 
 use crate::t_state::DbState;
-use crate::lib_sqlx::{initiate_test, get_last_test, get_tests, delete_test, Test, TestConfiguration};
+use crate::lib_sqlx::{initiate_test, get_last_test, get_tests, delete_test, 
+    update_configuration, Test, TestConfiguration};
 
 #[tauri::command]
 pub fn greet(name: &str) -> String {
@@ -51,3 +52,22 @@ pub async fn delete_test_command(state: tauri::State<'_, DbState>, name: String)
     delete_test(pool, &name).await
         .map_err(|e| e.to_string())
 }
+
+#[tauri::command]
+pub async fn update_configuration_command(state: tauri::State<'_, DbState>, config: TestConfiguration)
+    -> Result<(), String> {
+
+    let pool = state.0.as_ref();
+    update_configuration(pool, config)
+        .await
+        .map_err(|e: sqlx::Error| e.to_string())
+}
+
+
+
+
+// weather actions -----------------------------
+// getTestWeatherData for display on table load or export to csv
+// updateWeatherQe as in reassign
+// insert weather data (or insert QE).... each site will have its own data so array of weather sites. will also need dodic/lot/etc
+// deleteQe ... no longer needed

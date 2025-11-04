@@ -86,3 +86,9 @@ pub async fn delete_test(pool: &DbPool, name: &str) -> Result<(), sqlx::Error> {
     }
     Ok(())
 }
+
+
+pub async fn update_configuration(pool: &DbPool, config:TestConfiguration) ->
+    Result<(), sqlx::Error> {
+    q_configs::update_test_config(pool, config).await
+}
