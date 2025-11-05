@@ -167,7 +167,6 @@ pub enum QEType {
 /// - `id` - primary key for row
 /// - `name` - name of the test
 /// - `time` - timestamp test was created
-#[allow(dead_code)]
 #[derive(Debug, Clone, FromRow, Serialize)]
 pub struct Test {
     pub id: i64,
@@ -179,7 +178,6 @@ pub struct Test {
 /// Represents a new entry in `test`` table
 /// 
 /// Struct is deserialized from JSON
-#[allow(dead_code)]
 #[derive(Debug, Clone, Deserialize)]
 pub struct NewTest {
     pub name: String,
@@ -264,4 +262,41 @@ pub struct NewWeather {
     #[serde(with = "chrono::serde::ts_seconds")]
     pub time: DateTime<Utc>,
     pub test_id: i64, //FK
+}
+
+#[allow(dead_code)]
+pub struct NewQE {
+    pub site_id: i64, // weather site
+    pub range: i64, // from gun position in meters
+    pub altitude: i64, //meters
+    pub gun_orient: DegreesCircle,
+    pub qe: i64,
+    pub qe_type: QEType,
+    pub dodic: String,
+    pub lot: String,
+    pub wind_full: f64, // mph
+    pub wind_direction: f64, //floating point degrees
+    pub cross: f64, //mph
+    pub tail: f64, //mph
+    pub temp: f64, //degrees farenheit
+    pub humidity: f64, //percent
+    pub baro: f64, //inHg
+    // #[serde(with = "chrono::serde::ts_seconds")]
+    // pub time: DateTime<Utc>,
+    pub time: i64,
+    pub test_id: i64 //FK
+}
+
+#[derive(Debug, Clone, Serialize, Deserialize)]
+pub struct QEBase {
+    pub count: i64,
+    pub qe_type: String,
+    pub test_id: i64
+}
+
+#[derive(Debug, Clone, Serialize, Deserialize)]
+pub struct QESite {
+    pub site_id: i32,
+    #[serde(flatten)]
+    pub base: QEBase
 }

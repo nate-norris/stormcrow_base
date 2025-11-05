@@ -157,13 +157,13 @@ async fn create_tables(pool: &DbPool) -> Result<(), sqlx::Error> {
     // Weather table
     sqlx::query(
         r#"
-        CREATE TABLE IF NOT EXISTS weather (
+        CREATE TABLE IF NOT EXISTS qe (
             id INTEGER PRIMARY KEY AUTOINCREMENT,
             site_id INTEGER NOT NULL,
             range INTEGER NOT NULL,
             altitude INTEGER NOT NULL,
             gun_orient INTEGER NOT NULL,
-            qe INTEGER NOT NULL,
+            count INTEGER NOT NULL,
             qe_type CHARACTER(2) NOT NULL,
             dodic CHARACTER(4) NOT NULL,
             lot VARCHAR(14) NOT NULL,

@@ -1,13 +1,13 @@
 //! Define tauri commands that are available for this module.
 //! returns Result<T, sqlx::Error>
 //! 
-
 use chrono::{Utc};
 
 use super::models::{NewTest, Test, TestConfiguration};//, VelocityType, DegreesCircle, Percent};
 use super::schema::DbPool;
 use crate::lib_sqlx::q_tests;
 use crate::lib_sqlx::q_configs;
+use crate::lib_sqlx::q_qe;
 
 
 pub async fn initiate_test(pool: &DbPool, name: &str) -> 
@@ -73,12 +73,13 @@ pub async fn delete_test(pool: &DbPool, name: &str) -> Result<(), sqlx::Error> {
             if last == name {
                 q_tests::update_last_test(&mut *tx, None)
                     .await?;
-                println!("was last and is no longer");
             }
         }
         
         //remove test configuration
         q_configs::delete_config_by_id(&mut *tx, existing.id).await?;
+        // remove qe weather
+        q_qe::delete_test_qes(&mut *tx, existing.id).await?;
         //remove test
         q_tests::delete_test_by_id(&mut *tx, existing.id).await?;
         //finalize transaction

@@ -2,14 +2,12 @@
 //! 
 // use sqlx::Error;
 // use crate::lib_sqlx::models::{DegreesCircle, Percent};
-
-use super::{DbExec, TestConfiguration};
 /*
 DDL (CREATE, ALTER, DROP) → use sqlx::query(...).execute(pool).await.
 DML (SELECT, INSERT, UPDATE) → use query_as! or query! when possible for compile-time checks.
 */
 
-
+use super::{DbExec, TestConfiguration};
 
 pub(crate) async fn insert_default_test_config<'e, E>(executor: E, test_id: i64) -> 
 	Result<TestConfiguration, sqlx::Error> 
@@ -32,7 +30,6 @@ pub(crate) async fn insert_default_test_config<'e, E>(executor: E, test_id: i64)
     .fetch_one(executor)
     .await
 }
-
 
 pub(crate) async fn update_test_config<'e, E>(executor: E, config: TestConfiguration) ->
     Result<(), sqlx::Error> 

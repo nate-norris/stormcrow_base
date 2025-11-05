@@ -16,8 +16,9 @@ pub mod handler;
 // //internal module imports
 pub(crate) mod q_tests;
 pub(crate) mod q_configs;
+pub(crate) mod q_qe;
 use schema::DbExec;
-use models::NewTest;
+use models::{NewTest, QEBase};
 
 // Re-export tauri commands that are library specific via handlers
 pub use schema::{DbPool, init_db};
