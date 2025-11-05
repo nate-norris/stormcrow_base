@@ -3,7 +3,7 @@
 
 use crate::t_state::DbState;
 use crate::lib_sqlx::{initiate_test, get_last_test, get_tests, delete_test, 
-    update_configuration, Test, TestConfiguration};
+    update_configuration, delete_qe_site, Test, TestConfiguration, QESite};
 
 #[tauri::command]
 pub fn greet(name: &str) -> String {
@@ -63,7 +63,16 @@ pub async fn update_configuration_command(state: tauri::State<'_, DbState>, conf
         .map_err(|e: sqlx::Error| e.to_string())
 }
 
-
+#[tauri::command]
+pub async fn delete_qe_site_command(state: tauri::State<'_, DbState>, qe_site: QESite)
+    -> Result<(), String> {
+    let pool = state.0.as_ref();
+    delete_qe_site(pool, qe_site)
+        .await
+        .map_err(|e: sqlx::Error| e.to_string())
+}
+// delete qe specific site
+// delete qe
 
 
 // weather actions -----------------------------

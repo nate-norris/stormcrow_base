@@ -1,4 +1,5 @@
-use super::{DbExec, QEBase};
+use super::{DbExec, QEBase, QESite};
+// use crate::QESite;
 
 
 // weather actions -----------------------------
@@ -6,7 +7,6 @@ use super::{DbExec, QEBase};
 // updateWeatherQe as in reassign
 // insert weather data (or insert QE).... each site will have its own data so array of weather sites. will also need dodic/lot/etc
 // deleteQe ... no longer needed
-// delete all qes (on delete test)
 
 pub(crate) async fn delete_test_qes<'e, E>(executor: E, test_id: i64) ->
 	Result<(), sqlx::Error>
@@ -33,6 +33,26 @@ pub(crate) async fn delete_qe<'e, E>(executor: E, qe: QEBase) ->
 		qe.count,
 		qe.qe_type,
 		qe.test_id
+	)
+    .execute(executor)
+    .await?;
+	
+	Ok(())
+}
+
+pub(crate) async fn delete_qe_site<'e, E>(executor: E, qe_site: QESite) ->
+	Result<(), sqlx::Error>
+	where E: DbExec<'e> {
+
+	sqlx::query!(
+		r#"
+		DELETE FROM qe WHERE 
+		count = ? AND qe_type = ? AND test_id = ? AND site_id = ?
+		"#, 
+		qe_site.base.count,
+		qe_site.base.qe_type,
+		qe_site.base.test_id,
+		qe_site.site_id
 	)
     .execute(executor)
     .await?;

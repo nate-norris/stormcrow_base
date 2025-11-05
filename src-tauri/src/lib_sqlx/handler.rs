@@ -3,7 +3,7 @@
 //! 
 use chrono::{Utc};
 
-use super::models::{NewTest, Test, TestConfiguration};//, VelocityType, DegreesCircle, Percent};
+use super::models::{NewTest, Test, TestConfiguration, QESite};//, VelocityType, DegreesCircle, Percent};
 use super::schema::DbPool;
 use crate::lib_sqlx::q_tests;
 use crate::lib_sqlx::q_configs;
@@ -89,7 +89,12 @@ pub async fn delete_test(pool: &DbPool, name: &str) -> Result<(), sqlx::Error> {
 }
 
 
-pub async fn update_configuration(pool: &DbPool, config:TestConfiguration) ->
+pub async fn update_configuration(pool: &DbPool, config: TestConfiguration) ->
     Result<(), sqlx::Error> {
     q_configs::update_test_config(pool, config).await
+}
+
+pub async fn delete_qe_site(pool: &DbPool, qe_site: QESite) ->
+    Result<(), sqlx::Error> {
+    q_qe::delete_qe_site(pool, qe_site).await
 }
