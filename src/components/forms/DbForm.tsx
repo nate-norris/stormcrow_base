@@ -1,21 +1,9 @@
 import { useState } from "react";
 import { invoke } from "@tauri-apps/api/core";
 
-type Test = {
-  id: number;
-  name: string;
-  time: number;
-};
+import type { Test, TestConfiguration } from "@/models";
 
-type TestConfiguration = {
-  id: number;
-  cross: number;
-  cross_type: string;
-  tail: number;
-  tail_type: string;
-  gun_orient: number;
-  tolerance: number;
-};
+
 
 
 export default function DbForm() {
@@ -36,7 +24,6 @@ export default function DbForm() {
     }
 
     async function handleDeleteTest() {
-        // setDeleteName("");
         // delete_test_command
         invoke('delete_test_command', { name: deleteName.toUpperCase() })
             .then(() => {
@@ -45,6 +32,7 @@ export default function DbForm() {
         .catch((err) => {
             console.error("Failed to delete test:", err);
         });
+        setDeleteName("");
     }
 
     async function handleLastTest() {
