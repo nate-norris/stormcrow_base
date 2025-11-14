@@ -18,10 +18,10 @@ pub(crate) mod q_tests;
 pub(crate) mod q_configs;
 pub(crate) mod q_qe;
 use schema::DbExec;
-use models::{NewTest, QEBase};
+use models::NewTest;
 
 // Re-export tauri commands that are library specific via handlers
 pub use schema::{DbPool, init_db};
-pub use models::{Test, TestConfiguration, QESite};
+pub use models::{Test, TestConfiguration, QEDeleteSite, QEBase, QEEntry, WeatherRow};
 pub use handler::{initiate_test, get_last_test, get_tests, delete_test, 
-    update_configuration, delete_qe_site};
+    update_configuration, delete_qe_site, insert_new_qe, reassign_qe};
