@@ -2,8 +2,9 @@
 //! 
 
 use crate::t_state::DbState;
-use crate::lib_sqlx::{initiate_test, get_last_test, get_tests, delete_test, 
-    update_configuration, delete_qe_site, Test, TestConfiguration, QESite};
+use crate::lib_sqlx::{QEDeleteSite, QEBase, QEEntry, Test, TestConfiguration, WeatherRow, 
+    delete_qe_site, delete_test, get_last_test, get_tests, initiate_test, 
+    insert_new_qe, update_configuration, reassign_qe};
 
 #[tauri::command]
 pub fn greet(name: &str) -> String {
@@ -64,19 +65,29 @@ pub async fn update_configuration_command(state: tauri::State<'_, DbState>, conf
 }
 
 #[tauri::command]
-pub async fn delete_qe_site_command(state: tauri::State<'_, DbState>, qe_site: QESite)
+pub async fn delete_qe_site_command(state: tauri::State<'_, DbState>, qe_site: QEDeleteSite)
     -> Result<(), String> {
     let pool = state.0.as_ref();
     delete_qe_site(pool, qe_site)
         .await
         .map_err(|e: sqlx::Error| e.to_string())
 }
-// delete qe specific site
-// delete qe
 
+#[tauri::command]
+pub async fn insert_new_qe_command(state: tauri::State<'_, DbState>, new_qe: QEEntry)
+    -> Result<Vec<WeatherRow>, String> {
+    let pool = state.0.as_ref();
+    insert_new_qe(pool, new_qe)
+        .await
+        .map_err(|e: sqlx::Error| e.to_string())
+}
 
-// weather actions -----------------------------
-// getTestWeatherData for display on table load or export to csv
-// updateWeatherQe as in reassign
-// insert weather data (or insert QE).... each site will have its own data so array of weather sites. will also need dodic/lot/etc
-// deleteQe ... no longer needed
+#[tauri::command]
+pub async fn reassign_qe_command(state: tauri::State<'_, DbState>, 
+    source: QEBase, destination: QEBase)
+    -> Result<Vec<WeatherRow>, String> {
+    let pool = state.0.as_ref();
+    reassign_qe(pool, source, destination)
+        .await
+        .map_err(|e: sqlx::Error| e.to_string())
+}
