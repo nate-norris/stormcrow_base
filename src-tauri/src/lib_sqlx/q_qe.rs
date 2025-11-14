@@ -1,12 +1,65 @@
-use super::{DbExec, QEBase, QESite};
-// use crate::QESite;
+use crate::lib_sqlx::models::{SiteWeather, QEConfiguration, WeatherRow};
 
+use super::{DbExec, QEBase, QEDeleteSite};
 
-// weather actions -----------------------------
-// getTestWeatherData for display on table load or export to csv
-// updateWeatherQe as in reassign
-// insert weather data (or insert QE).... each site will have its own data so array of weather sites. will also need dodic/lot/etc
-// deleteQe ... no longer needed
+// TODO
+// pub(crate) async fn get_test_qes<'e, E>(executor: E, test_id: i64) ->
+
+// when reassigning weather delete (delete qe that is being overwritten plus if there is an existing destination qe)
+// when inserting weather and overwriting then all qe sites are gone
+pub(crate) async fn insert_qe_site<'e, E>(executor: E, base: &QEBase, config: &QEConfiguration, qe_site: &SiteWeather) ->
+	Result<WeatherRow, sqlx::Error>
+	where E: DbExec<'e> {
+
+	sqlx::query_as!(
+        WeatherRow,
+        r#"
+        INSERT INTO qe (site_id, range, altitude, gun_orient, count, qe_type, dodic, lot, wind_full, wind_direction, cross, tail, temp, humidity, baro, time, test_id)
+        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+        RETURNING id, site_id, range, altitude, gun_orient, count, qe_type, dodic, lot, wind_full, wind_direction, cross, tail, temp, humidity, baro, time, test_id
+        "#,
+        qe_site.site_id,
+		qe_site.range,
+		qe_site.altitude,
+		config.gun_orient,
+		base.count,
+		base.qe_type,
+		config.dodic,
+		config.lot,
+		qe_site.wind_full,
+		qe_site.wind_direction,
+		qe_site.cross,
+		qe_site.tail,
+		qe_site.temp,
+		qe_site.humidity,
+		qe_site.baro,
+		config.time,
+		base.test_id
+    )
+    .fetch_one(executor)
+    .await
+}
+
+pub(crate) async fn get_qe_rows<'e, E>(executor: E, base: &QEBase) ->
+	Result<Vec<WeatherRow>, sqlx::Error>
+	where E: DbExec<'e> {
+
+	let sites = sqlx::query_as!(
+		WeatherRow,
+		r#"
+		SELECT id, site_id, range, altitude, gun_orient, count, qe_type, dodic, lot, wind_full, wind_direction, cross, tail, temp, humidity, baro, time, test_id
+		FROM qe
+		WHERE count = ? AND qe_type = ? AND test_id = ?
+		"#, 
+		base.count,
+		base.qe_type,
+		base.test_id
+	)
+	.fetch_all(executor)
+    .await?;
+
+	Ok(sites)
+}
 
 pub(crate) async fn delete_test_qes<'e, E>(executor: E, test_id: i64) ->
 	Result<(), sqlx::Error>
@@ -21,14 +74,14 @@ pub(crate) async fn delete_test_qes<'e, E>(executor: E, test_id: i64) ->
 	Ok(())
 }
 
-pub(crate) async fn delete_qe<'e, E>(executor: E, qe: QEBase) ->
+pub(crate) async fn delete_qe<'e, E>(executor: E, qe: &QEBase) ->
     Result<(), sqlx::Error>
     where E: DbExec<'e> {
 
     sqlx::query!(
 		r#"
-		DELETE FROM qe WHERE 
-		count = ? AND qe_type = ? AND test_id = ?
+		DELETE FROM qe
+		WHERE count = ? AND qe_type = ? AND test_id = ?
 		"#, 
 		qe.count,
 		qe.qe_type,
@@ -40,7 +93,7 @@ pub(crate) async fn delete_qe<'e, E>(executor: E, qe: QEBase) ->
 	Ok(())
 }
 
-pub(crate) async fn delete_qe_site<'e, E>(executor: E, qe_site: QESite) ->
+pub(crate) async fn delete_qe_site<'e, E>(executor: E, qe_site: &QEDeleteSite) ->
 	Result<(), sqlx::Error>
 	where E: DbExec<'e> {
 
@@ -59,62 +112,3 @@ pub(crate) async fn delete_qe_site<'e, E>(executor: E, qe_site: QESite) ->
 	
 	Ok(())
 }
-
-// pub(crate) async fn delete_all_qes
-
-// pub(crate) async fn delete_qe_site<'e, E>(executor: E) ->
-//     Result<(), sqlx::Error>
-//     where E: DbExec<'e> {
-
-// 	sqlx::query!(
-// 		r#"DELETE FROM weather
-// 		"#
-// 	)
-//     Ok(())
-// }
-
-
-/*
-	def deleteQeWeather(self, sess_id: int, qe: int, qe_type: str, site=None):
-		''' delete QE session weather data, a qe is unique by its
-		type and session. NOTE WILL DELETE ALL SITE DATA IF SITE NOT PROVIDED
-		Args:
-			sess_id - (int) session id
-			qe - (int) quality evaluation count
-			qe_type - (str) 'TR' or 'WS'
-		Kwargs:
-			site (str | None) - limit deletions to a specific site if one
-				provided. Otherwise delete all based off qe and type
-		'''
-		if site is not None:
-			binding = (qe, qe_type, sess_id, site)
-			sql = ''' DELETE FROM Weather WHERE qe = ? AND qe_type = ? \
-				AND session_id = ? AND site_id = ?'''
-		else:
-			binding = (qe, qe_type, sess_id)
-			sql = ''' DELETE FROM Weather WHERE qe = ? AND qe_type = ? \
-				AND session_ID = ? '''
-		self.c.execute(sql, binding)
-		self.conn.commit()
-
-
-
-        def qualityEvaluationsDeleted(self):
-		''' delete selected rows from table and from database
-		Preconditions: 
-			WeatherTable will have one or more rows selected for deletion
-		'''
-		m = 'Proceed with deleting the selected rows?'
-		if self.mb.display('Delete Rows', m, prompt_type='okcancel'):
-			table = self.builders['table'].table
-
-			# remove from database, after deleting from table
-			for iid in table.deleteSelected():
-				qe, _type, site = table.parseRowIID(iid)
-				self.db.deleteQeWeather(self.session_id, qe, \
-					_type, site=site)
-
-		# may no longer be overwriting if current qe is deleted
-		self.builders['firing'].warnIfOverwriting()
-		
-*/
