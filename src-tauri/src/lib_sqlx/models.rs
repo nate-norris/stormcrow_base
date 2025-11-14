@@ -5,158 +5,8 @@
 //! matching data to tables.
 
 // use sqlx::FromRow;
-use chrono::{DateTime, Utc};
 use serde::{Serialize, Deserialize};
-
-use std::ops::Deref;
-use std::error::Error;
-// use sqlx::sqlite::{Sqlite, SqliteTypeInfo,  SqliteArgumentValue};
-// use sqlx::{Type, FromRow, Encode};
-// use sqlx::encode::IsNull;
-
-use sqlx::sqlite::{Sqlite, SqliteArgumentValue, SqliteValueRef, SqliteTypeInfo};
-use sqlx::encode::{Encode, IsNull};
-use sqlx::{Type, Decode, error::BoxDynError, FromRow};
-
-
-
-/// a valid degree (0-359) in a circle
-#[derive(Debug, Clone, Copy, PartialEq, Eq, Serialize, Deserialize)]
-pub struct DegreesCircle(u16);
-impl DegreesCircle {
-    /// Creates a degrees with valid 0-359
-    /// 
-    /// # Arguments
-    /// - `value` — The degree value to wrap in the `DegreesCircle`.
-    /// 
-    /// # Returns
-    /// - `Some(DegreesCircle)` — If the provided value is within the range `0..360`.
-    /// - `None` — If the value is out of range.
-    /// 
-    /// # Examples
-    /// ```
-    /// let deg = DegreesCircle::new(180);
-    /// ```
-    #[allow(dead_code)]
-    pub fn new(value: u16) ->Option<Self> {
-        if value < 360 {
-            Some(Self(value))
-        } else {
-            None
-        }
-    }
-
-    // Returns the degree value
-    #[allow(dead_code)]
-    pub fn value(self) -> u16 {
-        self.0
-    }
-}
-impl Deref for DegreesCircle {
-    type Target = u16;
-    fn deref(&self) -> &Self::Target {
-        &self.0
-    }
-}
-impl Type<Sqlite> for DegreesCircle {
-    fn type_info() -> SqliteTypeInfo {
-        <u16 as Type<Sqlite>>::type_info()
-    }
-}
-impl<'q> Encode<'q, Sqlite> for DegreesCircle {
-    fn encode_by_ref(
-        &self,
-        buf: &mut Vec<SqliteArgumentValue<'q>>
-    ) -> Result<IsNull, Box<dyn Error + Send + Sync>> {
-        // Safe cast because DegreesCircle is always 0..359
-        let val: i32 = self.0.try_into().unwrap();
-        buf.push(SqliteArgumentValue::Int(val));
-        Ok(IsNull::No)
-    }
-}
-impl<'r> Decode<'r, Sqlite> for DegreesCircle {
-    fn decode(value: SqliteValueRef<'r>) -> Result<Self, BoxDynError> {
-        // tell Rust explicitly we want Sqlite decode
-        let raw: i64 = <i64 as Decode<Sqlite>>::decode(value)?;
-        Ok(Self(raw as u16))
-    }
-}
-
-// integer based percentage 0-100
-#[derive(Debug, Clone, Copy, PartialEq, Eq, Serialize, Deserialize)]
-pub struct Percent(u8);
-impl Percent {
-    /// Create a valid new percent
-    ///   /// # Examples
-    /// ```
-    /// let p = Percent::new(7);
-    /// ```
-    #[allow(dead_code)]
-    pub fn new(value: u8) -> Option<Self> {
-        if value <= 100 {
-            Some(Self(value))
-        } else {
-            None
-        }
-    }
-
-    // Returns percent value
-    #[allow(dead_code)]
-    pub fn value(self) -> u8 {
-        self.0
-    }
-}
-impl Deref for Percent {
-    type Target = u8;
-    fn deref(&self) -> &Self::Target {
-        &self.0
-    }
-}
-impl Type<Sqlite> for Percent {
-    fn type_info() -> SqliteTypeInfo {
-        <u8 as Type<Sqlite>>::type_info()
-    }
-}
-impl<'q> Encode<'q, Sqlite> for Percent {
-    fn encode_by_ref(
-        &self,
-        buf: &mut Vec<SqliteArgumentValue<'q>>
-    ) -> Result<IsNull, Box<dyn Error + Send + Sync>> {
-        // Safe cast because DegreesCircle is always 0..359
-        let val: i32 = self.0.try_into().unwrap();
-        buf.push(SqliteArgumentValue::Int(val));
-        Ok(IsNull::No)
-    }
-}
-impl<'r> Decode<'r, Sqlite> for Percent {
-    fn decode(value: SqliteValueRef<'r>) -> Result<Self, BoxDynError> {
-        // tell Rust explicitly we want Sqlite decode
-        let raw: i64 = <i64 as Decode<Sqlite>>::decode(value)?;
-        Ok(Self(raw as u8)) // safe since prior check for value outside u8
-    }
-}
-
-/// Velocity type. Used as a preference for wind thresholds
-/// mph or knots or na if no type selected
-/// sqlx auto maps to enum lowercase values
-#[derive(Debug, Clone, Copy, PartialEq, Eq, sqlx::Type, Serialize, Deserialize)]
-#[sqlx(type_name = "velocity_type", rename_all = "lowercase")]
-#[serde(rename_all = "snake_case")]
-pub enum VelocityType {
-    MPH,
-    KNOTS,
-    NA
-}
-
-/// Quality Evaluation (QE) type (Test Round-TR or Warmer Spotter-WS)
-/// sqlx auto maps to enum uppercase values
-#[derive(Debug, Clone, Copy, PartialEq, Eq, sqlx::Type, Serialize, Deserialize)]
-#[sqlx(type_name = "qe_type", rename_all = "UPPERCASE")]
-#[serde(rename_all = "snake_case")]
-pub enum QEType {
-    TS,
-    WS
-}
+use sqlx::FromRow;
 
 /// Represents a row in `test` table
 /// 
@@ -171,8 +21,6 @@ pub enum QEType {
 pub struct Test {
     pub id: i64,
     pub name: String,
-    // #[serde(with = "chrono::serde::ts_seconds")]
-    // pub time: DateTime<Utc>,
     pub time: i64,
 }
 /// Represents a new entry in `test`` table
@@ -241,15 +89,15 @@ pub struct TestConfiguration {
 /// - `baro` — Barometric pressure in inches of mercury (inHg).
 /// - `time` — Timestamp of the measurement (`NaiveDateTime`).
 /// - `test_id` — Foreign key linking this weather entry to a `Test` entry.
-#[derive(Debug, Clone, FromRow, Serialize, Deserialize)]
-pub struct NewWeather {
-    pub id: i64,
+#[derive(Debug, Clone, FromRow, Serialize)]
+pub struct WeatherRow {
+    pub id: Option<i64>,
     pub site_id: i64, // weather site
     pub range: i64, // from gun position in meters
     pub altitude: i64, //meters
-    pub gun_orient: DegreesCircle,
-    pub qe: i64,
-    pub qe_type: QEType,
+    pub gun_orient: i64, //DegreesCircle,
+    pub count: i64,
+    pub qe_type: String, //QEType,
     pub dodic: String,
     pub lot: String,
     pub wind_full: f64, // mph
@@ -259,32 +107,30 @@ pub struct NewWeather {
     pub temp: f64, //degrees farenheit
     pub humidity: f64, //percent
     pub baro: f64, //inHg
-    #[serde(with = "chrono::serde::ts_seconds")]
-    pub time: DateTime<Utc>,
-    pub test_id: i64, //FK
-}
-
-#[allow(dead_code)]
-pub struct NewQE {
-    pub site_id: i64, // weather site
-    pub range: i64, // from gun position in meters
-    pub altitude: i64, //meters
-    pub gun_orient: DegreesCircle,
-    pub qe: i64,
-    pub qe_type: QEType,
-    pub dodic: String,
-    pub lot: String,
-    pub wind_full: f64, // mph
-    pub wind_direction: f64, //floating point degrees
-    pub cross: f64, //mph
-    pub tail: f64, //mph
-    pub temp: f64, //degrees farenheit
-    pub humidity: f64, //percent
-    pub baro: f64, //inHg
-    // #[serde(with = "chrono::serde::ts_seconds")]
-    // pub time: DateTime<Utc>,
     pub time: i64,
     pub test_id: i64 //FK
+}
+
+#[derive(Debug, Clone, Deserialize)]
+pub struct SiteWeather {
+    pub site_id: i64, // unique id for site
+    pub range: i64, // from gun position in meters
+    pub altitude: i64, //meters
+    pub wind_full: f64, // mph
+    pub wind_direction: f64, //floating point degrees
+    pub cross: f64, //mph
+    pub tail: f64, //mph
+    pub temp: f64, //degrees farenheit
+    pub humidity: f64, //percent
+    pub baro: f64, //inHg
+}
+
+#[derive(Debug, Clone, Deserialize)]
+pub struct QEConfiguration {
+    pub dodic: String,
+    pub lot: String,
+    pub gun_orient: i64,
+    pub time: i64
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize)]
@@ -294,9 +140,65 @@ pub struct QEBase {
     pub test_id: i64
 }
 
-#[derive(Debug, Clone, Serialize, Deserialize)]
-pub struct QESite {
-    pub site_id: i32,
+#[derive(Debug, Clone, Deserialize)]
+pub struct QEEntry {
+    pub base: QEBase,
+    pub config: QEConfiguration,
+    pub sites: Vec<SiteWeather>
+}
+impl QEEntry {
+    pub fn from_weather_rows(rows: Vec<WeatherRow>) -> Option<Self> {
+        if rows.is_empty() {
+            return None;
+        }
+
+        // Take base/config from the first row — guaranteed to be consistent
+        let base = rows[0].clone().into();
+        let config = rows[0].clone().into();
+        let sites = rows.into_iter().map(|r| r.into()).collect();
+
+        Some(Self { base, config, sites })
+    }
+}
+impl From<WeatherRow> for QEBase {
+    fn from(row: WeatherRow) -> Self {
+        QEBase {
+            count: row.count,
+            qe_type: row.qe_type,
+            test_id: row.test_id,
+        }
+    }
+}
+impl From<WeatherRow> for QEConfiguration {
+    fn from(row: WeatherRow) -> Self {
+        QEConfiguration {
+            gun_orient: row.gun_orient,
+            dodic: row.dodic,
+            lot: row.lot,
+            time: row.time,
+        }
+    }
+}
+impl From<WeatherRow> for SiteWeather {
+    fn from(row: WeatherRow) -> Self {
+        SiteWeather {
+            site_id: row.site_id,
+            range: row.range,
+            altitude: row.altitude,
+            wind_full: row.wind_full,
+            wind_direction: row.wind_direction,
+            cross: row.cross,
+            tail: row.tail,
+            temp: row.temp,
+            humidity: row.humidity,
+            baro: row.baro,
+        }
+    }
+}
+
+#[derive(Debug, Clone, Deserialize)]
+pub struct QEDeleteSite {
+    pub site_id: i64,
     #[serde(flatten)]
     pub base: QEBase
 }
