@@ -3,8 +3,9 @@
 //! 
 use chrono::{Utc};
 
-use super::models::{NewTest, Test, TestConfiguration, QESite};//, VelocityType, DegreesCircle, Percent};
+use super::models::{NewTest, Test, TestConfiguration, QEDeleteSite, QEBase, WeatherRow};//, VelocityType, DegreesCircle, Percent};
 use super::schema::DbPool;
+use crate::lib_sqlx::models::QEEntry;
 use crate::lib_sqlx::q_tests;
 use crate::lib_sqlx::q_configs;
 use crate::lib_sqlx::q_qe;
@@ -94,7 +95,56 @@ pub async fn update_configuration(pool: &DbPool, config: TestConfiguration) ->
     q_configs::update_test_config(pool, config).await
 }
 
-pub async fn delete_qe_site(pool: &DbPool, qe_site: QESite) ->
+pub async fn insert_new_qe(pool: &DbPool, new_qe: QEEntry) ->
+    Result<Vec<WeatherRow>, sqlx::Error> {
+
+    // remove qe if present
+    //      will lose past QE data for all sites
+    q_qe::delete_qe(pool, &new_qe.base).await?;
+
+    // initiate transaction for all queries executed simultaneous
+    let mut tx = pool.begin().await?;
+
+    let mut rows = Vec::new();
+    for qe_site in new_qe.sites.iter() {
+        let r = q_qe::insert_qe_site(&mut *tx, &new_qe.base, &new_qe.config, qe_site).await?;
+        rows.push(r);
+    }
+
+    tx.commit().await?;
+    Ok(rows)
+}
+
+pub async fn reassign_qe(pool: &DbPool, qe_source: QEBase, qe_destination: QEBase) ->
+    Result<Vec<WeatherRow>, sqlx::Error> {
+    let mut tx = pool.begin().await?;
+
+    // get QEEntry for reinsert
+    //      will recreate the old entry and modify to the destination
+    let rows = q_qe::get_qe_rows(&mut *tx, &qe_source).await?;
+    let mut entry = match QEEntry::from_weather_rows(rows) {
+        Some(e) => e,
+        None => return Ok(Vec::new()),
+    };
+
+    // delete source qe leaving behind
+    q_qe::delete_qe(&mut *tx, &qe_source).await?;
+    
+    // assign source base to destination
+    //      all other values stay the same
+    entry.base = qe_destination;
+    // initiate transaction for all queries executed simultaneous
+    let mut tx = pool.begin().await?;
+    let mut rows = Vec::new();
+    for qe_site in entry.sites.iter() {
+        let r = q_qe::insert_qe_site(&mut *tx, &entry.base, &entry.config, qe_site).await?;
+        rows.push(r);
+    } 
+
+    Ok(rows)
+}
+
+pub async fn delete_qe_site(pool: &DbPool, qe_site: QEDeleteSite) ->
     Result<(), sqlx::Error> {
-    q_qe::delete_qe_site(pool, qe_site).await
+    q_qe::delete_qe_site(pool, &qe_site).await
 }
