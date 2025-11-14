@@ -24,4 +24,4 @@ use models::NewTest;
 pub use schema::{DbPool, init_db};
 pub use models::{Test, TestConfiguration, QEDeleteSite, QEBase, QEEntry, WeatherRow};
 pub use handler::{initiate_test, get_last_test, get_tests, delete_test, 
-    update_configuration, delete_qe_site, insert_new_qe, reassign_qe};
+    update_configuration, get_test_qes, delete_qe_site, insert_new_qe, reassign_qe};

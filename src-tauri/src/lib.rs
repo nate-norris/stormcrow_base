@@ -16,8 +16,8 @@ use t_state::DbState;
 use lib_sqlx::init_db;
 use commands::{greet, get_users_command,
     initiate_test_command, get_last_test_command, get_tests_command, 
-    delete_test_command, update_configuration_command, delete_qe_site_command, 
-    insert_new_qe_command, reassign_qe_command};
+    delete_test_command, update_configuration_command, get_test_qes_command,
+    delete_qe_site_command, insert_new_qe_command, reassign_qe_command};
 
 #[cfg_attr(mobile, tauri::mobile_entry_point)]
 pub fn run() {
@@ -60,6 +60,7 @@ pub fn run() {
             get_tests_command,
             delete_test_command,
             update_configuration_command,
+            get_test_qes_command,
             insert_new_qe_command,
             delete_qe_site_command,
             reassign_qe_command

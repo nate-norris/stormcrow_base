@@ -2,8 +2,23 @@ use crate::lib_sqlx::models::{SiteWeather, QEConfiguration, WeatherRow};
 
 use super::{DbExec, QEBase, QEDeleteSite};
 
-// TODO
-// pub(crate) async fn get_test_qes<'e, E>(executor: E, test_id: i64) ->
+pub(crate) async fn get_test_qes<'e, E>(executor: E, test_id: i64) ->
+	Result<Vec<WeatherRow>, sqlx::Error>
+	where E: DbExec<'e> {
+	let sites = sqlx::query_as!(
+		WeatherRow,
+		r#"
+		SELECT id, site_id, range, altitude, gun_orient, count, qe_type, dodic, lot, wind_full, wind_direction, cross, tail, temp, humidity, baro, time, test_id
+		FROM qe
+		WHERE test_id = ?
+		"#, 
+		test_id
+	)
+	.fetch_all(executor)
+    .await?;
+
+	Ok(sites)
+}
 
 // when reassigning weather delete (delete qe that is being overwritten plus if there is an existing destination qe)
 // when inserting weather and overwriting then all qe sites are gone

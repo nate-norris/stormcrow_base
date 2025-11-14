@@ -4,7 +4,7 @@
 use crate::t_state::DbState;
 use crate::lib_sqlx::{QEDeleteSite, QEBase, QEEntry, Test, TestConfiguration, WeatherRow, 
     delete_qe_site, delete_test, get_last_test, get_tests, initiate_test, 
-    insert_new_qe, update_configuration, reassign_qe};
+    get_test_qes, insert_new_qe, update_configuration, reassign_qe};
 
 #[tauri::command]
 pub fn greet(name: &str) -> String {
@@ -62,6 +62,14 @@ pub async fn update_configuration_command(state: tauri::State<'_, DbState>, conf
     update_configuration(pool, config)
         .await
         .map_err(|e: sqlx::Error| e.to_string())
+}
+
+#[tauri::command]
+pub async fn get_test_qes_command(state: tauri::State<'_, DbState>, test_id: i64) ->
+    Result<Vec<WeatherRow>, String> {
+    let pool = state.0.as_ref();
+    get_test_qes(pool, test_id).await
+        .map_err(|e| e.to_string())
 }
 
 #[tauri::command]

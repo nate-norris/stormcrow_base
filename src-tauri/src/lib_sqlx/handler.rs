@@ -95,6 +95,11 @@ pub async fn update_configuration(pool: &DbPool, config: TestConfiguration) ->
     q_configs::update_test_config(pool, config).await
 }
 
+pub async fn get_test_qes(pool: &DbPool, test_id: i64) ->
+    Result<Vec<WeatherRow>, sqlx::Error> {
+    q_qe::get_test_qes(pool, test_id).await
+}
+
 pub async fn insert_new_qe(pool: &DbPool, new_qe: QEEntry) ->
     Result<Vec<WeatherRow>, sqlx::Error> {
 
