@@ -1,0 +1,79 @@
+
+#!/bin/bash
+
+# -----------------------------
+# WSL Tauri ARM64 Cross-Build
+# -----------------------------
+# This script installs dependencies, Rust, Node, and builds
+# your Tauri app for aarch64 Linux (Raspberry Pi 5 64-bit)
+# -----------------------------
+
+set -e  # Stop on first error
+echo "Starting Tauri ARM64 build setup..."
+
+# 1. Update system
+echo "Updating packages..."
+sudo apt update
+sudo apt upgrade -y
+
+# 2. Install basic build tools and libraries
+echo "Installing build dependencies..."
+sudo apt install -y build-essential curl git pkg-config \
+    libssl-dev libgtk-3-dev cmake
+sudo apt install -y libwebkit2gtk-4.1-0
+
+# 3. Install Node.js (LTS 20)
+echo "Installing Node.js..."
+curl -fsSL https://deb.nodesource.com/setup_20.x | sudo -E bash -
+sudo apt install -y nodejs
+echo "Node version: $(node -v)"
+echo "NPM version: $(npm -v)"
+
+# 4. Install Rust and Tauri CLI
+echo "Installing Rust..."
+curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y
+source $HOME/.cargo/env
+sudo apt install -y build-essential curl git pkg-config libssl-dev
+echo "Rust version: $(rustc --version)"
+
+echo "Installing Tauri CLI..."
+cargo install tauri-cli
+echo "Tauri CLI installed."
+
+# 5. Add ARM64 target
+echo "Adding ARM64 target for cross-compilation..."
+rustup target add aarch64-unknown-linux-gnu
+
+# 6. Install ARM64 cross-compilers
+echo "Installing ARM64 gcc..."
+sudo apt install -y gcc-aarch64-linux-gnu g++-aarch64-linux-gnu
+
+# 7. Optionally install 'cross' for easier builds
+echo "Installing 'cross' for cross-compilation..."
+cargo install cross
+
+# -----------------------------
+# 8. Build Tauri app for ARM64
+# -----------------------------
+
+npm install
+npm run build
+
+echo "Building Tauri app for aarch64..."
+# Navigate to your Tauri project root before running script
+# Using cross (recommended):
+cross build --release --target aarch64-unknown-linux-gnu
+#cross tauri build # UNSURE HOW TO IMPLEMENT
+
+# Using cargo directly (if not using cross):
+# cargo build --release --target aarch64-unknown-linux-gnu
+
+echo "Build complete!"
+echo "Binary is located at: src-tauri/target/aarch64-unknown-linux-gnu/release/<your_app_name>"
+
+# 9. Reminder to install runtime dependencies on Pi
+echo "IMPORTANT: On the Pi, make sure 'libwebkit2gtk-4.1' is installed to run the app."
+sudo apt install -y libwebkit2gtk-4.1-0
+
+
+
