@@ -5,8 +5,10 @@
 //! 
 //! State is managed through marker structs in order to allow async startup
 //! 
+//!
 use std::sync::Arc;
-use crate::lib_sqlx::DbPool;
+use tauri::Manager;
+// use crate::lib_sqlx::DbPool;
 
 mod commands;
 mod lib_sqlx;
@@ -22,13 +24,13 @@ use commands::{greet, get_users_command,
 #[cfg_attr(mobile, tauri::mobile_entry_point)]
 pub fn run() {
 
-    let pool: DbPool = tauri::async_runtime::block_on(init_db())
+    let pool = tauri::async_runtime::block_on(init_db())
         .expect("Failed to init database");
 
     tauri::Builder::default()
         //placeholder states provided synchronously
         .manage(DbState(Arc::new(pool)))
-        .setup(|_app| {
+        .setup(|app| {
             // shared database pool
             {
                 // build db syncrhonously
@@ -48,6 +50,14 @@ pub fn run() {
                 //     let pool = init_db().await.unwrap();
                 //     let mut lock = db_state.lock().await;
                 //     *lock = Some(pool);
+                // });
+            }
+            {
+                // let writer_tx = init_mm2t(&app.handle())
+                //     .expect("Failed to open mm2t serial port");
+                // // Insert into Tauri state
+                // app.manage(MM2TState {
+                //     writer_tx
                 // });
             }
             Ok(())

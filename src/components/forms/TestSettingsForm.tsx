@@ -1,2 +1,2 @@
-import { useAtom } from "jotai";
-import { lotAtom } from "@/atoms/logQEAtom";
+// import { useAtom } from "jotai";
+// import { lotAtom } from "@/atoms/logQEAtom";

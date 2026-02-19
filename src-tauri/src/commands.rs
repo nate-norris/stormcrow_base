@@ -99,3 +99,37 @@ pub async fn reassign_qe_command(state: tauri::State<'_, DbState>,
         .await
         .map_err(|e: sqlx::Error| e.to_string())
 }
+
+// #[tauri::command]
+// pub async fn mmt2_write_command(state: tauri::State<'_, MM2TState>, data: Vec<u8>) ->
+//     Result<(), String> {
+//     state.writer_tx.send(data)
+//         .await
+//         .map_err(|e| e.to_string())
+// }
+
+// #[tauri::command]
+// pub async fn next_radio_packet(state: State<'_, SerialState>)
+//     -> Result<Vec<u8>, String>
+// {
+    
+//     /*
+//     import { listen } from "@tauri-apps/api/event";
+
+// useEffect(() => {
+//   const unlisten = listen("radio-packet", (event) => {
+//     const packet = event.payload;
+//     console.log("Radio packet:", packet);
+//   });
+
+//   return () => { unlisten.then(fn => fn()); };
+// }, []);
+//      */
+//     let mut rx = state.packet_rx.lock().await;
+//     match rx.recv().await {
+//         Some(packet) => Ok(packet),
+//         None => Err("radio closed".into()),
+//     }
+// }
+//app_handle.emit_all("radio-packet", packet).unwrap();
+// ALTERNATIVE TO NEXT_RADIO_PACKET??
