@@ -76,4 +76,14 @@ echo "IMPORTANT: On the Pi, make sure 'libwebkit2gtk-4.1' is installed to run th
 sudo apt install -y libwebkit2gtk-4.1-0
 
 
+# -----------------------------
+# 10. Setup Sqlx
+# -----------------------------
+
+ensure .sqlx is not in .gitignore
+cd into src-tauri from command prompt
+set DATABASE_URL=sqlite:///C:/Users/StandAlone/Desktop/Projects/Stormcrow/stormcrow_base/data/weather.sqlite
+commit .sqlx files
+run
+cargo sqlx prepare
 
