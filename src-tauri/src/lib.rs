@@ -7,7 +7,7 @@
 //! 
 //!
 use std::sync::Arc;
-use tauri::Manager;
+// use tauri::Manager;
 // use crate::lib_sqlx::DbPool;
 
 mod commands;
@@ -30,7 +30,7 @@ pub fn run() {
     tauri::Builder::default()
         //placeholder states provided synchronously
         .manage(DbState(Arc::new(pool)))
-        .setup(|app| {
+        .setup(|_app| {
             // shared database pool
             {
                 // build db syncrhonously
