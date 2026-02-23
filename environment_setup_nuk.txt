@@ -80,10 +80,20 @@ sudo apt install -y libwebkit2gtk-4.1-0
 # 10. Setup Sqlx
 # -----------------------------
 
-ensure .sqlx is not in .gitignore
+// Use modern SQLx 0.8.x, enable SQLite, async runtime, and compile-time macros
+Cargo.toml
+sqlx = { version = "0.8.6", features = ["sqlite", "runtime-tokio", "macros"] }
+
+// set absolute path of database: triple slash required
 cd into src-tauri from command prompt
 set DATABASE_URL=sqlite:///C:/Users/StandAlone/Desktop/Projects/Stormcrow/stormcrow_base/data/weather.sqlite
-commit .sqlx files
-run
+
+setx SQLX_OFFLINE true // tell rust analyzer to use offline mode
+restart IDE
+
+// generate .sqlx offline metadata for queries
 cargo sqlx prepare
+ensure .sqlx is not in .gitignore
+commit .sqlx files
+
 
