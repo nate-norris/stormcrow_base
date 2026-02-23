@@ -1,0 +1,12 @@
+{
+  "db_name": "SQLite",
+  "query": "\n\t\tDELETE FROM qe WHERE \n\t\tcount = ? AND qe_type = ? AND test_id = ? AND site_id = ?\n\t\t",
+  "describe": {
+    "columns": [],
+    "parameters": {
+      "Right": 4
+    },
+    "nullable": []
+  },
+  "hash": "db39d82d09f541cbe3025c8d1ec85c7ec924e411baeba3d0d8e1f00a431db513"
+}

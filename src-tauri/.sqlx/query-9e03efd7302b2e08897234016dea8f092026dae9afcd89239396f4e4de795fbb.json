@@ -1,10 +1,10 @@
 {
   "db_name": "SQLite",
-  "query": "SELECT id, name, time FROM tests WHERE name = ?",
+  "query": "\n        SELECT id as\"id!\", name, time as \"time!\"\n        FROM tests WHERE name = ?\n        ",
   "describe": {
     "columns": [
       {
-        "name": "id",
+        "name": "id!",
         "ordinal": 0,
         "type_info": "Integer"
       },
@@ -14,9 +14,9 @@
         "type_info": "Text"
       },
       {
-        "name": "time",
+        "name": "time!",
         "ordinal": 2,
-        "type_info": "Datetime"
+        "type_info": "Integer"
       }
     ],
     "parameters": {
@@ -28,5 +28,5 @@
       false
     ]
   },
-  "hash": "6f4b7e6eaaea4624bf36cd2986bde81b6261660415d754c486d1359cad6e6c6a"
+  "hash": "9e03efd7302b2e08897234016dea8f092026dae9afcd89239396f4e4de795fbb"
 }
