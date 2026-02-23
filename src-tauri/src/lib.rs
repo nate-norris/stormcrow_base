@@ -14,6 +14,7 @@ mod commands;
 mod lib_sqlx;
 mod t_state;
 
+use utils::logger;
 use t_state::DbState;
 use lib_sqlx::init_db;
 use commands::{greet, get_users_command,
@@ -23,7 +24,8 @@ use commands::{greet, get_users_command,
 
 #[cfg_attr(mobile, tauri::mobile_entry_point)]
 pub fn run() {
-
+    logger::info("Started stormcrow");
+    
     let pool = tauri::async_runtime::block_on(init_db())
         .expect("Failed to init database");
 
