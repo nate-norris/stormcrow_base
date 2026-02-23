@@ -66,7 +66,7 @@ fn get_db_path() -> (PathBuf, String) {
     { //TODO fix the app source for production
         // Packaged Tauri app: platform-appropriate folder
         let base = dirs::data_dir().expect("no data dir");
-        let path = base.join("chinook").join("weather.sqlite");
+        let path = base.join("stormcrow").join("weather.sqlite");
         let url = format!("{}://{}", DB_SCHEME, path.display());
         (path, url)
     }
@@ -92,6 +92,7 @@ fn get_db_path() -> (PathBuf, String) {
 async fn maybe_create_database(database_path: &str) -> Result<(), sqlx::Error> {
     if !Sqlite::database_exists(database_path).await.unwrap_or(false) {
         Sqlite::create_database(database_path).await?;
+        //TODO ensure parent folder of database is created
     }
     Ok(())
 }
