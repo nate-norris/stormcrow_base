@@ -4,5 +4,5 @@
 // use tauri::{AppHandle, Manager};
 
 fn main() {
-    chinook_lib::run()
+    stormcrow_base_lib::run()
 }
