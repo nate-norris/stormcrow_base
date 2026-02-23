@@ -1,0 +1,56 @@
+{
+  "db_name": "SQLite",
+  "query": "\n        INSERT INTO test_configs\n            (id, cross, cross_type, tail, tail_type, gun_orient, tolerance)\n        VALUES (?, 10, 'mph', 10, 'mph', 0, 75)\n        RETURNING id, cross, cross_type as \"cross_type: _\",\n                  tail, tail_type as \"tail_type: _\",\n                  gun_orient as \"gun_orient: _\", tolerance as \"tolerance: _\"\n        ",
+  "describe": {
+    "columns": [
+      {
+        "name": "id",
+        "ordinal": 0,
+        "type_info": "Integer"
+      },
+      {
+        "name": "cross",
+        "ordinal": 1,
+        "type_info": "Integer"
+      },
+      {
+        "name": "cross_type: _",
+        "ordinal": 2,
+        "type_info": "Text"
+      },
+      {
+        "name": "tail",
+        "ordinal": 3,
+        "type_info": "Integer"
+      },
+      {
+        "name": "tail_type: _",
+        "ordinal": 4,
+        "type_info": "Text"
+      },
+      {
+        "name": "gun_orient: _",
+        "ordinal": 5,
+        "type_info": "Integer"
+      },
+      {
+        "name": "tolerance: _",
+        "ordinal": 6,
+        "type_info": "Integer"
+      }
+    ],
+    "parameters": {
+      "Right": 1
+    },
+    "nullable": [
+      false,
+      false,
+      false,
+      false,
+      false,
+      false,
+      false
+    ]
+  },
+  "hash": "32868f7aaecc9d2c28c9b5382fbd331b92f6636ad81548725c4f255b381dc126"
+}

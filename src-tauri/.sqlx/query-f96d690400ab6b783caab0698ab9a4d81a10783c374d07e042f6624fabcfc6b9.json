@@ -1,0 +1,12 @@
+{
+  "db_name": "SQLite",
+  "query": "\n        UPDATE test_configs SET \n            cross = ?,\n            cross_type = ?,\n            tail = ?,\n            tail_type = ?,\n            gun_orient = ?,\n            tolerance = ?\n        WHERE id = ?\n        ",
+  "describe": {
+    "columns": [],
+    "parameters": {
+      "Right": 7
+    },
+    "nullable": []
+  },
+  "hash": "f96d690400ab6b783caab0698ab9a4d81a10783c374d07e042f6624fabcfc6b9"
+}

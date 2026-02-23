@@ -1,0 +1,32 @@
+{
+  "db_name": "SQLite",
+  "query": "\n        INSERT INTO tests (name, time)\n        VALUES (?, ?)\n        RETURNING id, name, time\n        ",
+  "describe": {
+    "columns": [
+      {
+        "name": "id",
+        "ordinal": 0,
+        "type_info": "Integer"
+      },
+      {
+        "name": "name",
+        "ordinal": 1,
+        "type_info": "Text"
+      },
+      {
+        "name": "time",
+        "ordinal": 2,
+        "type_info": "Datetime"
+      }
+    ],
+    "parameters": {
+      "Right": 2
+    },
+    "nullable": [
+      false,
+      false,
+      false
+    ]
+  },
+  "hash": "e5e344c97616b1881773beec1d6a9af5c2959b9dbe13649d7f551f43c7fb7053"
+}
