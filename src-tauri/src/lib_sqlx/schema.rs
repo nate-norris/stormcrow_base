@@ -93,11 +93,14 @@ fn get_db_path() -> (PathBuf, String) {
 /// # }
 /// ```
 async fn maybe_create_database(database_path: &str) -> Result<(), sqlx::Error> {
-
+    
     let path = Path::new(database_path);
+    println!("IN MAYBE CREATE DATABASE");
+    println!("{:?}", path);
 
     // confirm parent directory
     if let Some(parent) = path.parent().filter(|p| !p.exists()) {
+        println!("creating parent");
         fs::create_dir_all(parent)
             .await
             .map_err(sqlx::Error::Io)?;
@@ -105,6 +108,7 @@ async fn maybe_create_database(database_path: &str) -> Result<(), sqlx::Error> {
 
     // create DB file
     if !Sqlite::database_exists(database_path).await.unwrap_or(false) {
+        println!("create database");
         Sqlite::create_database(database_path).await?;
     }
     Ok(())
