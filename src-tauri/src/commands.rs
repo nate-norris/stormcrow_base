@@ -1,10 +1,10 @@
 //! Define tauri commands that are available outside of any specific module/file
 //! 
-
-use crate::t_state::DbState;
+use crate::t_state::{DbState, SpeakerState};
 use crate::lib_sqlx::{QEDeleteSite, QEBase, QEEntry, Test, TestConfiguration, WeatherRow, 
     delete_qe_site, delete_test, get_last_test, get_tests, initiate_test, 
     get_test_qes, insert_new_qe, update_configuration, reassign_qe};
+use utils::speaker::SpeakerNotification;
 
 #[tauri::command]
 pub fn greet(name: &str) -> String {
@@ -98,6 +98,15 @@ pub async fn reassign_qe_command(state: tauri::State<'_, DbState>,
     reassign_qe(pool, source, destination)
         .await
         .map_err(|e: sqlx::Error| e.to_string())
+}
+
+#[tauri::command]
+pub async fn speaker_boom_command(state: tauri::State<'_, SpeakerState>)
+    -> Result<(), String> {
+    let tx = state.0.as_ref();
+    tx.send(SpeakerNotification::Boom)
+        .await
+        .map_err(|e| e.to_string())
 }
 
 // #[tauri::command]
