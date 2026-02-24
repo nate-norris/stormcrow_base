@@ -32,6 +32,9 @@ impl<'e, T> DbExec<'e> for T where T: Executor<'e, Database = Sqlite> {}
 pub async fn init_db() -> Result<DbPool, sqlx::Error> {
     // platform specific db location
     let (_path, db_url) = get_db_path();
+    println!("get db path");
+    println!("{:?}", _path);
+    println!("{}", db_url);
     // create database if needed
     maybe_create_database(&db_url).await?;
     // connect to the pool
