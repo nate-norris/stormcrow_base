@@ -2,10 +2,10 @@
 //! 
 //! Will create the database, any required tables, and return a sqlx::Pool
 //! for future database calls. 
-
+use tokio::fs;
 use sqlx::{Pool, Sqlite, Executor};
 use sqlx::migrate::MigrateDatabase;
-use std::path::PathBuf;
+use std::path::{Path, PathBuf};
 
 pub type DbPool = Pool<Sqlite>; // pool type
 
@@ -63,7 +63,7 @@ fn get_db_path() -> (PathBuf, String) {
     }
 
     #[cfg(not(debug_assertions))]
-    { //TODO fix the app source for production
+    {
         // Packaged Tauri app: platform-appropriate folder
         let base = dirs::data_dir().expect("no data dir");
         let path = base.join("stormcrow").join("weather.sqlite");
@@ -90,9 +90,19 @@ fn get_db_path() -> (PathBuf, String) {
 /// # }
 /// ```
 async fn maybe_create_database(database_path: &str) -> Result<(), sqlx::Error> {
+
+    let path = Path::new(database_path);
+
+    // confirm parent directory
+    if let Some(parent) = path.parent().filter(|p| !p.exists()) {
+        fs::create_dir_all(parent)
+            .await
+            .map_err(sqlx::Error::Io)?;
+    }
+
+    // create DB file
     if !Sqlite::database_exists(database_path).await.unwrap_or(false) {
         Sqlite::create_database(database_path).await?;
-        //TODO ensure parent folder of database is created
     }
     Ok(())
 }
