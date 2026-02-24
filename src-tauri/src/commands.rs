@@ -109,13 +109,16 @@ pub async fn speaker_boom_command(state: tauri::State<'_, SpeakerState>)
         .map_err(|e| e.to_string())
 }
 
-// #[tauri::command]
-// pub async fn mmt2_write_command(state: tauri::State<'_, MM2TState>, data: Vec<u8>) ->
-//     Result<(), String> {
-//     state.writer_tx.send(data)
-//         .await
-//         .map_err(|e| e.to_string())
-// }
+
+#[allow(dead_code)]
+#[tauri::command]
+pub async fn speaker_command(state: tauri::State<'_, SpeakerState>, 
+    notification: SpeakerNotification) -> Result<(), String> {
+    let tx = state.0.as_ref();
+    tx.send(notification)
+        .await
+        .map_err(|e| e.to_string())
+}
 
 // #[tauri::command]
 // pub async fn next_radio_packet(state: State<'_, SerialState>)
