@@ -7,60 +7,59 @@
 //! 
 //!
 use std::sync::Arc;
-// use tauri::Manager;
-// use crate::lib_sqlx::DbPool;
+use tokio::sync::mpsc;
+use tauri::Manager;
 
 mod commands;
 mod lib_sqlx;
 mod t_state;
 
 use utils::logger;
-use t_state::DbState;
+use utils::speaker::{SpeakerTx, SpeakerRx, speaker_consume_task, SpeakerNotification};
+use utils::mm2t::MM2TTransport;
+use t_state::{DbState, SpeakerState, MM2TState};
 use lib_sqlx::init_db;
 use commands::{greet, get_users_command,
     initiate_test_command, get_last_test_command, get_tests_command, 
     delete_test_command, update_configuration_command, get_test_qes_command,
     delete_qe_site_command, insert_new_qe_command, reassign_qe_command};
+use commands::speaker_boom_command;
 
 #[cfg_attr(mobile, tauri::mobile_entry_point)]
 pub fn run() {
     logger::info("Started stormcrow");
-    
+
     let pool = tauri::async_runtime::block_on(init_db())
-        .expect("Failed to init database");
+        .expect("Tauri: failed init database");
 
     tauri::Builder::default()
         //placeholder states provided synchronously
         .manage(DbState(Arc::new(pool)))
-        .setup(|_app| {
-            // shared database pool
+        .setup(|app| {
+
+            let speaker_tx; // mpsc channel for speaker Sender
+            // speaker setup
             {
-                // build db syncrhonously
-                // let pool = tauri::async_runtime::block_on(init_db()).unwrap();
-                // app.manage(DbState(Arc::new(Some(pool))));
-
-                //ERROR
-                // tauri::async_runtime::spawn(async move {
-                //     let pool = init_db().await.unwrap();
-                //     app.manage(DbState(Arc::new(Some(pool))));
-
-                // });
-
-                // DOESNT WORK WITHOUT MUTEX
-                // let db_state = app.state::<DbState>().0.clone();
-                // tauri::async_runtime::spawn(async move {
-                //     let pool = init_db().await.unwrap();
-                //     let mut lock = db_state.lock().await;
-                //     *lock = Some(pool);
-                // });
+                let (tx, rx): (SpeakerTx, SpeakerRx) = mpsc::channel(32);
+                // initialize speaker mpsc Receiver channel
+                tauri::async_runtime::spawn(speaker_consume_task(rx));
+                // set Tauri state ref to mpsc Sender channel
+                speaker_tx = Arc::new(tx);
+                app.manage(SpeakerState (
+                    Arc::clone(&speaker_tx)
+                ));
             }
+
+            // mm2t radio receiver setup
             {
-                // let writer_tx = init_mm2t(&app.handle())
-                //     .expect("Failed to open mm2t serial port");
-                // // Insert into Tauri state
-                // app.manage(MM2TState {
-                //     writer_tx
-                // });
+                let mm2t = tauri::async_runtime::handle().block_on(async {
+                    init_mm2t(&speaker_tx).await
+                });
+                if let Some(r) = mm2t {
+                    app.manage(MM2TState (
+                        r
+                    ));
+                }
             }
             Ok(())
         })
@@ -75,8 +74,21 @@ pub fn run() {
             get_test_qes_command,
             insert_new_qe_command,
             delete_qe_site_command,
-            reassign_qe_command
+            reassign_qe_command,
+            speaker_boom_command
         ])
         .run(tauri::generate_context!())
         .expect("error while running tauri application");
+}
+
+
+async fn init_mm2t(speaker_tx: &SpeakerTx) -> Option<Arc<MM2TTransport>> {
+    match MM2TTransport::start("/dev/ttyUSB0").await {
+        Ok(r) => Some(Arc::new(r)),
+        Err(e) => {
+            logger::error_with("Failed mm2t init", e);
+            let _ = speaker_tx.send(SpeakerNotification::RadioError).await;
+            None
+        }
+    }
 }
