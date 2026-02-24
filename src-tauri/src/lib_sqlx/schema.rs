@@ -9,6 +9,20 @@ use std::path::{Path, PathBuf};
 
 pub type DbPool = Pool<Sqlite>; // pool type
 
+struct DbLocation {
+    path: PathBuf, //points to the SQLite database file location
+    url: String, // database connection URL suitable for `sqlx::SqlitePool`.
+}
+impl DbLocation {
+    fn path(&self) -> &Path {
+        &self.path
+    }
+
+    fn url(&self) -> &str {
+        &self.url
+    }
+}
+
 const DB_SCHEME: &str = "sqlite"; //uri type can be swapped
 // bounded type group
 //      all queries can accept either tx: &mut sqlx::Transaction<'_, DbPool> 
@@ -31,14 +45,11 @@ impl<'e, T> DbExec<'e> for T where T: Executor<'e, Database = Sqlite> {}
 /// - `Err(sqlx::Error)` — If any database operation fails.
 pub async fn init_db() -> Result<DbPool, sqlx::Error> {
     // platform specific db location
-    let (_path, db_url) = get_db_path();
-    println!("get db path");
-    println!("{:?}", _path);
-    println!("{}", db_url);
+    let db_location = get_db_path();
     // create database if needed
-    maybe_create_database(&db_url).await?;
+    maybe_create_database(&db_location).await?;
     // connect to the pool
-    let pool: DbPool = DbPool::connect(&db_url).await?;
+    let pool: DbPool = DbPool::connect(db_location.url()).await?;
     // Create tables if they don’t exist
     create_tables(&pool).await?;
 
@@ -51,18 +62,15 @@ pub async fn init_db() -> Result<DbPool, sqlx::Error> {
 /// mode.
 /// 
 /// # Returns
-/// A tuple `(path, url)`:
-/// - `path` - `PathBuff` pointing to the SQLite database file location.
-/// - `url` — `String` containing the database connection URL suitable for `sqlx::SqlitePool`.
-fn get_db_path() -> (PathBuf, String) {
+/// - DbLocation
+fn get_db_path() -> DbLocation {
     #[cfg(debug_assertions)]
     {
         let mut path = PathBuf::from(env!("CARGO_MANIFEST_DIR")); // guaranteed project root
         path.pop(); // go up one level from .toml
         path.push("data/weather.sqlite");
         let url: String = format!("{}://{}", DB_SCHEME, path.display());
-        println!("{}", url);
-        (path, url)
+        DbLocation { path, url }
     }
 
     #[cfg(not(debug_assertions))]
@@ -71,14 +79,14 @@ fn get_db_path() -> (PathBuf, String) {
         let base = dirs::data_dir().expect("no data dir");
         let path = base.join("stormcrow").join("weather.sqlite");
         let url = format!("{}://{}", DB_SCHEME, path.display());
-        (path, url)
+        DbLocation { path, url }
     }
 }
 
 /// Creates the database when required.
 /// 
 /// # Arguments
-/// - `database_path` — Path or URL to the database.
+/// - `location` — DbLocation containing PathBuf and url string to the database.
 /// 
 /// # Returns
 /// - `Ok(())` — function has ran correctly
@@ -88,28 +96,23 @@ fn get_db_path() -> (PathBuf, String) {
 /// ```rust,no_run
 /// # use sqlx::Error;
 /// # async fn example() -> Result<(), Error> {
-/// maybe_create_database("weather.sqlite").await?;
+/// # location = DbLocation{ PathBuf::from("path"), "sqlite:///path" }
+/// # maybe_create_database(location).await?;
 /// # Ok(())
 /// # }
 /// ```
-async fn maybe_create_database(database_path: &str) -> Result<(), sqlx::Error> {
-    
-    let path = Path::new(database_path);
-    println!("IN MAYBE CREATE DATABASE");
-    println!("{:?}", path);
+async fn maybe_create_database(location: &DbLocation) -> Result<(), sqlx::Error> {
 
     // confirm parent directory
-    if let Some(parent) = path.parent().filter(|p| !p.exists()) {
-        println!("creating parent");
+    if let Some(parent) = location.path().parent().filter(|p| !p.exists()) {
         fs::create_dir_all(parent)
             .await
             .map_err(sqlx::Error::Io)?;
     }
 
     // create DB file
-    if !Sqlite::database_exists(database_path).await.unwrap_or(false) {
-        println!("create database");
-        Sqlite::create_database(database_path).await?;
+    if !Sqlite::database_exists(location.url()).await.unwrap_or(false) {
+        Sqlite::create_database(location.url()).await?;
     }
     Ok(())
 }
