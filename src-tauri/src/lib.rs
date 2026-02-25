@@ -13,11 +13,12 @@ use tauri::Manager;
 mod commands;
 mod lib_sqlx;
 mod t_state;
+mod mm2t_read;
 
 use utils::logger;
 use utils::speaker::{SpeakerTx, SpeakerRx, speaker_consume_task, SpeakerNotification};
-use utils::mm2t::MM2TTransport;
-use t_state::{DbState, SpeakerState, MM2TState};
+use t_state::{DbState, SpeakerState};
+use mm2t_read::{init_mm2t, spawn_mm2t_read};
 use lib_sqlx::init_db;
 use commands::{greet, get_users_command,
     initiate_test_command, get_last_test_command, get_tests_command, 
@@ -52,13 +53,18 @@ pub fn run() {
 
             // mm2t radio receiver setup
             {
-                let mm2t = tauri::async_runtime::handle().block_on(async {
+                let mm2t_option = tauri::async_runtime::handle().block_on(async {
                     init_mm2t(&speaker_tx).await
                 });
-                if let Some(r) = mm2t {
-                    app.manage(MM2TState (
-                        r
-                    ));
+                if let Some(mm2t) = mm2t_option {
+                    spawn_mm2t_read(mm2t, app.handle().clone());
+                } else {
+                    logger::error("Failed mm2t init");
+                    let tx_clone = Arc::clone(&speaker_tx);
+                    tauri::async_runtime::spawn(async move {
+                        let _ = tx_clone.send(SpeakerNotification::RadioError);
+                    });
+                    
                 }
             }
             Ok(())
@@ -79,16 +85,4 @@ pub fn run() {
         ])
         .run(tauri::generate_context!())
         .expect("error while running tauri application");
-}
-
-
-async fn init_mm2t(speaker_tx: &SpeakerTx) -> Option<Arc<MM2TTransport>> {
-    match MM2TTransport::start("/dev/ttyUSB0").await {
-        Ok(r) => Some(Arc::new(r)),
-        Err(e) => {
-            logger::error_with("Failed mm2t init", e);
-            let _ = speaker_tx.send(SpeakerNotification::RadioError).await;
-            None
-        }
-    }
 }
