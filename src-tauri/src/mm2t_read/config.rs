@@ -25,9 +25,11 @@ pub fn spawn_mm2t_read(mm2t: MM2TTransport, app_handle: AppHandle) {
                 Ok(b) => b,
                 Err(_) => {
                     logger::error("Error reading mm2t byte");
+                    println!("error in reading byte");
                     break
                 },
             };
+            println!("{}", byte);
 
             let packet = match decoder.push(byte) {
                 Ok(Some(packet)) => packet,
@@ -37,6 +39,7 @@ pub fn spawn_mm2t_read(mm2t: MM2TTransport, app_handle: AppHandle) {
                     continue;
                 }
             };
+            println!("Got a packet skank");
             handle_packet(packet, &app_handle);
         }
     });
