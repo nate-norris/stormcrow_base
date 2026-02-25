@@ -61,7 +61,6 @@ pub fn run() {
                 if let Some(mm2t) = mm2t_option {
                     spawn_mm2t_read(mm2t, app.handle().clone());
                 } else {
-                    logger::error("Failed mm2t init");
                     let tx_clone = Arc::clone(&speaker_tx);
                     tauri::async_runtime::spawn(async move {
                         let _ = tx_clone.send(SpeakerNotification::RadioError);
