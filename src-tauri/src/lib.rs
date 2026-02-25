@@ -28,6 +28,7 @@ use commands::speaker_boom_command;
 
 #[cfg_attr(mobile, tauri::mobile_entry_point)]
 pub fn run() {
+    logger::init_logger(None);
     logger::info("Started stormcrow");
 
     let pool = tauri::async_runtime::block_on(init_db())
