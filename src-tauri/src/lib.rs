@@ -37,13 +37,14 @@ pub fn run() {
         //placeholder states provided synchronously
         .manage(DbState(Arc::new(pool)))
         .setup(|app| {
-
+            println!("before start speaker");
             let speaker_tx; // mpsc channel for speaker Sender
             // speaker setup
             {
                 let (tx, rx): (SpeakerTx, SpeakerRx) = mpsc::channel(32);
                 // initialize speaker mpsc Receiver channel
                 tauri::async_runtime::spawn(speaker_consume_task(rx));
+                println!("after speaker consume task");
                 // set Tauri state ref to mpsc Sender channel
                 speaker_tx = Arc::new(tx);
                 app.manage(SpeakerState (
