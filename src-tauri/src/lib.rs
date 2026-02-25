@@ -50,6 +50,7 @@ pub fn run() {
                     Arc::clone(&speaker_tx)
                 ));
             }
+            println!("finished speaker setup");
 
             // mm2t radio receiver setup
             {
@@ -67,6 +68,7 @@ pub fn run() {
                     
                 }
             }
+            println!("finished mm2t setup")
             Ok(())
         })
         .invoke_handler(tauri::generate_handler![
