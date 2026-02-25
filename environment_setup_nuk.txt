@@ -96,4 +96,15 @@ cargo sqlx prepare
 ensure .sqlx is not in .gitignore
 commit .sqlx files
 
+# -----------------------------
+# 11. Nuk Ports
+# -----------------------------
 
+# Ports on the Nuk may not be available for the program to use. In order to 
+# ensure permissions are correct you can run the following...
+
+sudo usermod -a -G dialout $USER
+ls -l /dev/ttyUSB0 # or other port name
+
+# Output should look like:
+# crw-rw---- 1 root dialout 188, 0 Feb 25 10:24 /dev/ttyUSB0
