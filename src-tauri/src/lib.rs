@@ -38,22 +38,18 @@ pub fn run() {
         //placeholder states provided synchronously
         .manage(DbState(Arc::new(pool)))
         .setup(|app| {
-            println!("before start speaker");
             let speaker_tx; // mpsc channel for speaker Sender
             // speaker setup
             {
                 let (tx, rx): (SpeakerTx, SpeakerRx) = mpsc::channel(32);
                 // initialize speaker mpsc Receiver channel
                 tauri::async_runtime::spawn(speaker_consume_task(rx));
-                println!("after speaker consume task");
                 // set Tauri state ref to mpsc Sender channel
                 speaker_tx = Arc::new(tx);
                 app.manage(SpeakerState (
                     Arc::clone(&speaker_tx)
                 ));
             }
-            println!("finished speaker setup");
-
             // mm2t radio receiver setup
             {
                 let mm2t_option = tauri::async_runtime::handle().block_on(async {
@@ -69,7 +65,6 @@ pub fn run() {
                     
                 }
             }
-            println!("finished mm2t setup");
             Ok(())
         })
         .invoke_handler(tauri::generate_handler![
