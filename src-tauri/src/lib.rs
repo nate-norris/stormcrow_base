@@ -69,7 +69,7 @@ pub fn run() {
                     
                 }
             }
-            println!("finished mm2t setup")
+            println!("finished mm2t setup");
             Ok(())
         })
         .invoke_handler(tauri::generate_handler![
