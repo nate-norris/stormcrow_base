@@ -5,7 +5,7 @@ use utils::mm2t::{MM2TTransport, PacketDecoder};
 use super::packet_handler::handle_packet;
 
 pub async fn init_mm2t(speaker_tx: &SpeakerTx) -> Option<MM2TTransport> {
-    match MM2TTransport::start("/dev/ttyUSB0").await {
+    match MM2TTransport::start("ttyUSB0").await {
         Ok(r) => Some(r),
         Err(e) => {
             println!("failed mm2t init in err");
