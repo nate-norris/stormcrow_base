@@ -39,7 +39,7 @@ pub fn spawn_mm2t_read(mm2t: MM2TTransport, app_handle: AppHandle) {
                     continue;
                 }
             };
-            println!("Got a packet skank");
+            println!("Got a packet skank {:?}", packet.payload);
             handle_packet(packet, &app_handle);
         }
     });
