@@ -62,7 +62,6 @@ pub fn run() {
                     tauri::async_runtime::spawn(async move {
                         let _ = tx_clone.send(SpeakerNotification::RadioError);
                     });
-                    
                 }
             }
             Ok(())

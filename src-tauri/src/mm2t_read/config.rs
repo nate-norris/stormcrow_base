@@ -16,7 +16,6 @@ pub async fn init_mm2t(speaker_tx: &SpeakerTx) -> Option<MM2TTransport> {
 }
 
 pub fn spawn_mm2t_read(mm2t: MM2TTransport, app_handle: AppHandle) {
-    
     tauri::async_runtime::spawn(async move {
         let mut decoder = PacketDecoder::new();
         // let mut count = 1;
@@ -26,12 +25,10 @@ pub fn spawn_mm2t_read(mm2t: MM2TTransport, app_handle: AppHandle) {
                 Ok(b) => b,
                 Err(_) => {
                     logger::error("Error reading mm2t byte");
-                    println!("error in reading byte");
                     break
                 },
             };
-            println!("{}", byte);
-
+            // wait for packet
             let packet = match decoder.push(byte) {
                 Ok(Some(packet)) => packet,
                 Ok(None) => continue,
@@ -40,13 +37,7 @@ pub fn spawn_mm2t_read(mm2t: MM2TTransport, app_handle: AppHandle) {
                     continue;
                 }
             };
-            println!("got a packet {:?}", packet.payload);
-            // if count != packet.payload[2] {
-            //     println!("ERROR: skipped a count!");
-            // }
-            // else {
-            //     println!("count match");
-            // }
+            // process packet
             handle_packet(packet, &app_handle);
         }
     });
