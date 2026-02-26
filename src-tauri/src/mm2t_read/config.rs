@@ -15,6 +15,7 @@ pub async fn init_mm2t(speaker_tx: &SpeakerTx) -> Option<MM2TTransport> {
     }
 }
 
+#[allow(dead_code)]
 pub fn spawn_mm2t_read(mm2t: MM2TTransport, app_handle: AppHandle) {
     
     tauri::async_runtime::spawn(async move {
@@ -41,6 +42,23 @@ pub fn spawn_mm2t_read(mm2t: MM2TTransport, app_handle: AppHandle) {
             };
             println!("Got a packet skank {:?}", packet.payload);
             handle_packet(packet, &app_handle);
+        }
+    });
+}
+
+pub fn spawn_mm2t_read_mult(mm2t: MM2TTransport) {
+    tauri::async_runtime::spawn(async move {
+        loop {
+            let chunk = mm2t.read_many(64).await.unwrap_or_else(|e| {
+                eprintln!("Read error: {:?}", e);
+                vec![]
+            });
+            if !chunk.is_empty() {
+                for b in &chunk {
+                    print!("{:02X} ", b);
+                }
+                println!();
+            }
         }
     });
 }
