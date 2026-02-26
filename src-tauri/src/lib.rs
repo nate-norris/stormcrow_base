@@ -56,7 +56,8 @@ pub fn run() {
                     init_mm2t(&speaker_tx).await
                 });
                 if let Some(mm2t) = mm2t_option {
-                    spawn_mm2t_read(mm2t, app.handle().clone());
+                    mm2t.spawn_raw_read();
+                    // spawn_mm2t_read(mm2t, app.handle().clone());
                 } else {
                     let tx_clone = Arc::clone(&speaker_tx);
                     tauri::async_runtime::spawn(async move {
