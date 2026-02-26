@@ -55,7 +55,7 @@ pub fn spawn_mm2t_read_mult(mm2t: MM2TTransport) {
             });
             if !chunk.is_empty() {
                 for b in &chunk {
-                    print!("{:02X} ", b);
+                    print!("{} ", b);
                 }
                 println!();
             }
