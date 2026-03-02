@@ -45,21 +45,3 @@ pub fn spawn_mm2t_read(mm2t: MM2TTransport, app_handle: AppHandle,
         }
     });
 }
-
-#[allow(dead_code)]
-pub fn spawn_mm2t_read_mult(mm2t: MM2TTransport) {
-    tauri::async_runtime::spawn(async move {
-        loop {
-            let chunk = mm2t.read_many(64).await.unwrap_or_else(|e| {
-                eprintln!("Read error: {:?}", e);
-                vec![]
-            });
-            if !chunk.is_empty() {
-                for b in &chunk {
-                    print!("{} ", b);
-                }
-                println!();
-            }
-        }
-    });
-}
