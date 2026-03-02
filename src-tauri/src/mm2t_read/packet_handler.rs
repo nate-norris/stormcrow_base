@@ -8,7 +8,7 @@ const PACKET_WEATHER: u8 = 0x57;
 
 #[derive(Debug, Serialize)]
 pub struct WeatherData {
-    pub site_id: u8,
+    pub site_id: u16,
     pub altitude: f32,
     pub wind_full: f32,
     pub wind_dir: f32,
@@ -19,7 +19,7 @@ pub struct WeatherData {
 impl WeatherData {
     fn from_payload(payload: &[u8]) -> anyhow::Result<Self> {
         Ok(Self {
-            site_id: payload[0],
+            site_id: u16::from_le_bytes(payload[0..2].try_into()?),
             altitude: f32::from_le_bytes(payload[1..5].try_into()?),
             wind_full: f32::from_le_bytes(payload[5..9].try_into()?),
             wind_dir: f32::from_le_bytes(payload[9..13].try_into()?),
