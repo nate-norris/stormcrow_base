@@ -52,11 +52,14 @@ pub fn run() {
             }
             // mm2t radio receiver setup
             {
+                // confirm mm2t can initialize
+                //      spawns error speaker pattern if not
                 let mm2t_option = tauri::async_runtime::handle().block_on(async {
                     init_mm2t(&speaker_tx).await
                 });
+
                 if let Some(mm2t) = mm2t_option {
-                    spawn_mm2t_read(mm2t, app.handle().clone());
+                    spawn_mm2t_read(mm2t, app.handle().clone(), &speaker_tx);
                 } else {
                     let tx_clone = Arc::clone(&speaker_tx);
                     tauri::async_runtime::spawn(async move {

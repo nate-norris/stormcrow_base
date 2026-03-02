@@ -15,30 +15,32 @@ pub async fn init_mm2t(speaker_tx: &SpeakerTx) -> Option<MM2TTransport> {
     }
 }
 
-pub fn spawn_mm2t_read(mm2t: MM2TTransport, app_handle: AppHandle) {
+pub fn spawn_mm2t_read(mm2t: MM2TTransport, app_handle: AppHandle, 
+    speaker_tx: &SpeakerTx) {
     tauri::async_runtime::spawn(async move {
         let mut decoder = PacketDecoder::new();
-        // let mut count = 1;
         loop {
-            //recieve byte
-            let byte = match mm2t.read().await {
-                Ok(b) => b,
-                Err(_) => {
-                    logger::error("Error reading mm2t byte");
+            match mm2t.read().await {
+                Ok(Some(byte)) => {
+                    match decoder.push(byte) {
+                        Ok(Some(packet)) => handle_packet(packet, &app_handle),
+                        Ok(None) => {},
+                        Err(e) => {
+                            logger::error(&format!("Packet decode error: {}", e));
+                        }
+                    }
+                },
+                Ok(None) => { 
+                    tauri::async_runtime::sleep(Duration::from_millis(1)).await;
+                    continue;
+                },
+                Err(e) => {
+                    logger::error_with("MM2T Read: error reading bytes {}", e);
+                    let _ = speaker_tx.send(SpeakerNotification::RadioError)
+                        .await;
                     break
                 },
-            };
-            // wait for packet
-            let packet = match decoder.push(byte) {
-                Ok(Some(packet)) => packet,
-                Ok(None) => continue,
-                Err(e) => {
-                    logger::error(&format!("Packet decode error: {}", e));
-                    continue;
-                }
-            };
-            // process packet
-            handle_packet(packet, &app_handle);
+            }
         }
     });
 }
