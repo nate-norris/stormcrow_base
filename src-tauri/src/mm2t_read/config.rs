@@ -31,7 +31,7 @@ pub fn spawn_mm2t_read(mm2t: MM2TTransport, app_handle: AppHandle,
                     }
                 },
                 Ok(None) => { 
-                    tauri::async_runtime::sleep(Duration::from_millis(1)).await;
+                    tauri::async_runtime::sleep(std::time::Duration::from_millis(1)).await;
                     continue;
                 },
                 Err(e) => {
