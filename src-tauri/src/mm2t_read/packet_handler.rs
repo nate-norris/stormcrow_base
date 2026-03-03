@@ -40,9 +40,11 @@ pub(crate) fn handle_packet(packet: DecodedPacket, _app_handle: &AppHandle) {
 
 fn handle_boom() {
     println!("Got me a Boom!");
+    //app_handle.emit("event_name", payload)?;
 }
 
 fn handle_weather(payload: &[u8]) {
     let data = WeatherData::from_payload(payload);
     println!("Got me some weather {:?}", data);
+    //app_handle.emit("event_name", payload)?;
 }
