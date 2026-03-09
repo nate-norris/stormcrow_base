@@ -8,7 +8,7 @@
 //!
 use std::sync::Arc;
 use tokio::sync::mpsc;
-use tauri::{Manager, Emitter, WebviewWindow};
+use tauri::{Manager, WebviewWindow};
 use tokio::time::{sleep, Duration};
 
 mod commands;
