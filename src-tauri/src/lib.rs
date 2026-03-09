@@ -90,7 +90,7 @@ pub fn run() {
             }
 
             tauri::async_runtime::spawn(async move {
-                sleep(Duration::from_secs(10)).await; // allow time for splash
+                sleep(Duration::from_secs(300)).await; // allow time for splash
                 //  main_window.emit("rust-ready", {}).unwrap();
                 splash.close().unwrap();
                 main_window.show().unwrap();
