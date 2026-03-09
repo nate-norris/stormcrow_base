@@ -20,7 +20,7 @@ function App() {
     };
   }, []);
 
-  if (!ready) return null; 
+  if (!ready) return <div>Waiting Turd</div>; 
 
   return (
     <div className="min-h-screen">

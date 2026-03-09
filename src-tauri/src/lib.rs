@@ -84,16 +84,17 @@ pub fn run() {
                 } else {
                     let tx_clone = Arc::clone(&speaker_tx);
                     tauri::async_runtime::spawn(async move {
-                        let _ = tx_clone.send(SpeakerNotification::RadioError);
-                        sleep(Duration::from_secs(4)).await; // allow time for splash
+                        let _ = tx_clone.send(SpeakerNotification::RadioError);        
                     });
                 }
             }
 
-            // close splash and show main window
-            main_window.emit("rust-ready", {}).unwrap();
-            splash.close().unwrap();
-            main_window.show().unwrap();
+            tauri::async_runtime::spawn(async move {
+                sleep(Duration::from_secs(4)).await; // allow time for splash
+                //  main_window.emit("rust-ready", {}).unwrap();
+                splash.close().unwrap();
+                main_window.show().unwrap();
+            });
 
             Ok(())
         })
