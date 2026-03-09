@@ -8,7 +8,8 @@
 //!
 use std::sync::Arc;
 use tokio::sync::mpsc;
-use tauri::Manager;
+use tauri::{Manager, Emitter, WebviewWindow};
+use tokio::time::{sleep, Duration};
 
 mod commands;
 mod lib_sqlx;
@@ -38,8 +39,28 @@ pub fn run() {
         //placeholder states provided synchronously
         .manage(DbState(Arc::new(pool)))
         .setup(|app| {
-            let speaker_tx; // mpsc channel for speaker Sender
+
+            // splash screen loading
+            let main_window: WebviewWindow;
+            let splash: WebviewWindow;
+            {
+                main_window = app.get_webview_window("main").unwrap();
+                main_window.hide().unwrap();
+                splash = tauri::WebviewWindowBuilder::new(
+                    app,
+                    "splash",
+                    tauri::WebviewUrl::App("splash.html".into())
+                )
+                .title("Loading...")
+                .inner_size(400.0, 300.0)
+                .decorations(false)
+                .always_on_top(true)
+                .build()
+                .unwrap();
+            }
+
             // speaker setup
+            let speaker_tx; // mpsc channel for speaker Sender
             {
                 let (tx, rx): (SpeakerTx, SpeakerRx) = mpsc::channel(32);
                 // initialize speaker mpsc Receiver channel
@@ -64,9 +85,16 @@ pub fn run() {
                     let tx_clone = Arc::clone(&speaker_tx);
                     tauri::async_runtime::spawn(async move {
                         let _ = tx_clone.send(SpeakerNotification::RadioError);
+                        sleep(Duration::from_secs(4)).await; // allow time for splash
                     });
                 }
             }
+
+            // close splash and show main window
+            main_window.emit("rust-ready", {}).unwrap();
+            splash.close().unwrap();
+            main_window.show().unwrap();
+
             Ok(())
         })
         .invoke_handler(tauri::generate_handler![
