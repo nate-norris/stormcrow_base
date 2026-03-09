@@ -26,6 +26,7 @@ function App() {
     <div className="min-h-screen">
       {/* <QEForm />
       <DbForm /> */}
+      <p>Hello Turd</p>
     </div>
   );
 }
