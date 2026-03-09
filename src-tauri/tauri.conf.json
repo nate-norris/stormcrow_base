@@ -12,9 +12,10 @@
   "app": {
     "windows": [
       {
-        "title": "chinook",
+        "title": "stormcrow",
         "width": 800,
-        "height": 600
+        "height": 600,
+        "backgroundColor": "#ffffff"
       }
     ],
     "security": {
