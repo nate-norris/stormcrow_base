@@ -52,13 +52,12 @@ pub fn run() {
                     tauri::WebviewUrl::App("splash.html".into())
                 )
                 .title("Loading...")
-                .inner_size(400.0, 300.0)
+                .inner_size(300.0, 300.0)
                 .center()
                 .decorations(false)
                 .transparent(true)
                 .shadow(false)
                 .always_on_top(true)
-                .devtools(true)
                 .build()
                 .unwrap();
             }
