@@ -53,6 +53,7 @@ pub fn run() {
                 )
                 .title("Loading...")
                 .inner_size(400.0, 300.0)
+                .center()
                 .decorations(false)
                 .always_on_top(true)
                 .devtools(true)
