@@ -20,13 +20,13 @@ function App() {
     };
   }, []);
 
-  if (!ready) return <div>Waiting Turd</div>; 
+  if (!ready) return <div>Waiting</div>; 
 
   return (
     <div className="min-h-screen">
       {/* <QEForm />
       <DbForm /> */}
-      <p>Hello Turd</p>
+      <p>Hello</p>
     </div>
   );
 }
