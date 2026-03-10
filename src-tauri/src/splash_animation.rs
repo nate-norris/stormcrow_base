@@ -29,10 +29,12 @@ impl SplashStartup {
     }
 
     pub fn end(self) {
-        tauri::async_runtime::block_on(async {
+        let main = self.main;
+        let splash = self.splash;
+        tauri::async_runtime::spawn(async move {
             sleep(Duration::from_secs(7)).await;
-            self.splash.close().unwrap();
-            self.main.show().unwrap()
+            splash.close().unwrap();
+            main.show().unwrap()
         });
     } 
 }
