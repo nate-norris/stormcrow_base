@@ -55,6 +55,8 @@ pub fn run() {
                 .inner_size(400.0, 300.0)
                 .center()
                 .decorations(false)
+                .transparent(true)
+                .shadow(false)
                 .always_on_top(true)
                 .devtools(true)
                 .build()
