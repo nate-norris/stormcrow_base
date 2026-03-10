@@ -8,19 +8,20 @@
 //!
 use std::sync::Arc;
 use tokio::sync::mpsc;
-use tauri::{Manager, WebviewWindow};
-use tokio::time::{sleep, Duration};
+use tauri::Manager;
 
 mod commands;
 mod lib_sqlx;
 mod t_state;
 mod mm2t_read;
+mod splash_animation;
 
 use utils::logger;
 use utils::speaker::{SpeakerTx, SpeakerRx, speaker_consume_task, SpeakerNotification};
 use t_state::{DbState, SpeakerState};
 use mm2t_read::{init_mm2t, spawn_mm2t_read};
 use lib_sqlx::init_db;
+use splash_animation::SplashStartup;
 use commands::{greet, get_users_command,
     initiate_test_command, get_last_test_command, get_tests_command, 
     delete_test_command, update_configuration_command, get_test_qes_command,
@@ -41,26 +42,7 @@ pub fn run() {
         .setup(|app| {
 
             // splash screen loading
-            let main_window: WebviewWindow;
-            let splash: WebviewWindow;
-            {
-                main_window = app.get_webview_window("main").unwrap();
-                main_window.hide().unwrap();
-                splash = tauri::WebviewWindowBuilder::new(
-                    app,
-                    "splash",
-                    tauri::WebviewUrl::App("splash.html".into())
-                )
-                .title("Loading...")
-                .inner_size(300.0, 300.0)
-                .center()
-                .decorations(false)
-                .transparent(true)
-                .shadow(false)
-                .always_on_top(true)
-                .build()
-                .unwrap();
-            }
+            let splash = SplashStartup::begin(&app.handle());
 
             // speaker setup
             let speaker_tx; // mpsc channel for speaker Sender
@@ -92,12 +74,7 @@ pub fn run() {
                 }
             }
 
-            tauri::async_runtime::spawn(async move {
-                sleep(Duration::from_secs(5)).await; // allow time for splash
-                //  main_window.emit("rust-ready", {}).unwrap();
-                splash.close().unwrap();
-                main_window.show().unwrap();
-            });
+            splash.end(); // end splash animation
 
             Ok(())
         })
