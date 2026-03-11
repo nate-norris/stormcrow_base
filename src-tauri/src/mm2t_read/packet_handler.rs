@@ -1,5 +1,5 @@
 use serde::Serialize;
-use tauri::{AppHandle};
+use tauri::{AppHandle, Emitter};
 use utils::mm2t::DecodedPacket;
 use utils::logger;
 
@@ -38,13 +38,19 @@ pub(crate) fn handle_packet(packet: DecodedPacket, app_handle: &AppHandle) {
     }
 }
 
-fn handle_boom(_handle: &AppHandle) {
-    println!("Got me a Boom!");
-    //app_handle.emit("event_name", payload)?;
+fn handle_boom(handle: &AppHandle) {
+    if let Err(e) = handle.emit("boom", ()) {
+        logger::error_with("Boom packet: failed event emit", e);
+    }
 }
 
-fn handle_weather(payload: &[u8], _handle: &AppHandle) {
-    let data = WeatherData::from_payload(payload);
-    println!("Got me some weather {:?}", data);
-    //app_handle.emit("event_name", payload)?;
+fn handle_weather(payload: &[u8], handle: &AppHandle) {
+    match WeatherData::from_payload(payload) {
+        Ok(weather_data) => {
+            if let Err(e) = handle.emit("weather", &weather_data) {
+                logger::error_with("Weather packet: failed emit event", e);
+            }
+        },
+        Err(e) => logger::error_with("Weather packet: failed ", e),
+    }
 }
