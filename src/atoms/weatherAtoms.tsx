@@ -1,0 +1,6 @@
+
+
+type WeatherObservers = {
+    "A": {}
+}
+// weatherAtom
