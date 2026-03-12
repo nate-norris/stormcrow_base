@@ -1,3 +1,19 @@
+export function getWindCalculations(gunDegrees: number, windFull: number, windDir: number) : WindCalcs {
+    const relativeOffset = windDir - gunDegrees
+    const rad = relativeOffset * Math.PI / 180;
+    const crossFactor = Math.abs(Math.sin(rad));
+    const quadrant = getQuadrant(relativeOffset);
+
+    const calcs: WindCalcs = {
+        cross: windFull * Math.sin(rad), 
+        headTail: windFull * Math.cos(rad),
+        quadrant: quadrant,
+        crossFactor: crossFactor,
+        crossType: getCrossDoctrine(crossFactor),
+    }
+    return calcs
+}
+
 enum Quadrant {
     Head,
     StarboardHead,
@@ -22,22 +38,6 @@ interface WindCalcs {
     quadrant: Quadrant,
     crossFactor: number,
     crossType: CrossDoctrine;
-}
-
-export function getWindCalculations(gunDegrees: number, windFull: number, windDir: number) : WindCalcs {
-    const relativeOffset = windDir - gunDegrees
-    const rad = relativeOffset * Math.PI / 180;
-    const crossFactor = Math.abs(Math.sin(rad));
-    const quadrant = getQuadrant(relativeOffset);
-
-    const calcs: WindCalcs = {
-        cross: windFull * Math.sin(rad), 
-        headTail: windFull * Math.cos(rad),
-        quadrant: quadrant,
-        crossFactor: crossFactor,
-        crossType: getCrossDoctrine(crossFactor),
-    }
-    return calcs
 }
 
 function getQuadrant(relativeOffset: number): Quadrant {
