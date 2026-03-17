@@ -1,12 +1,16 @@
-export function getWindCalculations(gunDegrees: number, windFull: number, windDir: number) : WindCalcs {
-    const relativeOffset = windDir - gunDegrees
-    const rad = relativeOffset * Math.PI / 180;
-    const crossFactor = Math.abs(Math.sin(rad));
-    const quadrant = getQuadrant(relativeOffset);
+import { Quadrant, CrossDoctrine, WindCalcs } from "@/models";
+
+export function getWindCalculations(gunDegrees: number, windFull: number, windTo: number) : WindCalcs {
+    const relativeOffset = windTo - gunDegrees
+    const rad = relativeOffset * Math.PI / 180; // radians
+    const sin = Math.sin(rad);
+
+    const crossFactor: number = Math.abs(sin);
+    const quadrant: Quadrant = getQuadrant(relativeOffset);
 
     const calcs: WindCalcs = {
-        cross: windFull * Math.sin(rad), 
-        headTail: windFull * Math.cos(rad),
+        cross: windFull * sin, // port starboard
+        headTail: windFull * Math.cos(rad), // head tail
         quadrant: quadrant,
         crossFactor: crossFactor,
         crossType: getCrossDoctrine(crossFactor),
@@ -14,31 +18,6 @@ export function getWindCalculations(gunDegrees: number, windFull: number, windDi
     return calcs
 }
 
-enum Quadrant {
-    Head,
-    StarboardHead,
-    Starboard,
-    TailStarboard,
-    Tail,
-    TailPort,
-    Port,
-    PortHead,
-}
-enum CrossDoctrine {
-    None = 0,
-    Quarter = 0.25,
-    Half = 0.5,
-    ThreeQuarter = 0.75,
-    Full = 1.0,
-}
-
-interface WindCalcs {
-    cross: number;
-    headTail: number;
-    quadrant: Quadrant,
-    crossFactor: number,
-    crossType: CrossDoctrine;
-}
 
 function getQuadrant(relativeOffset: number): Quadrant {
     const a = (relativeOffset % 360 + 360) % 360;
@@ -55,7 +34,7 @@ function getQuadrant(relativeOffset: number): Quadrant {
 function getCrossDoctrine(f: number): CrossDoctrine {
     const clamped = Math.min(1, Math.max(0, f));
     const step = 0.25
-    const quantized = Math.round(clamped / step) + step;
+    const quantized = Math.round(clamped / step) * step;
 
     return quantized as CrossDoctrine
 }
