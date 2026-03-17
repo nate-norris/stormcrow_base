@@ -6,6 +6,28 @@ import type { WeatherObservation } from "@/models";
 /// the will need to allow for read, write, and update
 ///     consider using derived atoms for this
 
+/*
+Next level becomes:
+
+Event → State Transition → Atom Update
+
+Add an explicit domain layer:
+
+initTauriListeners
+        ↓
+WeatherStreamReducer (NEW)
+        ↓
+Atoms
+
+Where reducer decides:
+
+valid transitions
+
+timers
+
+lifecycle
+*/
+
 // siteId to WeatherObservation
 type WeatherObservers = Record<string, WeatherObservation>;
 export const weatherObserversAtom = atom<WeatherObservers>({});
@@ -13,7 +35,7 @@ export const weatherObserversAtom = atom<WeatherObservers>({});
 // update only atom for last WeatherObservation
 export const updateWeatherObserversAtom = atom(
   null,
-  (get, set, newObservation: WeatherObservation) => {
+  (_get, set, newObservation: WeatherObservation) => {
     set(weatherObserversAtom, prev => ({
       ...prev,
       [newObservation.siteId]: newObservation,
