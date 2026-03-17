@@ -1,5 +1,20 @@
 
 // TODO transfer all types and interface to .d.ts?
+type WeatherEvent = 
+    | { type: "RECEIVED"; observation: WeatherObservation }
+    | { type: "TIMEOUT"; siteId: string };
+
+type WeatherStatus = 
+    | "RECEIVING"
+    | "STALE"
+    | "NOT_RECEIVING";
+
+interface WeatherState {
+    siteId: string;
+    observation?: WeatherObservation;
+    status: WeatherStatus;
+    lastUpdate?: number;
+}
 
 export type WeatherObservation =
     WeatherPacket &
