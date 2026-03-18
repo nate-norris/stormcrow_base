@@ -1,4 +1,4 @@
-import { Quadrant, CrossDoctrine, WindCalcs } from "@/models";
+import { Quadrant, CrossDoctrine, WindCalcs } from "./models";
 
 export function getWindCalculations(gunDegrees: number, windFull: number, windTo: number) : WindCalcs {
     const relativeOffset = windTo - gunDegrees
