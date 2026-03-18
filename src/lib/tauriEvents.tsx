@@ -2,7 +2,7 @@ import { Event, listen } from "@tauri-apps/api/event";
 // import type { WeatherPacket, WeatherObservation, WindCalcs } from "@/models";
 // import { getWindCalculations } from "./windCalculations";
 // import { WeatherReducer } from "@/atoms"
-import { WeatherProcessor, WeatherPacket } from "@/atoms";
+import { WeatherProcessor, WeatherPacket } from "@/state";
 
 type TauriEvents =  {
     weather: WeatherPacket;
