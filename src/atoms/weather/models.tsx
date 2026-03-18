@@ -1,25 +1,35 @@
 
-// TODO transfer all types and interface to .d.ts?
-type WeatherEvent = 
-    | { type: "RECEIVED"; observation: WeatherObservation }
-    | { type: "TIMEOUT"; siteId: string };
+// export type WeatherPacketEvent = 
+//     | { type: WeatherPacketEventType.Received; observation: WeatherObservation }
+//     | { type: WeatherPacketEventType.Timeout; siteId: string };
 
-type WeatherStatus = 
-    | "RECEIVING"
-    | "STALE"
-    | "NOT_RECEIVING";
+// export enum WeatherPacketEventType {
+//     Received = "RECEIVED",
+//     Timeout = "TIMEOUT",
+// }
+// export enum WeatherEventEnum {
+//     NewPacket = "NEW_PACKET",
+//     Error = "ERROR",
+// }
 
-interface WeatherState {
-    siteId: string;
-    observation?: WeatherObservation;
-    status: WeatherStatus;
-    lastUpdate?: number;
-}
+// export interface WeatherState {
+//     observation?: WeatherObservation;
+//     status: WeatherStatus;
+//     lastUpdate?: number; // date TODO should remove since WeatherObservation contains time?
+// }
+export const WeatherStatus = {
+  Receiving: "RECEIVING",
+  Stale: "STALE",
+  NotReceiving: "NOT_RECEIVING",
+} as const;
+type WeatherS =
+  typeof WeatherStatus[keyof typeof WeatherStatus];
 
 export type WeatherObservation =
     WeatherPacket &
     WindCalcs & {
-        time: Date
+        time: number,
+        status: WeatherS
     }
 export interface WeatherPacket {
     siteId: string,
@@ -31,13 +41,6 @@ export interface WeatherPacket {
     baro: number
 }
 
-export interface WindCalcs {
-    cross: number;
-    headTail: number;
-    quadrant: Quadrant,
-    crossFactor: number,
-    crossType: CrossDoctrine;
-}
 
 export enum Quadrant {
     Head,
@@ -58,3 +61,10 @@ export enum CrossDoctrine {
     Full = 1.0,
 }
 
+export interface WindCalcs {
+    cross: number;
+    headTail: number;
+    quadrant: Quadrant,
+    crossFactor: number,
+    crossType: CrossDoctrine;
+}
