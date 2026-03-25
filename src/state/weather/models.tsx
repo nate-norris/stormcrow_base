@@ -41,6 +41,12 @@ export interface WeatherPacket {
     baro: number
 }
 
+// Defines what types atom will receive updates on:
+// "observation" -> full WeatherObservation for new weather incoming
+// "status" -> timer update for stale or not receiving data
+export type WeatherUpdate =
+  | { type: "observation"; data: WeatherObservation }
+  | { type: "status"; siteId: string; status: WeatherS };
 
 export enum Quadrant {
     Head,
