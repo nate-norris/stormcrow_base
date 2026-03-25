@@ -1,6 +1,7 @@
 import { store } from "@/state/store"
 import { WeatherPacket, WindCalcs, WeatherObservation, WeatherStatus } from "./models";
-import { updateWeatherObserversAtom } from "./weatherAtoms";
+import { updateWeatherObserversAtom, deleteWeatherObserverAtom, 
+    updateWindLogAtom, deleteWindLogAtom } from "./weatherAtoms";
 import { getWindCalculations } from "./windCalculations";
 
 // TODO check if implement as actor model
@@ -28,6 +29,7 @@ export class WeatherStreamProcessor {
             type: "observation",
             data: obs,
         });
+        store.set(updateWindLogAtom, obs);
     }
 
     private resetTimeout(siteId: string) {
@@ -74,7 +76,13 @@ export class WeatherStreamProcessor {
     private deleteTimer(siteId: string) {
         // clear and delte timer
         const existing = this.timers.get(siteId);
-        if (existing) clearTimeout(existing);
-        this.timers.delete(siteId);
+        if (existing) {
+            clearTimeout(existing);
+            this.timers.delete(siteId);
+        }
+
+        store.set(deleteWeatherObserverAtom, siteId);
+        store.set(deleteWindLogAtom, siteId);
+
     }
 }
