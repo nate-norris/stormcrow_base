@@ -1,38 +1,13 @@
 import { atom } from 'jotai'
-import type { WeatherObservation, WeatherUpdate } from "./models";
+import type { WeatherObservation, WeatherUpdate, WindFullEvent } from "./models";
 
-/// create atom for WeatherObservers which is an array of Observer
-/// They will be mapped by observer id such as A, B, C, etc
-/// the will need to allow for read, write, and update
-///     consider using derived atoms for this
-
-/*
-Next level becomes:
-
-Event → State Transition → Atom Update
-
-Add an explicit domain layer:
-
-initTauriListeners
-        ↓
-WeatherStreamReducer (NEW)
-        ↓
-Atoms
-
-Where reducer decides:
-
-valid transitions
-
-timers
-
-lifecycle
-*/
-
-// siteId to WeatherObservation
+// primary atom of siteId to WeatherObservation
 type WeatherObservers = Record<string, WeatherObservation>;
-// primary atom holding WeatherObservers
 export const weatherObserversAtom = atom<WeatherObservers>({});
 
+// secondary log atom of siteId to timestamped wind value
+type WindLog = Record<string, WindFullEvent>;
+export const windLogAtom = atom<WindLog>({});
 
 // Update the atom with either a new WeatherObservation or
 // WeatherStatus update.
@@ -69,8 +44,49 @@ export const updateWeatherObserversAtom = atom(
   }
 );
 
-// TODO: add atom for last 5 minutes of full wind value
+// delete WeatherObservation
+export const deleteWeatherObserverAtom = atom(
+  null,
+  (_get, set, siteId: string) => {
+    set(weatherObserversAtom, prev => {
+      const next = { ... prev };
+      delete next[siteId];
+      return next;
+    });
+  }
+);
 
-// TODO: add option for deletion of atom if data is STALE/NOT_RECEIVING
-//    see WeatherStreamProcessor.deleteTimer for completely wiping
-// deleteWeatherObserverAtom(siteId: num)
+// three minute log of full wind value
+export const updateWindLogAtom = atom(
+  null,
+  (_get, set, obs: WeatherObservation) => {
+    set(windLogAtom, prev => {
+      const newEntry: WindFullEvent = { time: obs.time, windFull: obs.windFull };
+
+      const updated: WindLog = {
+        ...prev,
+        [obs.siteId]: newEntry,
+      };
+
+      // Drop old entries beyond the timeframe
+      const cutoff = obs.time - 3 * 60_000; // 3 minutes
+      Object.keys(updated).forEach(siteId => {
+        if (updated[siteId].time < cutoff) delete updated[siteId];
+      });
+
+      return updated;
+    });
+  }
+);
+
+// delete wind value tracking
+export const deleteWindLogAtom = atom(
+  null,
+  (_get, set, siteId: string) => {
+    set(windLogAtom, prev => {
+      const next = { ...prev };
+      delete next[siteId];
+      return next;
+    });
+  }
+);
