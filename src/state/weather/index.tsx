@@ -7,5 +7,5 @@
  */
 
 export type { WeatherPacket } from "./models";
-export { WeatherProcessor } from "./processor";
+export { WeatherStreamProcessor } from "./processor";
 export { sortedWeatherObserversAtom } from "./derived";
