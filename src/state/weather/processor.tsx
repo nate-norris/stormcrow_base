@@ -1,22 +1,12 @@
+import { store } from "@/state/store"
 import { WeatherPacket, WindCalcs, WeatherObservation, WeatherStatus } from "./models";
+import { updateWeatherObserversAtom } from "./weatherAtoms";
 import { getWindCalculations } from "./windCalculations";
 
-export class WeatherProcessor {
-    // private state = new Map<string, WeatherState>();
-    // private timers = new Map<string, ReturnType<typeof setTimeout>>();
+// TODO check if implement as actor model
+export class WeatherStreamProcessor {
+    private timers = new Map<string, ReturnType<typeof setTimeout>>();
 
-    // dispatch(event: WeatherPacketEvent) {
-    //     switch (event.type) {
-    //         case WeatherPacketEventType.Received:
-    //             this.handleObservation(event.observation);
-    //             break;
-    //         case WeatherPacketEventType.Timeout:
-    //             this.handleTimeout(event.siteId);
-    //             break;
-    //     }
-
-    //     this.emit();
-    // }
     handlePacket(packet: WeatherPacket) {
         const windTo = (packet.windDir + 180) % 360;
         const calcs: WindCalcs = getWindCalculations(0, packet.windFull, windTo);
@@ -28,56 +18,63 @@ export class WeatherProcessor {
             time: Date.now(),
             status: WeatherStatus.Receiving,
         }
+
+        this.publish(observation);
+        this.resetTimeout(observation.siteId);
     }
 
     private publish(obs: WeatherObservation) {
-        store.set(weatherAtom, prev => ({
-            ...prev,
-            [obs.siteId]: obs,
-        }));
-
-
-
-    // emit() {
-
-    // }
-
-    // handleObservation(observation: WeatherObservation) {
-    //     const now = Date.now();
-
-    //     const current: WeatherState = {
-    //         siteId: 
-    //     }
-    // }
-
-    // handleTimeout(siteId: string) {
-
-    // }
-}
-
-/*
-function handleWeatherObservation(event: Event<WeatherPacket>) {
-    const raw: WeatherPacket = event.payload;
-    const windTo = (raw.windDir + 180) % 360; // swap wind from to heading
-    const c: WindCalcs = getWindCalculations(0, raw.windFull, windTo);
-
-    // atom for current testing configuration
-    const observation: WeatherObservation = {
-        siteId: raw.siteId,
-        time: new Date(),
-        altitude: raw.altitude,
-        windFull: raw.windFull,
-        windDir: windTo,
-        cross: 0,
-        headTail: 0,
-        temp: raw.temp,
-        humidity: raw.humidity,
-        baro: raw.baro
+        store.set(updateWeatherObserversAtom, {
+            type: "observation",
+            data: obs,
+        });
     }
 
-    store.set(weatherAtom, (prev) => {{
-        ...prev,
-        [observation.siteId]: observation,
-    }});
+    private resetTimeout(siteId: string) {
+        // warn in 5 seconds of stale data
+        this.updateTimer(siteId, 5_000, this.timeoutWarn);
+    }
+
+    private timeoutWarn = (siteId: string) => {
+        // make status stale
+        store.set(updateWeatherObserversAtom, {
+            type: "status",
+            siteId: siteId,
+            status: WeatherStatus.Stale,
+        });
+
+        // warn in 30 seconds total of not receiving
+        this.updateTimer(siteId, 25_000, this.timeoutError);
+    }
+
+    
+    private timeoutError = (siteId: string) => {
+        // make status not receiving
+        store.set(updateWeatherObserversAtom, {
+            type: "status",
+            siteId: siteId,
+            status: WeatherStatus.NotReceiving,
+        });
+    }
+
+    // Helper function to clear and set the next timeout of the timer by siteId.
+    //
+    // NOTE: Functions passed as arguments must be declared as arrow functions 
+    // since class context is lost when method is passed as function to 
+    private updateTimer(siteId: string, timeout: number, fn: (siteId: string)  => void) {
+        // clear timer
+        const existing = this.timers.get(siteId);
+        if (existing) clearTimeout(existing);
+        // update new timer
+        this.timers.set(siteId, 
+            setTimeout(() => { fn(siteId); }, timeout)
+        );
+    }
+
+    private deleteTimer(siteId: string) {
+        // clear and delte timer
+        const existing = this.timers.get(siteId);
+        if (existing) clearTimeout(existing);
+        this.timers.delete(siteId);
+    }
 }
-*/
