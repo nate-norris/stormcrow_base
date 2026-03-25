@@ -1,22 +1,4 @@
 
-// export type WeatherPacketEvent = 
-//     | { type: WeatherPacketEventType.Received; observation: WeatherObservation }
-//     | { type: WeatherPacketEventType.Timeout; siteId: string };
-
-// export enum WeatherPacketEventType {
-//     Received = "RECEIVED",
-//     Timeout = "TIMEOUT",
-// }
-// export enum WeatherEventEnum {
-//     NewPacket = "NEW_PACKET",
-//     Error = "ERROR",
-// }
-
-// export interface WeatherState {
-//     observation?: WeatherObservation;
-//     status: WeatherStatus;
-//     lastUpdate?: number; // date TODO should remove since WeatherObservation contains time?
-// }
 export const WeatherStatus = {
   Receiving: "RECEIVING",
   Stale: "STALE",
@@ -39,6 +21,12 @@ export interface WeatherPacket {
     temp: number,
     humidity: number,
     baro: number
+}
+
+// structure for past log of wind values
+export type WindFullEvent = {
+    time: number,
+    windFull: number
 }
 
 // Defines what types atom will receive updates on:
