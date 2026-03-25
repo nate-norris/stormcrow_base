@@ -60,7 +60,7 @@ export class WeatherStreamProcessor {
     // Helper function to clear and set the next timeout of the timer by siteId.
     //
     // NOTE: Functions passed as arguments must be declared as arrow functions 
-    // since class context is lost when method is passed as function to 
+    // since class context is lost when method is passed as function
     private updateTimer(siteId: string, timeout: number, fn: (siteId: string)  => void) {
         // clear timer
         const existing = this.timers.get(siteId);
