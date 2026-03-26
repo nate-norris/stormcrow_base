@@ -11,4 +11,8 @@ export async function initTauriListeners() {
     await listen<TauriEvents["weather"]>("weather", (event) => {
         weatherProcessor.handlePacket(event.payload)
     });
+
+    await listen<TauriEvents["boom"]>("boom", (_event) => {
+
+    });
 }
