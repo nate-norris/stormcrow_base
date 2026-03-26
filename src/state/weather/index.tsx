@@ -8,4 +8,4 @@
 
 export type { WeatherPacket } from "./models";
 export { WeatherStreamProcessor } from "./processor";
-export { getWeatherSiteAtom } from "./derived";
+export { getWeatherSiteAtom, siteIdsAtom } from "./derived";
