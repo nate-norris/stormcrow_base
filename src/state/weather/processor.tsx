@@ -4,7 +4,6 @@ import { updateWeatherObserversAtom, deleteWeatherObserverAtom,
     updateWindLogAtom, deleteWindLogAtom } from "./weatherAtoms";
 import { getWindCalculations } from "./windCalculations";
 
-// TODO check if implement as actor model
 export class WeatherStreamProcessor {
     private timers = new Map<string, ReturnType<typeof setTimeout>>();
 
@@ -22,6 +21,18 @@ export class WeatherStreamProcessor {
 
         this.publish(observation);
         this.resetTimeout(observation.siteId);
+    }
+
+    removeSite(siteId: string) {
+        // clear and delte timer
+        const existing = this.timers.get(siteId);
+        if (existing) {
+            clearTimeout(existing);
+            this.timers.delete(siteId);
+        }
+
+        store.set(deleteWeatherObserverAtom, siteId);
+        store.set(deleteWindLogAtom, siteId);
     }
 
     private publish(obs: WeatherObservation) {
@@ -71,18 +82,5 @@ export class WeatherStreamProcessor {
         this.timers.set(siteId, 
             setTimeout(() => { fn(siteId); }, timeout)
         );
-    }
-
-    private deleteTimer(siteId: string) {
-        // clear and delte timer
-        const existing = this.timers.get(siteId);
-        if (existing) {
-            clearTimeout(existing);
-            this.timers.delete(siteId);
-        }
-
-        store.set(deleteWeatherObserverAtom, siteId);
-        store.set(deleteWindLogAtom, siteId);
-
     }
 }
