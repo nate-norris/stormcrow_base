@@ -1,7 +1,11 @@
+import { atom } from 'jotai'
+import { weatherObserversAtom } from "./weatherAtoms";
 
-
-// export const sortedWeatherObserversAtom = atom(get) => {
-//     // TODO
-//     const observations = Object.values(get(weatherObserversAtom))
-//     return observations[0]
-// }
+/**
+ * All data is kept current inside weatherObserversAtom and is supplied
+ * to decrease re-renders of React components.
+ * 
+ * @param siteId - identifier for the specific weather site
+ */
+export const getWeatherSiteAtom = (siteId: string) =>
+    atom((get) => get(weatherObserversAtom)[siteId]);
