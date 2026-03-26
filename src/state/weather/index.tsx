@@ -8,4 +8,4 @@
 
 export type { WeatherPacket } from "./models";
 export { WeatherStreamProcessor } from "./processor";
-// export { sortedWeatherObserversAtom } from "./derived";
+export { getWeatherSiteAtom } from "./derived";
