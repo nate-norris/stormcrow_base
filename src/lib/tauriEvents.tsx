@@ -9,6 +9,7 @@ type TauriEvents =  {
 
 export async function initTauriListeners() {
     await listen<TauriEvents["weather"]>("weather", (event) => {
+        console.log("Tauri event: weather listener");
         weatherProcessor.handlePacket(event.payload)
     });
 
