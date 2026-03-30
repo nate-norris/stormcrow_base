@@ -41,7 +41,7 @@ pub(crate) async fn update_test_config<'e, E>(executor: E, config: WindWarningCo
         max_wind = ?,
         threshold_percent = ?,
         gun_orient = ?,
-        expected_sites = ?,
+        expected_sites = ?
         WHERE id = ?
         "#,
         config.max_wind,
