@@ -1,5 +1,4 @@
 import { atom } from "jotai";
-import type { Test, TestConfiguration } from "@/models";
+import type { Test } from "@/models";
 
 export const activeTestAtom = atom<Test | null>(null);
-export const activeConfigAtom = atom<TestConfiguration | null>(null);
