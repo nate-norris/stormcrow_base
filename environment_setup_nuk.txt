@@ -96,6 +96,24 @@ cargo sqlx prepare
 ensure .sqlx is not in .gitignore
 commit .sqlx files
 
+# Changing table schema?
+# NOTE: migrations currently did not accept non existing .sqlite in /data.
+# 
+#
+# 1. temporarily turn SQLX_OFFLINE to false. This is located in src-tauri/.env
+# 2. Delete the database and manually add back in /data/weather.sqlite
+# 3. clear sqlx cache
+rm -r .sqlx/ 
+# 3. Ensure migrations folder exists inside src-tauri
+mkdir migrations
+cargo sqlx migrate add init 
+# 4. Populate with migrations/ with +migrate Up and +migrate Down logic for table creation
+# 5. run migrations (under src-tauri)
+cargo sqlx migrate run
+# 4. Regenerate sqlx metadta (queries in .sqlx/)
+cargo sqlx prepare
+
+
 # -----------------------------
 # 11. Nuk Ports
 # -----------------------------
