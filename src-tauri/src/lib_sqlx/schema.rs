@@ -165,7 +165,7 @@ async fn create_tables(pool: &DbPool) -> Result<(), sqlx::Error> {
             max_wind INTEGER NOT NULL,
             threshold_percent INTEGER NOT NULL,
             gun_orient INTEGER NOT NULL,
-            expected_sites: number,
+            expected_sites INTEGER NOT NULL,
             FOREIGN KEY(id) REFERENCES tests(id)
         );
         "#,
