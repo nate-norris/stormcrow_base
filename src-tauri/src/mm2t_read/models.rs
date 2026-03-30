@@ -1,6 +1,7 @@
 use tauri::{AppHandle, Emitter};
 use serde::Serialize;
 use utils::mm2t::DecodedPacket;
+use utils::logger;
 
 #[derive(Debug, Serialize)]
 pub(crate) struct WeatherData {
@@ -38,6 +39,8 @@ impl PacketKind {
             PACKET_BOOM => Ok(PacketKind::Boom),
             PACKET_WEATHER => {
                 let data = WeatherData::from_payload(&packet.payload)?;
+                let m = format!("MM2T decode: weather packet {:?}", data);
+                logger::info(m);
                 Ok(PacketKind::Weather(data))
             },
             _ => anyhow::bail!("Unknown packet type"),
@@ -50,6 +53,8 @@ impl PacketKind {
                 app.emit("boom", ())?;
             },
             PacketKind::Weather(data) => {
+                let m = format!("MM2T handle: weather packet {:?}", data);
+                logger::info(m);
                 app.emit("weather", &data)?;
             }
         }
