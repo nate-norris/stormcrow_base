@@ -1,0 +1,12 @@
+{
+  "db_name": "SQLite",
+  "query": "UPDATE test_configs SET \n        max_wind = ?,\n        threshold_percent = ?,\n        gun_orient = ?,\n        expected_sites = ?\n        WHERE id = ?\n        ",
+  "describe": {
+    "columns": [],
+    "parameters": {
+      "Right": 5
+    },
+    "nullable": []
+  },
+  "hash": "5683c478c4f479c2429b058e8a132d7fc7b831e8fb961330c751d97381b04002"
+}
