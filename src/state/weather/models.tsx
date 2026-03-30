@@ -7,11 +7,21 @@ export const WeatherStatus = {
 type WeatherS =
   typeof WeatherStatus[keyof typeof WeatherStatus];
 
+/**
+ * Represents wind severity levels compared to user defined thresholds.
+ */
+export enum WindState {
+    Ok = 2,
+    Warn = 1,
+    Critical = 0
+}
+
 export type WeatherObservation =
     WeatherPacket &
     WindCalcs & {
         time: number,
-        status: WeatherS
+        status: WeatherS,
+        wind_state: WindState,
     }
 export interface WeatherPacket {
     siteId: string,
