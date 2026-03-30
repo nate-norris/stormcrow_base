@@ -7,6 +7,7 @@ use super::models::PacketKind;
 pub(crate) fn handle_packet(packet: DecodedPacket, app_handle: &AppHandle) {
     match PacketKind::from_decode(packet) {
         Ok(kind) => {
+            logger::info("Packet emit from decode");
             if let Err(e) = kind.handle(app_handle) {
                 logger::error_with("Packet emit failure", e);
             }
