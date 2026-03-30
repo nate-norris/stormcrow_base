@@ -1,5 +1,5 @@
 import { atom, Atom } from 'jotai'
-import { weatherObserversAtom } from "./weatherAtoms";
+import { weatherObserversAtom } from "./atomPrimary";
 import { WeatherObservation } from './models';
 
 /**
