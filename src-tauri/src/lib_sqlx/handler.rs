@@ -3,7 +3,7 @@
 //! 
 use chrono::{Utc};
 
-use super::models::{NewTest, Test, TestConfiguration, QEDeleteSite, QEBase, WeatherRow};//, VelocityType, DegreesCircle, Percent};
+use super::models::{NewTest, Test, WindWarningConfig, QEDeleteSite, QEBase, WeatherRow};//, VelocityType, DegreesCircle, Percent};
 use super::schema::DbPool;
 use crate::lib_sqlx::models::QEEntry;
 use crate::lib_sqlx::q_tests;
@@ -12,7 +12,7 @@ use crate::lib_sqlx::q_qe;
 
 
 pub async fn initiate_test(pool: &DbPool, name: &str) -> 
-    Result<(Test, TestConfiguration), sqlx::Error> {
+    Result<(Test, WindWarningConfig), sqlx::Error> {
     
     // test reference
     let new_test: NewTest = NewTest {
@@ -33,7 +33,7 @@ pub async fn initiate_test(pool: &DbPool, name: &str) ->
     let mut tx = pool.begin().await?;
     // insert and retrieve the Test
     let test = q_tests::insert_test(&mut *tx, &new_test).await?;
-    // insert and retrieve the TestConfiguration
+    // insert and retrieve the WindWarningConfig
     let config = q_configs::insert_default_test_config(
         &mut *tx, test.id).await?;
     // update last test active
@@ -90,7 +90,7 @@ pub async fn delete_test(pool: &DbPool, name: &str) -> Result<(), sqlx::Error> {
 }
 
 
-pub async fn update_configuration(pool: &DbPool, config: TestConfiguration) ->
+pub async fn update_configuration(pool: &DbPool, config: WindWarningConfig) ->
     Result<(), sqlx::Error> {
     q_configs::update_test_config(pool, config).await
 }

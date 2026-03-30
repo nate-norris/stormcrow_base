@@ -22,6 +22,6 @@ use models::NewTest;
 
 // Re-export tauri commands that are library specific via handlers
 pub use schema::{DbPool, init_db};
-pub use models::{Test, TestConfiguration, QEDeleteSite, QEBase, QEEntry, WeatherRow};
+pub use models::{Test, WindWarningConfig, QEDeleteSite, QEBase, QEEntry, WeatherRow};
 pub use handler::{initiate_test, get_last_test, get_tests, delete_test, 
     update_configuration, get_test_qes, delete_qe_site, insert_new_qe, reassign_qe};

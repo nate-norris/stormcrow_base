@@ -7,23 +7,24 @@ DDL (CREATE, ALTER, DROP) → use sqlx::query(...).execute(pool).await.
 DML (SELECT, INSERT, UPDATE) → use query_as! or query! when possible for compile-time checks.
 */
 
-use super::{DbExec, TestConfiguration};
+use super::{DbExec, WindWarningConfig};
 
 pub(crate) async fn insert_default_test_config<'e, E>(executor: E, test_id: i64) -> 
-	Result<TestConfiguration, sqlx::Error> 
+	Result<WindWarningConfig, sqlx::Error> 
     where E: DbExec<'e> {
 
     // let gun_orient = DegreesCircle::new(0).unwrap().value() as i64; // u16
     // let tolerance = Percent::new(75).unwrap().value() as i64;       // u8
     sqlx::query_as!(
-        TestConfiguration,
+        WindWarningConfig,
         r#"
         INSERT INTO test_configs
-            (id, cross, cross_type, tail, tail_type, gun_orient, tolerance)
-        VALUES (?, 10, 'mph', 10, 'mph', 0, 75)
-        RETURNING id, cross, cross_type as "cross_type: _",
-                  tail, tail_type as "tail_type: _",
-                  gun_orient as "gun_orient: _", tolerance as "tolerance: _"
+            (id, max_wind, threshold_percent, gun_orient, expected_sites)
+        VALUES (?, 10, 75, 0, 1)
+        RETURNING id, max_wind, 
+            threshold_percent as "threshold_percent: _", 
+            gun_orient as "gun_orient: _",
+            expected_sites
         "#,
         test_id,
     )
@@ -31,26 +32,22 @@ pub(crate) async fn insert_default_test_config<'e, E>(executor: E, test_id: i64)
     .await
 }
 
-pub(crate) async fn update_test_config<'e, E>(executor: E, config: TestConfiguration) ->
+pub(crate) async fn update_test_config<'e, E>(executor: E, config: WindWarningConfig) ->
     Result<(), sqlx::Error> 
     where E: DbExec<'e> {
 
     sqlx::query!(
         r#"UPDATE test_configs SET 
-        cross = ?,
-        cross_type = ?,
-        tail = ?,
-        tail_type = ?,
+        max_wind = ?,
+        threshold_percent = ?,
         gun_orient = ?,
-        tolerance = ?
+        expected_sites = ?,
         WHERE id = ?
         "#,
-        config.cross,
-        config.cross_type,
-        config.tail,
-        config.tail_type,
+        config.max_wind,
+        config.threshold_percent,
         config.gun_orient,
-        config.tolerance,
+        config.expected_sites,
         config.id
         )
         .execute(executor)
@@ -60,12 +57,12 @@ pub(crate) async fn update_test_config<'e, E>(executor: E, config: TestConfigura
 }
 
 pub(crate) async fn get_test_config_by_id<'e, E>(executor: E, test_id: i64) ->
-	Result<Option<TestConfiguration>, sqlx::Error> 
+	Result<Option<WindWarningConfig>, sqlx::Error> 
     where E: DbExec<'e> {
 	sqlx::query_as!(
-		TestConfiguration,
+		WindWarningConfig,
 		r#"
-        SELECT id, cross, cross_type, tail, tail_type, gun_orient, tolerance 
+        SELECT id, max_wind, threshold_percent, gun_orient, expected_sites
 		FROM test_configs WHERE id = ?
         "#,
 		test_id

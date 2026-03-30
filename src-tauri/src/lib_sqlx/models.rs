@@ -41,26 +41,21 @@ pub struct NewTest {
 /// settings.
 /// 
 /// # Fields
-/// - `id` — Primary key linking this configuration to the corresponding `Test` entry in the `test` table.
-/// - `cross` — Maximum wind speed in miles per hour (mph) for the cross section.
-/// - `cross_type` — Type of velocity measurement for the cross section (`VelocityType` enum).
-/// - `tail` — Maximum wind speed in mph for the tail section.
-/// - `tail_type` — Type of velocity measurement for the tail section (`VelocityType` enum).
-/// - `gun_orient` — Orientation of the gun in degrees around the circle (`DegreesCircle`).
-/// - `tolerance` — Allowed tolerance as a percentage (`Percent`).
+/// - `id` — Primary key linking this configuration to the corresponding `Test` 
+/// entry in the `test` table.
+/// - `max_wind` — Maximum wind speed for the cross and head/tail calculations.
+/// - `threshold_percent` — Allowed tolerance as a percentage used to calculate
+/// allowed cross and head/tail wind components.
+/// - `gun_orient` — Orientation of the gun in degrees around the circle.
+/// - `expected_sites` — The number of sites to verify consistent receiving
+/// of weather data from.
 #[derive(Debug, Clone, FromRow, Serialize, Deserialize)]
-pub struct TestConfiguration {
+pub struct WindWarningConfig {
     pub id: i64,
-    pub cross: i64,
-    pub cross_type: String,
-    // pub cross_type: VelocityType,
-    pub tail: i64,
-    pub tail_type: String,
-    // pub tail_type: VelocityType,
-    // pub gun_orient: DegreesCircle,
-    // pub tolerance: Percent
+    pub max_wind: i64,
+    pub threshold_percent: i64,
     pub gun_orient: i64,
-    pub tolerance: i64
+    pub expected_sites: i64
 }
 
 /// Represents a weather measurement associated with a `test` entry.

@@ -1,7 +1,7 @@
 //! Define tauri commands that are available outside of any specific module/file
 //! 
 use crate::t_state::{DbState, SpeakerState};
-use crate::lib_sqlx::{QEDeleteSite, QEBase, QEEntry, Test, TestConfiguration, WeatherRow, 
+use crate::lib_sqlx::{QEDeleteSite, QEBase, QEEntry, Test, WindWarningConfig, WeatherRow, 
     delete_qe_site, delete_test, get_last_test, get_tests, initiate_test, 
     get_test_qes, insert_new_qe, update_configuration, reassign_qe};
 use utils::speaker::SpeakerNotification;
@@ -19,10 +19,10 @@ pub async fn get_users_command() -> Vec<String> {
 
 #[tauri::command]
 pub async fn initiate_test_command(state: tauri::State<'_, DbState>, name: String) -> 
-    Result<(Test, TestConfiguration), String> {
+    Result<(Test, WindWarningConfig), String> {
 
     let pool = state.0.as_ref();
-    let result: (Test, TestConfiguration) = initiate_test(pool, &name)
+    let result: (Test, WindWarningConfig) = initiate_test(pool, &name)
         .await
         .map_err(|e| e.to_string())?;
 
@@ -55,7 +55,7 @@ pub async fn delete_test_command(state: tauri::State<'_, DbState>, name: String)
 }
 
 #[tauri::command]
-pub async fn update_configuration_command(state: tauri::State<'_, DbState>, config: TestConfiguration)
+pub async fn update_configuration_command(state: tauri::State<'_, DbState>, config: WindWarningConfig)
     -> Result<(), String> {
 
     let pool = state.0.as_ref();

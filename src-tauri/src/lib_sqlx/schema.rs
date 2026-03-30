@@ -162,12 +162,10 @@ async fn create_tables(pool: &DbPool) -> Result<(), sqlx::Error> {
         r#"
         CREATE TABLE IF NOT EXISTS test_configs (
             id INTEGER PRIMARY KEY,
-            cross INTEGER NOT NULL,
-            cross_type VARCHAR(5) NOT NULL,
-            tail INTEGER NOT NULL,
-            tail_type VARCHAR(5) NOT NULL,
+            max_wind INTEGER NOT NULL,
+            threshold_percent INTEGER NOT NULL,
             gun_orient INTEGER NOT NULL,
-            tolerance INTEGER NOT NULL,
+            expected_sites: number,
             FOREIGN KEY(id) REFERENCES tests(id)
         );
         "#,
