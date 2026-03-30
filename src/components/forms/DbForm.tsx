@@ -1,10 +1,7 @@
 import { useState } from "react";
 import { invoke } from "@tauri-apps/api/core";
 
-import type { Test, TestConfiguration } from "@/models";
-
-
-
+import type { Test, WindWarningConfig } from "@/models";
 
 export default function DbForm() {
 
@@ -14,7 +11,7 @@ export default function DbForm() {
     async function handleInitDb() {
         setName("");
         try {
-            const [test, testConfig]: [Test, TestConfiguration] = await invoke("initiate_test_command", { name: name.toUpperCase() });
+            const [test, testConfig]: [Test, WindWarningConfig] = await invoke("initiate_test_command", { name: name.toUpperCase() });
             alert(JSON.stringify(test));
             alert(JSON.stringify(testConfig));
         } catch (error) {
