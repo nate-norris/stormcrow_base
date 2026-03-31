@@ -19,7 +19,7 @@ export class WeatherStreamProcessor {
             windFull: windTo,
             time: Date.now(),
             status: WeatherStatus.Receiving,
-            wind_state: getWindState(calcs, 10, .75), // TODO get from state
+            windState: getWindState(calcs, 10, .75), // TODO get from state
         }
 
         this.publish(observation);

@@ -21,7 +21,7 @@ export type WeatherObservation =
     WindCalcs & {
         time: number,
         status: WeatherS,
-        wind_state: WindState,
+        windState: WindState,
     }
 export interface WeatherPacket {
     siteId: string,
