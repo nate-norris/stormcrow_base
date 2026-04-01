@@ -8,7 +8,7 @@ export class WeatherStreamProcessor {
     private timers = new Map<string, ReturnType<typeof setTimeout>>();
 
     handlePacket(packet: WeatherPacket) {
-        const windTo = (packet.windDir + 180) % 360;
+        const windTo = Math.round(((packet.windDir + 180) % 360) * 10) / 10;
         // TODO: get weapon orientation from state
         const weapon_orientation = 0;
         const calcs: WindCalcs = getWindCalculations(weapon_orientation, packet.windFull, windTo);
