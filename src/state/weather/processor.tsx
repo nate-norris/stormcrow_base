@@ -16,7 +16,7 @@ export class WeatherStreamProcessor {
         const observation: WeatherObservation = {
             ...packet,
             ...calcs,
-            windFull: windTo,
+            windDir: windTo,
             time: Date.now(),
             status: WeatherStatus.Receiving,
             windState: getWindState(calcs, 10, .75), // TODO get from state
