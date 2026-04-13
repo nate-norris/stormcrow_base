@@ -22,7 +22,7 @@ use t_state::{DbState, SpeakerState};
 use mm2t_read::{init_mm2t, spawn_mm2t_read};
 use lib_sqlx::init_db;
 use splash_animation::SplashStartup;
-use commands::{greet, get_users_command,
+use commands::{
     initiate_test_command, get_last_test_command, get_tests_command, 
     delete_test_command, update_configuration_command, get_test_qes_command,
     delete_qe_site_command, insert_new_qe_command, reassign_qe_command};
@@ -79,8 +79,6 @@ pub fn run() {
             Ok(())
         })
         .invoke_handler(tauri::generate_handler![
-            greet,
-            get_users_command,
             initiate_test_command,
             get_last_test_command,
             get_tests_command,
