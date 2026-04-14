@@ -4,6 +4,5 @@ const modes = [
   "new",
   "continue",
   "delete",
-  "confirmDelete",
 ] as const;
 export type StepMode = typeof modes[number];
