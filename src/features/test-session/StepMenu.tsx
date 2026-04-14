@@ -1,13 +1,16 @@
-import { StepMode } from "./models";
+import { Step } from "./models";
 
 // limited sub selection of StepMode
-type MenuAction = Extract<StepMode, "new" | "continue" | "delete">;
+type MenuAction =
+  | typeof Step.New
+  | typeof Step.Continue
+  | typeof Step.Delete;
+// define the props
 type MenuProps = {
     onSelect: (action: MenuAction) => void;
 };
 
-
-function MenuView({ onSelect}: MenuProps) {
+export default function MenuView({ onSelect}: MenuProps) {
     return (
         <div className="flex flex-col items-center justify-center gap-4 h-full">
             <h2 className="text-xl font-semibold">
