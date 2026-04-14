@@ -4,6 +4,8 @@ import { Provider } from "jotai";
 import { store } from "@/state";
 import { bootstrapApp } from "./bootstrap";
 import WeatherSites from "@/components/widgets/WeatherSites"
+import { TestManagement } from "./features/test-session";
+
 
 function App() {
   useEffect(() => {
@@ -14,6 +16,7 @@ function App() {
     <Provider store={store}>
       <div className="min-h-screen">
         <WeatherSites />
+        <TestManagement />
       </div>
     </Provider>
     
