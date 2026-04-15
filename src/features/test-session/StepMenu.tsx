@@ -1,13 +1,13 @@
 import { Step } from "./models";
 
 // limited sub selection of StepMode
-type MenuAction =
+type MenuSteps =
   | typeof Step.New
   | typeof Step.Continue
   | typeof Step.Delete;
 // define the props
 type MenuProps = {
-    onSelect: (action: MenuAction) => void;
+    onSelect: (step: MenuSteps) => void;
 };
 
 export default function MenuView({ onSelect}: MenuProps) {
