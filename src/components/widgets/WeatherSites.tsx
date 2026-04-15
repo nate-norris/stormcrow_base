@@ -5,19 +5,19 @@ import { getWeatherSiteAtom, siteIdsAtom } from "@/state/weather/";
 export default function WeatherSites() {
     const [siteIds] = useAtom(siteIdsAtom);
 
-    if (siteIds.length === 0) {
-        return (
-            <div>
-                <p>No Sites Receiving</p>
-            </div>
-        );
-    }
-
     return (
-        <div className="flex flex-wrap gap-4">
-            {siteIds.map(id => (
-                <WeatherCard key={id} siteId={id} />
-            ))}
+        <div className="w-1/5 min-h-screen flex flex-col gap-4 bg-amber-400">
+            {siteIds.length === 0 ? (
+                <div>
+                    <p>No Sites Receiving</p>
+                </div>
+             ) : (
+                <div className="flex flex-wrap gap-4 bg-amber-400 f">
+                    {siteIds.map(id => (
+                        <WeatherCard key={id} siteId={id} />))
+                    }
+                </div>
+             )}
         </div>
     );
 }
