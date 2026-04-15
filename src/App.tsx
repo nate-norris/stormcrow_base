@@ -14,7 +14,7 @@ function App() {
 
   return (
     <Provider store={store}>
-      <div className="min-h-screen">
+      <div className="min-h-screen flex">
         <WeatherSites />
         <TestManagement />
       </div>
