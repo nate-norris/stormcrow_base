@@ -15,10 +15,10 @@ export default function TestManagement() {
     const nav = createNavigation(step, setStep);
 
     const views = {
-        menu: <MenuView onSelect={setStep}/>,
-        new: <NewView />,
-        continue: <ContinueView />,
-        delete: <DeleteView />,
+        menu: <MenuView onSelect={nav.go}/>,
+        new: <NewView onBack={nav.back}/>,
+        continue: <ContinueView onBack={nav.back}/>,
+        delete: <DeleteView onBack={nav.back}/>,
     };
 
     return (
