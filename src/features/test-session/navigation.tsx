@@ -16,5 +16,9 @@ export function createNavigation(
         setStep("menu");
       }
     },
+
+    submit: () => {
+      // TODO: select test session; hide modal;
+    },
   };
 }
