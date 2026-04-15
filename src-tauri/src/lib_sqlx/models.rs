@@ -50,6 +50,7 @@ pub struct NewTest {
 /// - `expected_sites` — The number of sites to verify consistent receiving
 /// of weather data from.
 #[derive(Debug, Clone, FromRow, Serialize, Deserialize)]
+#[serde(rename_all = "camelCase")]
 pub struct WindWarningConfig {
     pub id: i64,
     pub max_wind: i64,
@@ -85,6 +86,7 @@ pub struct WindWarningConfig {
 /// - `time` — Timestamp of the measurement (`NaiveDateTime`).
 /// - `test_id` — Foreign key linking this weather entry to a `Test` entry.
 #[derive(Debug, Clone, FromRow, Serialize)]
+#[serde(rename_all = "camelCase")]
 pub struct WeatherRow {
     pub id: Option<i64>,
     pub site_id: i64, // weather site
