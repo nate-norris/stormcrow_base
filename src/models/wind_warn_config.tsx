@@ -4,8 +4,8 @@
  */
 export interface WindWarningConfig {
   id: number,
-  max_wind: number;
-  threshold_percent: number; // 0 -100
-  gun_orient: number;
-  expected_sites: number;
+  maxWind: number;
+  thresholdPercent: number; // 0 -100
+  gunOrient: number;
+  expectedSites: number;
 }
