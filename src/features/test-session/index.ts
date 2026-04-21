@@ -1,1 +1,1 @@
-export { default as TestManagement } from "./TestManageModal";
+export { default as TestModal } from "./TestModal";
