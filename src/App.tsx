@@ -4,7 +4,7 @@ import { Provider } from "jotai";
 import { store } from "@/state";
 import { bootstrapApp } from "./bootstrap";
 import WeatherSites from "@/components/widgets/WeatherSites"
-import { TestManagement } from "./features/test-session";
+import { TestModal } from "./features/test-session";
 
 
 function App() {
@@ -16,7 +16,7 @@ function App() {
     <Provider store={store}>
       <div className="min-h-screen flex">
         <WeatherSites />
-        <TestManagement />
+        <TestModal />
       </div>
     </Provider>
     
