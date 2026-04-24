@@ -6,7 +6,8 @@ const canGoBackToMenu: StepMode[] = [Step.New, Step.Continue, Step.Delete];
 
 export function createNavigation(
   step: StepMode,
-  setStep: (s: StepMode) => void
+  setStep: (s: StepMode) => void,
+  onComplete: () => void
 ) {
   return {
     go: (next: StepMode) => setStep(next),
@@ -17,8 +18,8 @@ export function createNavigation(
       }
     },
 
-    submit: () => {
-      // TODO: select test session; hide modal;
+    complete: () => {
+      onComplete();
     },
   };
 }
