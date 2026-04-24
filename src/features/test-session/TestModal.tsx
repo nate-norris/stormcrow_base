@@ -1,7 +1,7 @@
 import { useState } from "react";
 
 import { Modal } from "@/components/ui/modal";
-import TestManagement from "./TestModal";
+import TestManagement from "./TestManage";
 
 type Props = {
     isOnStartup: boolean; // application is booting
