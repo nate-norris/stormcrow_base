@@ -4,7 +4,7 @@ import { Modal } from "@/components/ui/modal";
 import TestManagement from "./TestManageModal";
 
 export default function TestModal() {
-    const [open, setOpen] = useState(false);
+    const [open, setOpen] = useState(true);
 
     return(
         <Modal isOpen={open} setIsOpen={setOpen}>
