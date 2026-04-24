@@ -16,7 +16,7 @@ function App() {
     <Provider store={store}>
       <div className="min-h-screen flex">
         <WeatherSites />
-        <TestModal />
+        <TestModal isOnStartup={true}/>
       </div>
     </Provider>
     
