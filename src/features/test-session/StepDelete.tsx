@@ -45,7 +45,8 @@ export default function DeleteView({ onBack, tests }: DeleteProps) {
         // const exists = tests.some(test => test.name === n);
         const deletingTest = tests.find(test => test.id === selectedId);
         if (deletingTest) {
-            deleteTest(deletingTest.name);
+            await deleteTest(deletingTest.name);
+            onBack(); // go back to menu upon delete
         }
     }
 
