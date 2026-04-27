@@ -20,3 +20,5 @@ export function TestSessionSelector({ tests, selectedId, onChange }: Props) {
         </select>
     );
 }
+
+//TODO swap for shadcn select
