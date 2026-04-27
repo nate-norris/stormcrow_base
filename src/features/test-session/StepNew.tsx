@@ -14,33 +14,30 @@ type NewProps = {
 
 export default function NewView({ onBack, onSubmit, tests }: NewProps) {
     const [name, setName] = useState(""); // test name provided by user
-    const [isNameConflict, setIsNameConflict] = useState(true);
+    const [isNameConflict, setIsNameConflict] = useState(false); // name already added
 
     const handleSubmit = async () => {
-        // set name to upper case
-        const n = name.toUpperCase();
+        
+        const n = name.trim().toUpperCase(); // set name to upper case
 
-        // confirm unique name entry
-        const exists = tests.some(test => test.name === n);
-        if (exists) {
-            setIsNameConflict(true);
-            return;
+        // verification of test name existing and not empty string
+        //    display warning if error
+        const exists = tests.some(test => test.name === n); // test name exists
+        // do not process empty strings
+        if (!n || n === "") {
+          return;
+        } else if (exists) { // test name conflict
+          setIsNameConflict(true);
+          return;
         }
         
         // submit the name and retrieve the Test and WindWarningConfig
         try {
             const [test, windConfig]: [Test, WindWarningConfig] = await initiateTest(n);
+            alert
         } catch (error) {
             alert('error');
         }
-
-
-        // verify no existing test with the provided name
-        // TODO this is wrong
-        // if (last && n == last.name) {
-        //     setIsNameConflict(true);
-        //     return;
-        // }
 
         // update globals
         // close the modal
