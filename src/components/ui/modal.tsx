@@ -1,7 +1,7 @@
 import { createPortal } from "react-dom";
 import FocusLock from "react-focus-lock";
 import { motion, AnimatePresence } from "framer-motion";
-import { FiX } from "react-icons/fi";
+import { FiX, FiArrowLeft } from "react-icons/fi";
 
 type ModalProps = {
   isOpen: boolean;
@@ -44,5 +44,21 @@ export function Modal({ isOpen, setIsOpen=() => {}, children }: ModalProps) {
       </FocusLock>
     </AnimatePresence>,
     document.body
+  );
+}
+
+type BackProps = {
+  action: () => void;
+};
+export function ModalBackButton({ action=() => {} }: BackProps) {
+
+  return (
+    <button 
+        className="absolute top-3 left-3 flex items-center gap-1 
+        text-gray-500 hover:text-black transition-colors hover:scale-120"
+        onClick={action}
+    >
+        <FiArrowLeft size={20} className="stroke-[3.5]" />
+    </button>
   );
 }
