@@ -9,7 +9,7 @@ type ModalProps = {
   children: React.ReactNode;
 };
 
-export function Modal({ isOpen, setIsOpen=() => {}, children }: ModalProps) {
+function Modal({ isOpen, setIsOpen=() => {}, children }: ModalProps) {
 
   if (!isOpen) {
     return createPortal(
@@ -50,7 +50,7 @@ export function Modal({ isOpen, setIsOpen=() => {}, children }: ModalProps) {
 type BackProps = {
   action: () => void;
 };
-export function ModalBackButton({ action=() => {} }: BackProps) {
+function ModalBackButton({ action=() => {} }: BackProps) {
 
   return (
     <button 
@@ -61,4 +61,9 @@ export function ModalBackButton({ action=() => {} }: BackProps) {
         <FiArrowLeft size={20} className="stroke-[3.5]" />
     </button>
   );
+}
+
+export {
+  Modal,
+  ModalBackButton,
 }
