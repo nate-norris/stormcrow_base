@@ -18,13 +18,13 @@ export default function MenuView({ onSelect}: MenuProps) {
             </h2>
 
             <div className="flex flex-col gap-3 w-64">
-                <button className="btn" onClick={() => onSelect("new")}>
+                <button className="btn hover:scale-110 hover:font-semibold" onClick={() => onSelect("new")}>
                     New test
                 </button>
-                <button className="btn" onClick={() => onSelect("continue")}>
+                <button className="btn hover:scale-110 hover:font-semibold" onClick={() => onSelect("continue")}>
                     Continue previous test
                 </button>
-                <button className="btn" onClick={() => onSelect("delete")}>
+                <button className="btn hover:scale-110 hover:font-semibold" onClick={() => onSelect("delete")}>
                     Delete a test
                 </button>
             </div>
