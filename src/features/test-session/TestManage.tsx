@@ -19,7 +19,8 @@ TODO:
 - differentiate between first startup modal display and routing to test management
         should only compare to lastTest if on startup
 - if no previous tests at all dont go to continue regardless of allowDefaultContinue
-- build in uniform back menu button
+- build splash view for continue/delete showing details of selected test from dropdown
+- add shadcn Sonner for confirmation?
 
 */
 type Props = {
