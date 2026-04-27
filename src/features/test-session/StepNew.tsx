@@ -2,6 +2,7 @@ import { useState } from "react";
 
 import { Button } from "@/components/ui/button";
 import { ModalBackButton } from "@/components/ui/modal";
+import { Input } from "@/components/ui/input";
 import { Test, WindWarningConfig } from "@/models";
 import { initiateTest } from "./sessionService";
 
@@ -47,22 +48,18 @@ export default function NewView({ onBack, onSubmit, tests }: NewProps) {
     return (
       <div className="flex flex-col items-center gap-3">
         <ModalBackButton action={onBack} />
-        <h2 className="text-xl font-semibold">Create a new test</h2>
+        <h2 className="text-xl font-semibold mt-5">Create a new test</h2>
         <div className="flex items-start gap-2 mt-5">
           <div className="flex flex-col">
-            <input 
-              className="border p-2 rounded-2xl" 
-              type="text"
-              placeholder="Test name"
+            <Input
+              className="w-70"
               value={name}
               onChange={(e) => setName(e.target.value)}
-            />
-
-            {isNameConflict ? (
-              <p className="text-sm mt-1 text-red-900">Test already exists.</p>
-            ): (<></>)}
+              placeholder="Test name" />
+            <p className={`text-sm mt-1 text-red-900 ${isNameConflict ? "visible" : "invisible"}`}>
+              Test already exists.
+            </p>
           </div>
-          
           <Button onClick={handleSubmit}>Go</Button>
         </div>
       </div>
