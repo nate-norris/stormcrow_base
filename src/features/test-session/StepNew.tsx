@@ -1,4 +1,7 @@
 import { useState } from "react";
+
+import { Button } from "@/components/ui/button";
+import { ModalBackButton } from "@/components/ui/modal";
 import { Test, WindWarningConfig } from "@/models";
 import { initiateTest } from "./sessionService";
 
@@ -11,7 +14,7 @@ type NewProps = {
 
 export default function NewView({ onBack, onSubmit, tests }: NewProps) {
     const [name, setName] = useState(""); // test name provided by user
-    const [isNameConflict, setIsNameConflict] = useState(false);
+    const [isNameConflict, setIsNameConflict] = useState(true);
 
     const handleSubmit = async () => {
         // set name to upper case
@@ -45,22 +48,26 @@ export default function NewView({ onBack, onSubmit, tests }: NewProps) {
     };
 
     return (
-        <div className="flex flex-col gap-4">
-            <h2 className="text-xl font-semibold mb-4">Create a new test</h2>
-            <div>
-                <input
-                    className="border p-2 rounded"
-                    type="text"
-                    placeholder="Test name"
-                    value={name}
-                    onChange={(e) => setName(e.target.value)}
-                />
-                {isNameConflict ? (
-                    <p className="text-red-900">Test already exists.</p>
-                ): (<></>)}
-            </div>
-            <button className="btn" onClick={handleSubmit}>Submit</button>
-            <button className="btn" onClick={onBack}>Back</button>
+      <div className="flex flex-col items-center gap-3">
+        <ModalBackButton action={onBack} />
+        <h2 className="text-xl font-semibold">Create a new test</h2>
+        <div className="flex items-start gap-2 mt-5">
+          <div className="flex flex-col">
+            <input 
+              className="border p-2 rounded-2xl" 
+              type="text"
+              placeholder="Test name"
+              value={name}
+              onChange={(e) => setName(e.target.value)}
+            />
+
+            {isNameConflict ? (
+              <p className="text-sm mt-1 text-red-900">Test already exists.</p>
+            ): (<></>)}
+          </div>
+          
+          <Button onClick={handleSubmit}>Go</Button>
         </div>
+      </div>
     );
 }
