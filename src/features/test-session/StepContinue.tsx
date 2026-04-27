@@ -1,8 +1,8 @@
 import { useState } from "react";
 
 import { TestSessionSelector } from "./widgets";
-
 import { Test } from "@/models";
+import { ModalBackButton } from "@/components/ui/modal";
 
 // define the props
 type ContinueProps = {
@@ -17,13 +17,13 @@ export default function ContinueView({ onBack, onSubmit, tests, last }: Continue
 
     return (
         <div className="flex flex-col gap-4">
+            <ModalBackButton action={onBack} />
             <div>Continue</div>
             <TestSessionSelector 
                 tests={tests}
                 selectedId={selectedId}
                 onChange={setSelectedId}
             />
-            <button className="btn" onClick={onBack}>Back</button>
             <button className="btn" onClick={onSubmit}>Submit</button>
         </div>
     );

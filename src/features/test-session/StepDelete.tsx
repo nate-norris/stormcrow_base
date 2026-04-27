@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { ModalBackButton } from "@/components/ui/modal";
 import { Test } from "@/models";
 import { TestSessionSelector } from "./widgets";
 
@@ -30,6 +31,7 @@ export default function DeleteView({ onBack, tests }: DeleteProps) {
     return (
 
         <div className="flex flex-col gap-4">
+            <ModalBackButton action={onBack} />
             {!selectedId && (
                 <>
                     <div>Delete</div>
@@ -42,7 +44,6 @@ export default function DeleteView({ onBack, tests }: DeleteProps) {
                             <p className="text-red-900">Cannot delete an active test.</p>
                     ): (<></>)}
                     <button className="btn" onClick={handleSubmit}>Submit</button>
-                    <button className="btn" onClick={onBack}>Back</button>
                 </>
             )}
 
