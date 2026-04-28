@@ -68,10 +68,18 @@ pub(crate) async fn update_last_test<'e, E>(executor: E, test_name: Option<&str>
 	Result<(), sqlx::Error> 
     where E: DbExec<'e> {
 
-	sqlx::query("UPDATE last_test SET last_test_name = ?")
-	.bind(test_name)
-	.execute(executor)
-	.await?;
+    sqlx::query(
+        r#"
+        UPDATE last_test SET 
+        last_test_name = ?,
+        last_initiated = strftime('%s', 'now')
+        WHERE id = 1
+        "#
+    )
+    .bind(test_name)
+    .execute(executor)
+    .await?;
+
 	Ok(())
 }
 

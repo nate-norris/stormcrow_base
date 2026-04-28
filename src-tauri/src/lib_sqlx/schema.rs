@@ -207,7 +207,8 @@ async fn create_tables(pool: &DbPool) -> Result<(), sqlx::Error> {
         r#"
         CREATE TABLE IF NOT EXISTS last_test (
             id INTEGER PRIMARY KEY CHECK (id = 1),
-            last_test_name VARCHAR(30)
+            last_test_name VARCHAR(30),
+            last_initiated INTEGER NOT NULL
         );
         "#,
     )
