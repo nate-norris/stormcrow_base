@@ -1,25 +1,53 @@
 import "./index.css";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { Provider } from "jotai";
+
 import { store } from "@/state";
 import { bootstrapApp } from "./bootstrap";
-import WeatherSites from "@/components/widgets/WeatherSites"
 import { TestModal } from "./features/test-session";
-
+import { AppTabs } from "@/components/layouts/TabsNav";
+import { AppMenu } from "@/components/layouts/AppMenu";
+import WeatherSites from "@/components/widgets/WeatherSites"
 
 function App() {
+  // Test session configuration including adding, deleting or continuing
+  //    previous test sessions.
+  //
+  // TestModal can be revealed by:
+  // 1. On booting the test session should be selected
+  // 2. When the user selects the option from the app menu
+  //
+  // TestModal can be hidden by:
+  // 1: Selecting outside of the modal
+  // 2: Selecting the exit button within the modal
+  // 3: Finilizing actions within the modal (New/Continue)
+  const [isTestManagementOpen, setIsTestManagementOpen] = useState<boolean>(true);
+  const [isBooting, setIsBooting] = useState<boolean>(true);
+
   useEffect(() => {
     bootstrapApp();
   }, []);
 
+  const handleTestManagementClose = () => {
+    setIsTestManagementOpen(false);
+    setIsBooting(false); // will always be false after boot
+  }
+
   return (
     <Provider store={store}>
       <div className="min-h-screen flex">
+        {/* Allow standard menu step of test management TestModal */}
+        <AppMenu onOpenTestManagement={() => setIsTestManagementOpen(true)}/>
+        <AppTabs />
         <WeatherSites />
-        <TestModal isOnStartup={true}/>
+        {/* Allow modified step upon app startup */}
+        <TestModal
+          isOpen={isTestManagementOpen}
+          entryMode={isBooting ? "menu" : "continue-if-possible"}
+          onClose={handleTestManagementClose}
+        />
       </div>
     </Provider>
-    
   );
 }
 
