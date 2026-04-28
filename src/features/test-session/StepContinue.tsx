@@ -25,7 +25,8 @@ export default function ContinueView({ onBack, onSubmit, tests, currentTest }: C
             return;
         }
 
-        //onSubmit();
+        // close the modal
+        onSubmit();
     };
 
     return (
