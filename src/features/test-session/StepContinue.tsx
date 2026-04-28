@@ -19,9 +19,8 @@ export default function ContinueView({ onBack, onSubmit, tests, currentTest }: C
     const [isSelectionConflict, setIsSelectionConflict] = useState<boolean>(false);
 
      const handleSubmit = async () => {
-        // confirm user is not attempting to delete an active test session
-        const fakeId = 2; // TODO pull test selected id from jotai
-        if (fakeId === selectedId) {
+        // confirm user is not attempting to continue a test already in session
+        if (currentTest?.id === selectedId) {
             setIsSelectionConflict(true);
             return;
         }

@@ -32,8 +32,7 @@ export default function DeleteView({ onBack, tests, currentTest }: DeleteProps) 
     const handleSubmit = async () => {
 
         // confirm user is not attempting to delete an active test session
-        const fakeId = 2; // TODO pull test selected id from jotai
-        if (fakeId === selectedId) {
+        if (currentTest?.id === selectedId) {
             setIsSelectionConflict(true);
             return;
         }
