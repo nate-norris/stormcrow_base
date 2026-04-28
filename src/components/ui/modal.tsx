@@ -5,11 +5,11 @@ import { FiX, FiArrowLeft } from "react-icons/fi";
 
 type ModalProps = {
   isOpen: boolean;
-  setIsOpen?: (value: boolean) => void;
+  onClose: () => void;
   children: React.ReactNode;
 };
 
-function Modal({ isOpen, setIsOpen=() => {}, children }: ModalProps) {
+function Modal({ isOpen, onClose, children }: ModalProps) {
 
   if (!isOpen) {
     return createPortal(
@@ -23,7 +23,7 @@ function Modal({ isOpen, setIsOpen=() => {}, children }: ModalProps) {
       <FocusLock>
         <div
           className="fixed inset-0 z-50 flex items-center justify-center bg-black/60"
-          onMouseDown={() => setIsOpen(false)}
+          onMouseDown={() => onClose()}
         >
           <motion.div
             className="relative w-full max-w-md rounded-xl bg-white p-6 shadow-xl"
@@ -35,7 +35,7 @@ function Modal({ isOpen, setIsOpen=() => {}, children }: ModalProps) {
           >
             <button
               className="absolute top-3 right-3 text-gray-500 hover:text-black transition-all hover:scale-120"
-              onClick={() => setIsOpen(false)}>
+              onClick={() => onClose()}>
               <FiX size={20} className="stroke-[3.5]" />
             </button>
             {children}
