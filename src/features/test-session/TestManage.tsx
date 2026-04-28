@@ -38,6 +38,8 @@ export default function TestManagement({ onComplete, allowDefaultContinue }: Pro
     const [tests, setTests] = useState<Test[]>([]);
     // last known test
     const [lastTest, setLastTest] = useState<Test | null>(null);
+    // TODO current test
+    const [currentTest, setCurrentTest] = useState<Test | null>(null);
 
     const loadModal = async () => {
         // all test sessions
@@ -68,7 +70,7 @@ export default function TestManagement({ onComplete, allowDefaultContinue }: Pro
     const views = {
         menu: <MenuView onSelect={nav.go}/>,
         new: <NewView onBack={nav.back} onSubmit={nav.complete} tests={tests} />,
-        continue: <ContinueView onBack={nav.back} onSubmit={nav.complete}  tests={tests} last={lastTest} />,
+        continue: <ContinueView onBack={nav.back} onSubmit={nav.complete}  tests={tests} currentTest={currentTest} />,
         delete: <DeleteView onBack={nav.back}  tests={tests} />,
     };
 
