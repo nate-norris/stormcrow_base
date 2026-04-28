@@ -40,9 +40,8 @@ export default function NewView({ onBack, onSubmit, tests }: NewProps) {
             alert('error');
         }
 
-        // update globals
         // close the modal
-        // onSubmit();
+        onSubmit();
     };
 
     return (
