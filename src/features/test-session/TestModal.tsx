@@ -1,20 +1,18 @@
-import { useState } from "react";
-
 import { Modal } from "@/components/ui/modal";
 import TestManagement from "./TestManage";
 
 type Props = {
-    isOnStartup: boolean; // application is booting
+    isOpen: boolean;
+    entryMode: "menu" | "continue-if-possible";
+    onClose: () => void;
 }
-export default function TestModal({ isOnStartup }: Props) {
-    const [open, setOpen] = useState(true);
-
+export default function TestModal({ isOpen, entryMode, onClose }: Props) {
     return(
-        <Modal isOpen={open} setIsOpen={setOpen}>
+        <Modal isOpen={isOpen} onClose={onClose}>
             <TestManagement 
-                onComplete={() => setOpen(false)} // close modal
+                onComplete={onClose} // close modal
                 // skip to continue step on startup if available
-                allowDefaultContinue={isOnStartup}
+                allowDefaultContinue={entryMode === "continue-if-possible" ? true : false}
             />
         </Modal>
     );
