@@ -1,9 +1,10 @@
 import { useState } from "react";
 
 import { TestSessionSelector } from "./widgets";
-import { Test } from "@/models";
+import { Test, WindWarningConfig } from "@/models";
 import { ModalBackButton } from "@/components/ui/modal";
 import { Button } from "@/components/ui/button";
+import { initiateTest } from "./sessionService";
 
 // define the props
 type ContinueProps = {
@@ -25,8 +26,16 @@ export default function ContinueView({ onBack, onSubmit, tests, currentTest }: C
             return;
         }
 
-        // close the modal
-        onSubmit();
+        try {
+            const continuingTest = tests.find(test => test.id === selectedId);
+            if (continuingTest) {
+                const [test, windConfig]: [Test, WindWarningConfig] =
+                    await initiateTest(continuingTest.name);
+                onSubmit(); // close the modal
+            }
+        } catch (error) {
+            alert("error");
+        }
     };
 
     return (
