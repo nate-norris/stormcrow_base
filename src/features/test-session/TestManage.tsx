@@ -71,7 +71,7 @@ export default function TestManagement({ onComplete, allowDefaultContinue }: Pro
         menu: <MenuView onSelect={nav.go}/>,
         new: <NewView onBack={nav.back} onSubmit={nav.complete} tests={tests} />,
         continue: <ContinueView onBack={nav.back} onSubmit={nav.complete}  tests={tests} currentTest={currentTest} />,
-        delete: <DeleteView onBack={nav.back}  tests={tests} />,
+        delete: <DeleteView onBack={nav.back}  tests={tests} currentTest={currentTest} />,
     };
 
     return (

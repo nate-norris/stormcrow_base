@@ -20,9 +20,10 @@ import {
 type DeleteProps = {
     onBack: () => void;
     tests: Test[];
+    currentTest: Test | null;
 };
 
-export default function DeleteView({ onBack, tests }: DeleteProps) {
+export default function DeleteView({ onBack, tests, currentTest }: DeleteProps) {
 
     const [selectedId, setSelectedId] = useState<number | null>(null);
     const [isSelectionConflict, setIsSelectionConflict] = useState<boolean>(false);
