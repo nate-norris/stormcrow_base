@@ -1,24 +1,37 @@
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select"
+
 import { Test } from "@/models";
 
 type Props = {
     tests: Test[];
     selectedId: number | null;
-    onChange: (id: number) => void;
+    onChange: (id: number | null) => void;
 }
 export function TestSessionSelector({ tests, selectedId, onChange }: Props) {
     return (
-        <select className="border p-2 rounded w-full"
-            value={selectedId ?? ""}
-            onChange={(e) => onChange(Number(e.target.value))}
-        > 
-            <option value="" disabled>Select a test</option>
-            {tests.map((test) => (
-                <option key={test.id} value={test.id}>
-                    {test.name} {new Date(test.time * 1000).toLocaleString()}
-                </option>
-            ))}
-        </select>
+        <Select 
+            value={selectedId ? String(selectedId) : ""} 
+            onValueChange={(value) => {
+                onChange(value ? Number(value) : null);
+            }}
+        >
+            <SelectTrigger className="w-full">
+                <SelectValue placeholder="Select a test" />
+            </SelectTrigger>
+            <SelectContent>
+                {tests.map((test) => (
+                    <SelectItem key={test.id} value={String(test.id)}>
+                        {test.name} {new Date(test.time * 1000).toLocaleString()}
+                    </SelectItem>
+                ))}
+            </SelectContent>
+        </Select>
+
     );
 }
-
-//TODO swap for shadcn select
