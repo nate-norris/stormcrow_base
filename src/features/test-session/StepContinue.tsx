@@ -12,10 +12,11 @@ type ContinueProps = {
     onSubmit: () => void;
     tests: Test[];
     currentTest: Test | null;
+    lastTest: Test | null;
 };
 
-export default function ContinueView({ onBack, onSubmit, tests, currentTest }: ContinueProps) {
-    const [selectedId, setSelectedId] = useState<number | null>(null);
+export default function ContinueView({ onBack, onSubmit, tests, currentTest, lastTest }: ContinueProps) {
+    const [selectedId, setSelectedId] = useState<number | null>(lastTest?.id ?? null);
     const [isSelectionConflict, setIsSelectionConflict] = useState<boolean>(false);
 
      const handleSubmit = async () => {
@@ -33,7 +34,7 @@ export default function ContinueView({ onBack, onSubmit, tests, currentTest }: C
                 onSubmit(); // close the modal
             }
         } catch (error) {
-            alert("error");
+            alert(error);
         }
     };
 
