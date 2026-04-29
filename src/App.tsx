@@ -43,7 +43,7 @@ function App() {
         {/* Allow modified step upon app startup */}
         <TestModal
           isOpen={isTestManagementOpen}
-          entryMode={isBooting ? "menu" : "continue-if-possible"}
+          entryMode={isBooting ? "continue-if-possible" : "menu"}
           onClose={handleTestManagementClose}
         />
       </div>
