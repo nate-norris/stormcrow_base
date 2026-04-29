@@ -29,6 +29,8 @@ type Props = {
 }
 export default function TestManagement({ onComplete, allowDefaultContinue }: Props) {
 
+    // component has initialized. stored for default to continue step
+    const [initialized, setInitialized] = useState<boolean>(false);
     // iterate through three primary selections for test management including:
     //      selection, new, continue, delete
     const [step, setStep] = useState<StepMode>(Step.Menu);
@@ -38,9 +40,35 @@ export default function TestManagement({ onComplete, allowDefaultContinue }: Pro
     const [tests, setTests] = useState<Test[]>([]);
     // last known test
     const [lastTest, setLastTest] = useState<Test | null>(null);
-    // TODO current test
+    const [defaultLastTest, setDefaultLastTest] = useState<Test | null>(null);
+    // TODO current test; may change to jotai
     const [currentTest, setCurrentTest] = useState<Test | null>(null);
 
+    // load modal on step change to menu
+    useEffect(() => {
+        if (step === Step.Menu) {
+            loadModal(); // call the setup for the modal
+        }
+    }, [step]);
+
+    // Jump step to continue with default selection upon start up and
+    // if there previous last test was within the allowed time frame.
+    useEffect(() => {
+        // return if not on boot, no provided lastTest, or ran previously
+        if (!allowDefaultContinue || !lastTest || initialized) return;
+
+        const now = Date.now();
+        const last = new Date(lastTest.time).getTime();
+
+        if (now - (last*1000) < 1000*60*60*24) {
+            setDefaultLastTest(lastTest);
+        }
+
+        setInitialized(true); // do not allow continue jump again
+        nav.go(Step.Continue);
+    }, [lastTest, allowDefaultContinue]);
+
+    // populate tests and last test
     const loadModal = async () => {
         // all test sessions
         const t = await service.getTests();
@@ -54,23 +82,12 @@ export default function TestManagement({ onComplete, allowDefaultContinue }: Pro
             setLastTest(lt);
         }
     };
-    // load modal on first mount
-    // TODO remove if step.Menu is always first load
-    // if using continue makes this neccessary include it
-    // useEffect(() => {
-    //     loadModal(); 
-    // }, []);
-    // load modal on step change to menu
-    useEffect(() => {
-        if (step === Step.Menu) {
-            loadModal(); // call the setup for the modal
-        }
-    }, [step]);
 
     const views = {
         menu: <MenuView onSelect={nav.go}/>,
         new: <NewView onBack={nav.back} onSubmit={nav.complete} tests={tests} />,
-        continue: <ContinueView onBack={nav.back} onSubmit={nav.complete}  tests={tests} currentTest={currentTest} />,
+        continue: <ContinueView onBack={nav.back} onSubmit={nav.complete}  
+            tests={tests} currentTest={currentTest} lastTest={defaultLastTest} />,
         delete: <DeleteView onBack={nav.back}  tests={tests} currentTest={currentTest} />,
     };
 
