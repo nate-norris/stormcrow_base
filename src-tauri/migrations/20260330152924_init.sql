@@ -38,7 +38,8 @@ CREATE TABLE IF NOT EXISTS qe (
 
 CREATE TABLE IF NOT EXISTS last_test (
     id INTEGER PRIMARY KEY CHECK (id = 1),
-    last_test_name VARCHAR(30)
+    last_test_name VARCHAR(30),
+    last_initiated INTEGER
 );
 
 INSERT INTO last_test (id, last_test_name)
@@ -46,7 +47,7 @@ VALUES (1, NULL)
 ON CONFLICT(id) DO NOTHING;
 
 -- +migrate Down
-DROP TABLE IF EXISTS last_test;
-DROP TABLE IF EXISTS qe;
-DROP TABLE IF EXISTS test_configs;
-DROP TABLE IF EXISTS tests;
+-- DROP TABLE IF EXISTS last_test;
+-- DROP TABLE IF EXISTS qe;
+-- DROP TABLE IF EXISTS test_configs;
+-- DROP TABLE IF EXISTS tests;
