@@ -33,8 +33,6 @@ export default function TestManagement({ onComplete, allowDefaultContinue }: Pro
     // last known test
     const [lastTest, setLastTest] = useState<Test | null>(null);
     const [defaultLastTest, setDefaultLastTest] = useState<Test | null>(null);
-    // TODO current test; may change to jotai
-    const [currentTest, setCurrentTest] = useState<Test | null>(null);
 
     // load modal on step change to menu
     useEffect(() => {
@@ -79,8 +77,8 @@ export default function TestManagement({ onComplete, allowDefaultContinue }: Pro
         menu: <MenuView onSelect={nav.go}/>,
         new: <NewView onBack={nav.back} onSubmit={nav.complete} tests={tests} />,
         continue: <ContinueView onBack={nav.back} onSubmit={nav.complete}  
-            tests={tests} currentTest={currentTest} lastTest={defaultLastTest} />,
-        delete: <DeleteView onBack={nav.back}  tests={tests} currentTest={currentTest} />,
+            tests={tests} lastTest={defaultLastTest} />,
+        delete: <DeleteView onBack={nav.back}  tests={tests} />,
     };
 
     return (
