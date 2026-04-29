@@ -1,10 +1,12 @@
 import { useState } from "react";
+import { useAtom } from "jotai";
 
 import { Button } from "@/components/ui/button";
 import { ModalBackButton } from "@/components/ui/modal";
 import { Input } from "@/components/ui/input";
 import { Test, WindWarningConfig } from "@/models";
 import { initiateTest } from "./sessionService";
+import { activeTestAtom, activeConfigAtom } from "@/state";
 
 // define the props
 type NewProps = {
@@ -16,6 +18,9 @@ type NewProps = {
 export default function NewView({ onBack, onSubmit, tests }: NewProps) {
     const [name, setName] = useState(""); // test name provided by user
     const [isNameConflict, setIsNameConflict] = useState(false); // name already added
+    // global active test and wind warning configurations
+    const [, setActiveTest] = useAtom(activeTestAtom);
+    const [, setActiveConfig] = useAtom(activeConfigAtom);
 
     const handleSubmit = async () => {
         
@@ -35,7 +40,8 @@ export default function NewView({ onBack, onSubmit, tests }: NewProps) {
         // submit the name and retrieve the Test and WindWarningConfig
         try {
             const [test, windConfig]: [Test, WindWarningConfig] = await initiateTest(n);
-            alert
+            setActiveTest(test);
+            setActiveConfig(windConfig);
         } catch (error) {
             alert('error');
         }

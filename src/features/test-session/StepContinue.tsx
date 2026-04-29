@@ -1,27 +1,31 @@
 import { useState } from "react";
+import { useAtom } from "jotai";
 
 import { TestSessionSelector } from "./widgets";
 import { Test, WindWarningConfig } from "@/models";
 import { ModalBackButton } from "@/components/ui/modal";
 import { Button } from "@/components/ui/button";
 import { initiateTest } from "./sessionService";
+import { activeTestAtom, activeConfigAtom } from "@/state";
 
 // define the props
 type ContinueProps = {
     onBack: () => void;
     onSubmit: () => void;
     tests: Test[];
-    currentTest: Test | null;
     lastTest: Test | null;
 };
 
-export default function ContinueView({ onBack, onSubmit, tests, currentTest, lastTest }: ContinueProps) {
+export default function ContinueView({ onBack, onSubmit, tests, lastTest }: ContinueProps) {
     const [selectedId, setSelectedId] = useState<number | null>(lastTest?.id ?? null);
     const [isSelectionConflict, setIsSelectionConflict] = useState<boolean>(false);
+    // global active test and wind warning configurations
+    const [activeTest, setActiveTest] = useAtom(activeTestAtom);
+    const [, setActiveConfig] = useAtom(activeConfigAtom);
 
      const handleSubmit = async () => {
         // confirm user is not attempting to continue a test already in session
-        if (currentTest?.id === selectedId) {
+        if (activeTest?.id === selectedId) {
             setIsSelectionConflict(true);
             return;
         }
@@ -31,6 +35,8 @@ export default function ContinueView({ onBack, onSubmit, tests, currentTest, las
             if (continuingTest) {
                 const [test, windConfig]: [Test, WindWarningConfig] =
                     await initiateTest(continuingTest.name);
+                setActiveTest(test);
+                setActiveConfig(windConfig);
                 onSubmit(); // close the modal
             }
         } catch (error) {

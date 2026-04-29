@@ -1,9 +1,12 @@
 import { useState } from "react";
+import { useAtom } from "jotai";
+
 import { ModalBackButton } from "@/components/ui/modal";
 import { Button } from "@/components/ui/button";
 import { Test } from "@/models";
 import { TestSessionSelector } from "./widgets";
 import { deleteTest } from "./sessionService";
+import { activeTestAtom } from "@/state";
 
 import {
     AlertDialog,
@@ -20,19 +23,19 @@ import {
 type DeleteProps = {
     onBack: () => void;
     tests: Test[];
-    currentTest: Test | null;
 };
 
-export default function DeleteView({ onBack, tests, currentTest }: DeleteProps) {
+export default function DeleteView({ onBack, tests }: DeleteProps) {
 
     const [selectedId, setSelectedId] = useState<number | null>(null);
     const [isSelectionConflict, setIsSelectionConflict] = useState<boolean>(false);
     const [showConfirmDialog, setShowConfirmDialog] = useState<boolean>(false);
+    // global active test and wind warning configurations
+    const [activeTest, ] = useAtom(activeTestAtom);
 
     const handleSubmit = async () => {
-
         // confirm user is not attempting to delete an active test session
-        if (currentTest?.id === selectedId) {
+        if (activeTest?.id === selectedId) {
             setIsSelectionConflict(true);
             return;
         }
