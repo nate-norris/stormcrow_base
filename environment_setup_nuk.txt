@@ -96,7 +96,7 @@ cargo sqlx prepare
 ensure .sqlx is not in .gitignore
 commit .sqlx files
 
-# Changing table schema?
+# Changing table schema? Below is a full reset without migrations
 # NOTE: migrations currently did not accept non existing .sqlite in /data.
 # 
 #
@@ -113,6 +113,11 @@ cargo sqlx migrate run
 # 4. Regenerate sqlx metadta (queries in .sqlx/)
 cargo sqlx prepare
 
+# Setting up migration for schema database change
+cargo sqlx migrate add name_for_migration (for migrate down name.down.sql)
+edit the migration with sql queries
+cargo sqlx migrate run
+cargo sqlx prepare
 
 # -----------------------------
 # 11. Nuk Ports
