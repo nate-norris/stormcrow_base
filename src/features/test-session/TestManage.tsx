@@ -12,16 +12,8 @@ import * as service from "./sessionService";
 
 /*
 TODO:
-
 - pull active test from jotai for confirmation in New/Continue/Delete 
-- implement defaulting to continue for lastTest if within appropriate criteria
-        allowDefaultContinue prop on TestManagement
-- differentiate between first startup modal display and routing to test management
-        should only compare to lastTest if on startup
-- if no previous tests at all dont go to continue regardless of allowDefaultContinue
 - build splash view for continue/delete showing details of selected test from dropdown
-- add shadcn Sonner for confirmation?
-
 */
 type Props = {
     onComplete: () => void;
