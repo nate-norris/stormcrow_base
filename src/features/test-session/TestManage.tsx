@@ -12,8 +12,10 @@ import * as service from "./sessionService";
 
 /*
 TODO:
-- pull active test from jotai for confirmation in New/Continue/Delete 
+- document
+- error handling
 - build splash view for continue/delete showing details of selected test from dropdown
+- sorted test by recent
 */
 type Props = {
     onComplete: () => void;

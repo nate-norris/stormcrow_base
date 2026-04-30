@@ -1,8 +1,6 @@
 import { invoke } from "@tauri-apps/api/core";
 import type { Test, WindWarningConfig } from "@/models";
 
-// TODO add error handling to the functions
-
 export async function getLastTest(): Promise<Test | null> {
   return await invoke<Test | null>("get_last_test_command");
 }
