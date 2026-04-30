@@ -9,9 +9,9 @@ export function AppTabs() {
         <TabsTrigger value="range">Range</TabsTrigger>
       </TabsList>
 
-      <TabsContent value="dashboard">...</TabsContent>
-      <TabsContent value="qes">...</TabsContent>
-      <TabsContent value="range">...</TabsContent>
+      <TabsContent value="firing"></TabsContent>
+      <TabsContent value="qes"></TabsContent>
+      <TabsContent value="range"></TabsContent>
     </Tabs>
   );
 }
