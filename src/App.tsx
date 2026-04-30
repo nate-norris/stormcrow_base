@@ -6,8 +6,7 @@ import { store } from "@/state";
 import { bootstrapApp } from "./bootstrap";
 import { TestModal } from "./features/test-session";
 import { TopNav } from "@/components/layouts/TopNav";
-import { AppTabs } from "@/components/layouts/TabsNav";
-import { AppMenu } from "@/components/layouts/AppMenu";
+import { AppTabs, AppMenu } from "@/features/navigation";
 import WeatherSites from "@/components/widgets/WeatherSites"
 
 function App() {
