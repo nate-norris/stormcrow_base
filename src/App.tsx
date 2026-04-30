@@ -5,6 +5,7 @@ import { Provider } from "jotai";
 import { store } from "@/state";
 import { bootstrapApp } from "./bootstrap";
 import { TestModal } from "./features/test-session";
+import { TopNav } from "@/components/layouts/TopNav";
 import { AppTabs } from "@/components/layouts/TabsNav";
 import { AppMenu } from "@/components/layouts/AppMenu";
 import WeatherSites from "@/components/widgets/WeatherSites"
@@ -35,10 +36,12 @@ function App() {
 
   return (
     <Provider store={store}>
-      <div className="min-h-screen flex">
-        {/* Allow standard menu step of test management TestModal */}
-        <AppMenu onOpenTestManagement={() => setIsTestManagementOpen(true)}/>
-        <AppTabs />
+      <div className="min-h-screen w-full flex flex-col">
+        <TopNav 
+          left={<AppMenu onOpenTestManagement={() => setIsTestManagementOpen(true)}/>}
+          center={<AppTabs />}
+        />
+        
         <WeatherSites />
         {/* Allow modified step upon app startup */}
         <TestModal
