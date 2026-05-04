@@ -19,7 +19,7 @@ export default function DodicInput() {
         
         // confirm matches critera for dodic regex
         if (typed.length > 0 && 
-            !(dodicRegex[typed.length-1].test(typed.slice(-1)) ||typed.length > 4)) 
+            !(dodicRegex[typed.length-1].test(typed.slice(-1)) || typed.length > 4)) 
             return;
 
         setDodic(typed);
@@ -39,5 +39,3 @@ export default function DodicInput() {
         </div>
     );
 }
-
-//TODO overwrite DODIC on test change to null if not QEs for this test or last logged QE
