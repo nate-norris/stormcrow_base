@@ -54,10 +54,11 @@ export default function TestManagement({ onComplete, allowDefaultContinue }: Pro
 
         if (now - (last*1000) < 1000*60*60*24) {
             setDefaultLastTest(lastTest);
+            nav.go(Step.Continue);
         }
+        nav.go(Step.Menu);
 
         setInitialized(true); // do not allow continue jump again
-        nav.go(Step.Continue);
     }, [lastTest, allowDefaultContinue]);
 
     // populate tests and last test
