@@ -1,5 +1,5 @@
 import { useAtom } from "jotai";
-import { dodicAtom } from "@/atoms/logQEAtom";
+import { dodicAtom } from "@/state/logQEAtom";
 
 // character matching for dodic regex
 const dodicRegex: RegExp[] = [
