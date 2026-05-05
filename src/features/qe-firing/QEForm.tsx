@@ -3,7 +3,7 @@ import { useAtom } from "jotai";
 // TODO implement collapsible/dialog/sheet so that only qe count and type are visible
 //  add Field to combine labels and inputs
 
-import { activeTestAtom, qeCountAtom, qeTypeAtom } from "@/state";
+import { activeTestAtom } from "@/state";
 import DodicInput from "./input_dodic";
 import LotInput from "./input_lot";
 import QECountSpinner from "./qe_count";
