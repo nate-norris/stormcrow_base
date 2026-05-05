@@ -4,6 +4,7 @@ export const dodicAtom = atom<string>("");
 export const lotAtom = atom<string>("");
 export const qeCountAtom = atom<string>("1");
 export const qeTypeAtom = atom<string>("");
+export const autoLogAtom = atom<boolean>(false);
 
 //TODO overwrite DODIC on test change to null if not QEs for this test or last logged QE
 /*
