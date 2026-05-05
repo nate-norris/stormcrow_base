@@ -1,18 +1,34 @@
 import { useAtom } from "jotai";
-import { qeTypeAtom } from "@/atoms/logQEAtom";
+
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select"
+import { qeTypeAtom } from "@/state/logQEAtom";
 
 export default function QETypeSelector() {
   const [qet, setQet] = useAtom(qeTypeAtom);
 
   return (
-    <>
-      <select
-        value={qet}                 // controlled via state
-        onChange={(e) => setQet(e.target.value)}
-      >
-        <option value="TR">Test Round (TR)</option>
-        <option value="WS">Warmer Spotter (WS)</option>
-      </select>
-    </>
+    <Select
+      value={qet}
+      onValueChange={(value) => setQet(value)}
+    >
+      <SelectTrigger className="w-50">
+        <SelectValue placeholder="Select a type" />
+      </SelectTrigger>
+      <SelectContent>
+        <SelectItem value="TR">
+          Test Round (TR)
+        </SelectItem>
+        <SelectItem value="WS">
+          Warmer Spotter (WS)
+        </SelectItem>
+      </SelectContent>
+
+    </Select>
   );
 }
