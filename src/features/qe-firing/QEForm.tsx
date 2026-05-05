@@ -1,7 +1,8 @@
 import { useAtom } from "jotai";
 
 import { activeTestAtom, dodicAtom, lotAtom, qeCountAtom, qeTypeAtom } from "@/state";
-import { DodicInput } from "./widgets";
+import DodicInput from "./input_dodic";
+import LotInput from "./input_lot";
 // import { lotAtom } from "@/atoms/logQEAtom";
 
 // import Dodic from "@/components/widgets/DodicInput";
@@ -21,31 +22,21 @@ export function QEForm() {
             <h2 className="text-center text-xl font-semibold mb-4">
                 Current QE
             </h2>
+
             <div className="mb-2">
                 <span className="font-medium">Test: </span>
                 <span>{test ? test.name : ""}</span>
             </div>
-            <div className="mb-3">
+
+            <div className="mb-3 flex items-center gap-2">
+                <label className="font-medium" htmlFor="dodic">DODIC: </label>
                 <DodicInput />
+            </div>
+
+            <div className="mb3 flex items-center gap-2">
+                <label className="font-medium" htmlFor="lot">Lot: </label>
+                <LotInput />
             </div>
         </div>
     );
 }
-
-
-// div className="bg-zinc-400">
-//             <Dodic />
-//             <div>
-//                 <label htmlFor="lot">LOT</label>
-//                 <input type="text" id="lot" value={lot}
-//                     onChange={(e) => setLot(e.target.value)} />
-//             </div>
-//             <QETypeSelector />
-//             <QECountSpinner />
-//             <label htmlFor="logqe">OVERWRITING</label>
-//             <button className="bg-amber-400" id="logqe" onClick={handleSubmit}>
-//                 Log QE
-//             </button>
-//         </div>
-        
-//     );
