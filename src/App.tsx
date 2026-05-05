@@ -8,6 +8,7 @@ import { TestModal } from "./features/test-session";
 import { TopNav } from "@/components/layouts/TopNav";
 import { AppTabs, AppMenu } from "@/features/navigation";
 import WeatherSites from "@/components/widgets/WeatherSites"
+import { QEForm } from "@/features/qe-firing";
 
 function App() {
   // Test session configuration including adding, deleting or continuing
@@ -41,7 +42,8 @@ function App() {
           center={<AppTabs />}
         />
         
-        <WeatherSites />
+        {/* <WeatherSites /> */}
+        <QEForm />
         {/* Allow modified step upon app startup */}
         <TestModal
           isOpen={isTestManagementOpen}
