@@ -9,6 +9,7 @@ import LotInput from "./input_lot";
 import QECountSpinner from "./qe_count";
 import QETypeSelector from "./qe_type";
 import AutoLog from "./auto_log";
+import LogQE from "./log_qe";
 
 export function QEForm() {
 
@@ -51,6 +52,10 @@ export function QEForm() {
 
             <div>
                 <AutoLog />
+            </div>
+
+            <div>
+                <LogQE />
             </div>
         </div>
     );
