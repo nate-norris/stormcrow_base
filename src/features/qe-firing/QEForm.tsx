@@ -1,8 +1,9 @@
 import { useAtom } from "jotai";
 
-import { activeTestAtom, dodicAtom, lotAtom, qeCountAtom, qeTypeAtom } from "@/state";
+import { activeTestAtom, qeCountAtom, qeTypeAtom } from "@/state";
 import DodicInput from "./input_dodic";
 import LotInput from "./input_lot";
+import QECountSpinner from "./qe_count";
 // import { lotAtom } from "@/atoms/logQEAtom";
 
 // import Dodic from "@/components/widgets/DodicInput";
@@ -33,9 +34,14 @@ export function QEForm() {
                 <DodicInput />
             </div>
 
-            <div className="mb3 flex items-center gap-2">
+            <div className="mb-4 flex items-center gap-2">
                 <label className="font-medium" htmlFor="lot">Lot: </label>
                 <LotInput />
+            </div>
+
+            <div className="mb-3 flex items-center gap-2">
+                <label className="font-medium" htmlFor="count">QE: </label>
+                <QECountSpinner />
             </div>
         </div>
     );
