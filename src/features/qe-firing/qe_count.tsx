@@ -1,5 +1,8 @@
 import { useAtom } from "jotai";
-import { qeCountAtom } from "@/atoms/logQEAtom";
+
+import { Input } from "@/components/ui/input";
+import { Button } from "@/components/ui/button";
+import { qeCountAtom } from "@/state/logQEAtom";
 
 export default function QECountSpinner() {
   const [value, setValue] = useAtom(qeCountAtom);
@@ -23,12 +26,35 @@ export default function QECountSpinner() {
   }
 
   return (
-    <div>
-        <label htmlFor="qe">QE</label>
-        <input id="qe" type="text" value={value}
-            onChange={handleChange}/>
-        <button onClick={qeUp}>▲</button>
-        <button onClick={qeDown}>▼</button>
+    <div className="flex items-stretch">
+      <Input
+        id="count"
+        type="text"
+        value={value}
+        onChange={handleChange}
+        className="w-20 rounded-r-none text-center h-10"
+      />
+
+      {/* vertical button group */}
+      <div className="flex flex-col">
+        <Button
+          type="button"
+          variant="outline"
+          className="h-5 px-2 rounded-l-none rounded-b-none"
+          onClick={qeUp}
+        >
+          ▲
+        </Button>
+
+        <Button
+          type="button"
+          variant="outline"
+          className="h-5 px-2 rounded-l-none rounded-t-none border-t-0"
+          onClick={qeDown}
+        >
+          ▼
+        </Button>
+      </div>
     </div>
   );
 }
