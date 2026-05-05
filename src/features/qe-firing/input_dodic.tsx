@@ -26,16 +26,13 @@ export default function DodicInput() {
     }
 
     return (
-        <div className="flex items-center gap-2">
-            <label className="font-medium" htmlFor="dodic">DODIC: </label>
-            <Input
-              id="dodic"  
-              value={dodic}
-              onChange={handleChange}
-              placeholder="A062" 
-              maxLength={4}
-              className="w-24"
-              />
-        </div>
+        <Input
+            id="dodic"  
+            value={dodic}
+            onChange={handleChange}
+            placeholder="A062" 
+            maxLength={4}
+            className="w-24"
+            />
     );
 }
