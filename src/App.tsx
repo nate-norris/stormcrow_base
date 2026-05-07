@@ -42,8 +42,8 @@ function App() {
           center={<AppTabs />}
         />
         
-        {/* <WeatherSites /> */}
-        <QEForm />
+        <WeatherSites />
+        {/* <QEForm /> */}
         {/* Allow modified step upon app startup */}
         <TestModal
           isOpen={isTestManagementOpen}
