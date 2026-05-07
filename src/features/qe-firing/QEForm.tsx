@@ -15,10 +15,6 @@ export function QEForm() {
 
     const [test] = useAtom(activeTestAtom);
 
-    function handleSubmit() {
-        alert("clicked")
-    }
-
     return (
         <div className="p-4">
             <h2 className="text-center text-xl font-semibold mb-4">
