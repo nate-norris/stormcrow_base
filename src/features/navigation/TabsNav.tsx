@@ -1,17 +1,17 @@
-import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
+import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
 
-export function AppTabs() {
+type Props = {
+  view: string;
+  onChange: (value: string) => void;
+}
+
+export function AppTabs({ view, onChange }: Props) {
   return (
-    <Tabs defaultValue="firing" className="w-full">
+    <Tabs value={view} onValueChange={onChange} className="w-full">
       <TabsList>
         <TabsTrigger value="firing">Firing</TabsTrigger>
         <TabsTrigger value="qes">QE Table</TabsTrigger>
-        <TabsTrigger value="range">Range</TabsTrigger>
       </TabsList>
-
-      <TabsContent value="firing"></TabsContent>
-      <TabsContent value="qes"></TabsContent>
-      <TabsContent value="range"></TabsContent>
     </Tabs>
   );
 }

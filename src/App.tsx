@@ -6,9 +6,9 @@ import { store } from "@/state";
 import { bootstrapApp } from "./bootstrap";
 import { TestModal } from "./features/test-session";
 import { TopNav } from "@/components/layouts/TopNav";
+import { FiringView } from "@/components/layouts/FiringView";
+import { QETableView } from "@/components/layouts/QETableView";
 import { AppTabs, AppMenu } from "@/features/navigation";
-import WeatherSites from "@/components/widgets/WeatherSites"
-import { QEForm } from "@/features/qe-firing";
 
 function App() {
   // Test session configuration including adding, deleting or continuing
@@ -24,6 +24,7 @@ function App() {
   // 3: Finilizing actions within the modal (New/Continue)
   const [isTestManagementOpen, setIsTestManagementOpen] = useState<boolean>(true);
   const [isBooting, setIsBooting] = useState<boolean>(true);
+  const [view, setView] = useState("firing");
 
   useEffect(() => {
     bootstrapApp();
@@ -39,11 +40,14 @@ function App() {
       <div className="min-h-screen w-full flex flex-col">
         <TopNav 
           left={<AppMenu onOpenTestManagement={() => setIsTestManagementOpen(true)}/>}
-          center={<AppTabs />}
+          center={<AppTabs view={view} onChange={setView} />}
         />
+
+        <main className="flex-1 overflow-hidden">
+          {view === "firing" && <FiringView />}
+          {view === "qes" && <QETableView />}
+        </main>
         
-        <WeatherSites />
-        {/* <QEForm /> */}
         {/* Allow modified step upon app startup */}
         <TestModal
           isOpen={isTestManagementOpen}
