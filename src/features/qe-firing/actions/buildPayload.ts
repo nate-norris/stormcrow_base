@@ -1,8 +1,8 @@
-export function buildPayload(): QEPayload {
+export function buildPayload(): null {
   return null;
 }
 
-type QEPayLoad {
+type QEPayLoad = {
   count: number;
   qeType: string;
   testId: number
@@ -12,7 +12,7 @@ type QEPayLoad {
   time: number;
 }
 
-type SiteWeather {
+type SiteWeather = {
   siteId: number;
   range: number;
   altitude: number;
