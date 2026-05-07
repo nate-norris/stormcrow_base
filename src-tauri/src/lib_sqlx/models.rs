@@ -63,8 +63,8 @@ pub struct WindWarningConfig {
 ///
 /// Each `NewWeather` row contains detailed environmental data recorded at a
 /// specific weather site and gun position, and is linked to a `Test` via `test_id`.
-/// This struct is used for both reading from and writing to the database, and
-/// can be serialized/deserialized for Tauri commands.
+/// This struct is used for returned weather table rows only and are serialized
+/// for Tauri commands.
 ///
 /// # Fields
 /// - `id` — Primary key of this weather entry.
