@@ -1,7 +1,9 @@
+// @ts-nocheck
 /*
 TODO: 
 this file is a work in progress for ammunition lot parsing.
 Currently the approach was to use finite state machine to parse each index one at a time.
+remove ts-nocheck above
 
 Moving forward the ParsedLot will need to be constantly updated and properly formatted
 upon every key stroke.
