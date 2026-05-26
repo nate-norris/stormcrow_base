@@ -11,7 +11,6 @@ export default function WeatherItem({ siteId }: { siteId: string }) {
     if (!siteWeather) return null;
 
     // TODO 
-    // swap div for shadcn Item within ScrollArea
     // implement background color for siteWeather.status
     // implement windCalculations (cross/headtail/quad/cFactor/cType)
     // HoverCard shadcn: altitude, temp, humidity, baro
