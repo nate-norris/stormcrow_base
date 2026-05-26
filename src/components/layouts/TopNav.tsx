@@ -1,5 +1,7 @@
 import { ReactNode } from "react";
 
+// TODO: verify shadcn Menubar
+
 export function TopNav({ left, center }: { left: ReactNode; center: ReactNode }) {
   return (
     <div className="sticky top-0 z-50 h-12 w-full border-b bg-white flex items-center">
