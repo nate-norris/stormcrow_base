@@ -1,6 +1,6 @@
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import logQE from "./actions";
+import { logQE } from "./actions";
 
 // TODO: check overwrite based off testQEsAtom
 export default function LogQE() {
