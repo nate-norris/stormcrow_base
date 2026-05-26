@@ -1,24 +1,33 @@
 
 import { useAtom } from "jotai";
 import { getWeatherSiteAtom, siteIdsAtom } from "@/state/weather/";
+import { SkeletonWeather } from "./SkeletonCard";
+import { ScrollArea } from "@/components/ui/scroll-area"
+
+// TODO
+// HoverCard: additional info for weather
+// Item: each site WeatherCard
+// Popover: add range to each site
+// ScrollArea: for entire area
 
 export default function WeatherSites() {
     const [siteIds] = useAtom(siteIdsAtom);
 
     return (
-        <div className="w-1/5 min-h-screen flex flex-col gap-4 bg-amber-400">
-            {siteIds.length === 0 ? (
-                <div>
-                    <p>No Sites Receiving</p>
-                </div>
-             ) : (
-                <div className="flex flex-wrap gap-4 bg-amber-400 f">
-                    {siteIds.map(id => (
-                        <WeatherCard key={id} siteId={id} />))
-                    }
-                </div>
-             )}
-        </div>
+        <ScrollArea className="w-1/5 max-w-96 min-w-64
+        p-4
+        rounded-md border-2">
+            {siteIds.length === 0 ?
+                (<SkeletonWeather />) :
+                (
+                    <div className="flex flex-wrap gap-4">
+                        {siteIds.map(id => (
+                            <WeatherCard key={id} siteId={id} />))
+                        }
+                    </div>
+                )
+            }
+        </ScrollArea>
     );
 }
 
