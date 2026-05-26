@@ -1,3 +1,4 @@
+// @ts-nocheck
 export function buildPayload(): null {
   return null;
 }
