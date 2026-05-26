@@ -3,12 +3,9 @@ import { useAtom } from "jotai";
 import { getWeatherSiteAtom, siteIdsAtom } from "@/state/weather/";
 import { SkeletonWeather } from "./SkeletonCard";
 import { ScrollArea } from "@/components/ui/scroll-area"
+import { formatUnixToTime } from "./utils";
 
-// TODO
-// HoverCard: additional info for weather
-// Item: each site WeatherCard
-// Popover: add range to each site
-// ScrollArea: for entire area
+
 
 export default function WeatherSites() {
     const [siteIds] = useAtom(siteIdsAtom);
@@ -38,25 +35,24 @@ function WeatherCard({ siteId }: { siteId: string }) {
     // but include for undefined occurance in getWeatherSiteAtom
     if (!siteWeather) return null;
 
+    // TODO 
+    // swap div for shadcn Item within ScrollArea
+    // implement background color for siteWeather.status
+    // implement windCalculations (cross/headtail/quad/cFactor/cType)
+    // HoverCard shadcn: altitude, temp, humidity, baro
+    // Popover shadcn: specify range on each site?
+    // return text value of windState
     return (
-        <div className="p-4 border rounded shadow-md w-64">
+        <div className="shadow-md rounded-2xl w-full">
             <h2 className="font-bold text-lg">{siteWeather.siteId}</h2>
-            <p>ID: {siteWeather.siteId}</p>
-            <p>Alt: {siteWeather.altitude}</p>
-            <p>Wind Speed: {siteWeather.windFull} km/h</p>
-            <p>Dir: {siteWeather.windDir}</p>
-            <p>Temp: {siteWeather.temp}°C</p>
-            <p>Hum: {siteWeather.humidity}</p>
-            <p>Baro: {siteWeather.baro}</p>
-            <p>cross: {siteWeather.siteId}</p>
-            <p>headtail: {siteWeather.siteId}</p>
-            <p>quad: {siteWeather.siteId}</p>
-            <p>cFactor: {siteWeather.siteId}</p>
-            <p>cType: {siteWeather.siteId}</p>
-            <p>Time: {siteWeather.time}</p>
-            <p>Status: {siteWeather.status}</p>
-            <p>Wind State: {siteWeather.windState}</p>
-            
+            <span>{formatUnixToTime(siteWeather.time)}</span>
+            <div>
+                <span>{siteWeather.windFull} mph</span>
+                <span>{siteWeather.windDir}°</span>
+            </div>
+            <div>
+                <span></span>
+            </div>
         </div>
     );
 };
