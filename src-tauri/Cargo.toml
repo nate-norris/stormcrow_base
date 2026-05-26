@@ -28,6 +28,7 @@ tokio = { version = "1", features = ["full"] }
 chrono = { version = "0.4.42", features = ["serde"] }
 tokio-serial = "5.4.5"
 anyhow = "1.0.100"
+dirs-next = "2.0.0"
 [dependencies.utils]
 git = "ssh://git@github.com/nate-norris/stormcrow_utils.git"
 package = "stormcrow_utils"

@@ -6,6 +6,7 @@ use tokio::fs;
 use sqlx::{Pool, Sqlite, Executor};
 use sqlx::migrate::MigrateDatabase;
 use std::path::{Path, PathBuf};
+use dirs_next;
 
 pub type DbPool = Pool<Sqlite>; // pool type
 
@@ -76,7 +77,7 @@ fn get_db_path() -> DbLocation {
     #[cfg(not(debug_assertions))]
     {
         // Packaged Tauri app: platform-appropriate folder
-        let base = dirs::data_dir().expect("no data dir");
+        let base = dirs_next::data_dir().expect("no data dir");
         let path = base.join("stormcrow").join("weather.sqlite");
         let url = format!("{}://{}", DB_SCHEME, path.display());
         DbLocation { path, url }
@@ -208,7 +209,7 @@ async fn create_tables(pool: &DbPool) -> Result<(), sqlx::Error> {
         CREATE TABLE IF NOT EXISTS last_test (
             id INTEGER PRIMARY KEY CHECK (id = 1),
             last_test_name VARCHAR(30),
-            last_initiated INTEGER NOT NULL
+            last_initiated INTEGER NOT NULL DEFAULT (strftime('%s', 'now'))
         );
         "#,
     )
