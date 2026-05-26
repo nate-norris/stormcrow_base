@@ -106,7 +106,8 @@ export function calc(gD: number, wf: number, wT: number) {
  * be warned if approaching the max wind.
  * @returns WindState either Ok, Warn or Critical
  */
-export function getWindState(c: WindCalcs, maxW: number, thresh: number) : WindState {
+export function getWindState(c: WindCalcs, maxW: number, thresh: number) 
+    : WindState {
     if (c.cross > maxW || c.headTail > maxW) {
         return WindState.Critical;
     } else if (c.cross > maxW * thresh || c.headTail > maxW * thresh) {
