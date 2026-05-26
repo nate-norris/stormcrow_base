@@ -90,8 +90,10 @@ export function calc(gD: number, wf: number, wT: number) {
     //TODO get true north not magnetic
     let gdStandard = 450 - gD; // (450-gD)%360
     let wtStandard = 450 - wT;
-    let cross = wf * Math.sin(wtStandard-gdStandard);
-    let ht = wf * Math.cos(wtStandard-gdStandard);
+    let _cross = wf * Math.sin(wtStandard-gdStandard);
+    let _ht = wf * Math.cos(wtStandard-gdStandard);
+    alert(_cross);
+    alert(_ht);
 }
 
 /**
