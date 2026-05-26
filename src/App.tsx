@@ -37,13 +37,13 @@ function App() {
 
   return (
     <Provider store={store}>
-      <div className="min-h-screen w-full flex flex-col">
+      <div className="flex h-screen w-full flex-col">
         <TopNav 
           left={<AppMenu onOpenTestManagement={() => setIsTestManagementOpen(true)}/>}
           center={<AppTabs view={view} onChange={setView} />}
         />
 
-        <main className="flex-1 overflow-hidden">
+        <main className="flex-1 min-h-0">
           {view === "firing" && <FiringView />}
           {view === "qes" && <QETableView />}
         </main>
