@@ -1,6 +1,6 @@
 import { useAtom } from "jotai";
 
-import { getWeatherSiteAtom } from "../state/atomDerived";
+import { getWeatherSiteAtom } from "../state/weatherObserversAtom";
 import { formatUnixToTime } from "./utils";
 
 export default function WeatherItem({ siteId }: { siteId: string }) {

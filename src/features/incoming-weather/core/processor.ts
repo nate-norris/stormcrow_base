@@ -1,7 +1,7 @@
 import { store } from "@/state/store"
 import { WeatherPacket, WindCalcs, WeatherObservation, WeatherStatus } from "./models";
-import { updateWeatherObserversAtom, deleteWeatherObserverAtom, 
-    updateWindLogAtom, deleteWindLogAtom } from "../state/atomPrimary";
+import { updateWeatherObserversAtom, deleteWeatherObserverAtom } from "../state/liveWeather";
+import { updateWindLogAtom, deleteWindLogAtom } from "../state/windLog";
 import { getWindCalculations, getWindState } from "./windCalculations";
 
 export default class WeatherStreamProcessor {

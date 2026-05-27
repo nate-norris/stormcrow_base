@@ -1,6 +1,6 @@
 
 import { useAtom } from "jotai";
-import { siteIdsAtom } from "../state/atomDerived";
+import { siteIdsAtom } from "../state/weatherObserversAtom";
 import { SkeletonWeather } from "./SkeletonItem";
 import { ScrollArea } from "@/components/ui/scroll-area"
 import WeatherItem from "./WeatherItem";
@@ -25,4 +25,3 @@ export default function WeatherSites() {
         </ScrollArea>
     );
 }
-
