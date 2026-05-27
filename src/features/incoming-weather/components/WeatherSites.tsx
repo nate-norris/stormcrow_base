@@ -1,7 +1,7 @@
 
 import { useAtom } from "jotai";
-import { siteIdsAtom } from "@/state/weather/";
-import { SkeletonWeather } from "./SkeletonCard";
+import { siteIdsAtom } from "../state/atomDerived";
+import { SkeletonWeather } from "./SkeletonItem";
 import { ScrollArea } from "@/components/ui/scroll-area"
 import WeatherItem from "./WeatherItem";
 

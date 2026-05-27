@@ -1,10 +1,10 @@
 import { store } from "@/state/store"
 import { WeatherPacket, WindCalcs, WeatherObservation, WeatherStatus } from "./models";
 import { updateWeatherObserversAtom, deleteWeatherObserverAtom, 
-    updateWindLogAtom, deleteWindLogAtom } from "./atomPrimary";
+    updateWindLogAtom, deleteWindLogAtom } from "../state/atomPrimary";
 import { getWindCalculations, getWindState } from "./windCalculations";
 
-export class WeatherStreamProcessor {
+export default class WeatherStreamProcessor {
     private timers = new Map<string, ReturnType<typeof setTimeout>>();
 
     handlePacket(packet: WeatherPacket) {

@@ -1,5 +1,5 @@
 import { atom } from 'jotai'
-import type { WeatherObservation, WeatherUpdate, WindFullEvent } from "./models";
+import type { WeatherObservation, WeatherUpdate, WindFullEvent } from "../core/models";
 
 // primary atom of siteId to WeatherObservation
 type WeatherObservers = Record<string, WeatherObservation>;

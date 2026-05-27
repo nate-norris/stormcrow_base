@@ -1,5 +1,5 @@
 import { listen } from "@tauri-apps/api/event";
-import { WeatherPacket } from "@/state";
+import { WeatherPacket } from "@/features/incoming-weather";
 import { weatherProcessor } from "./weatherProcessor";
 
 /**

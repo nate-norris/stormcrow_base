@@ -1,6 +1,6 @@
 import { atom, Atom } from 'jotai'
 import { weatherObserversAtom } from "./atomPrimary";
-import { WeatherObservation } from './models';
+import { WeatherObservation } from '../core/models';
 
 /**
  * Supply individual atom from the provided siteId
