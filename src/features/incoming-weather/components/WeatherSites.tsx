@@ -10,12 +10,11 @@ export default function WeatherSites() {
 
     return (
         <ScrollArea className="w-1/5 max-w-96 min-w-64
-        p-4
-        rounded-md border-2">
+        p-2 border-r-2">
             {siteIds.length === 0 ?
                 (<SkeletonWeather />) :
                 (
-                    <div className="flex flex-wrap gap-4">
+                    <div className="flex flex-wrap gap-3">
                         {siteIds.map(id => (
                             <WeatherItem key={id} siteId={id} />))
                         }
