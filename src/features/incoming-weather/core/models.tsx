@@ -4,7 +4,7 @@ export const WeatherStatus = {
   Stale: "STALE",
   NotReceiving: "NOT_RECEIVING",
 } as const;
-type WeatherS =
+export type WeatherS =
   typeof WeatherStatus[keyof typeof WeatherStatus];
 
 /**
