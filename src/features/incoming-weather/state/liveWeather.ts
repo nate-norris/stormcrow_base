@@ -3,14 +3,15 @@ import type { WeatherObservation, WeatherUpdate } from "../core/models";
 
 // primary atom of siteId to WeatherObservation
 type WeatherObservers = Record<string, WeatherObservation>;
-export const weatherObserversAtom = atom<WeatherObservers>({});
+export const liveWeatherObserversAtom = atom<WeatherObservers>({});
+// export const weatherObserversAtom = atom<WeatherObservers>({});
 
 // Update the atom with either a new WeatherObservation or
 // WeatherStatus update.
 export const updateWeatherObserversAtom = atom(
   null,
   (_get, set, update: WeatherUpdate) => {
-    set(weatherObserversAtom, prev => {
+    set(liveWeatherObserversAtom, prev => {
       switch (update.type) {
         // new observation
         case "observation":
@@ -44,7 +45,7 @@ export const updateWeatherObserversAtom = atom(
 export const deleteWeatherObserverAtom = atom(
   null,
   (_get, set, siteId: string) => {
-    set(weatherObserversAtom, prev => {
+    set(liveWeatherObserversAtom, prev => {
       const next = { ... prev };
       delete next[siteId];
       return next;
