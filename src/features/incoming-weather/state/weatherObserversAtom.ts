@@ -1,6 +1,12 @@
 import { atom, Atom } from 'jotai'
-import { weatherObserversAtom } from "./atomPrimary";
+
 import { WeatherObservation } from '../core/models';
+import { liveWeatherObserversAtom } from './liveWeather';
+import { mockWeatherObserversAtom } from './mockWeather';
+
+const useMock =
+  (import.meta.env.VITE_USE_MOCK_WEATHER ?? "false") === "true";
+export const weatherObserversAtom = useMock ? mockWeatherObserversAtom : liveWeatherObserversAtom;
 
 /**
  * Supply individual atom from the provided siteId
