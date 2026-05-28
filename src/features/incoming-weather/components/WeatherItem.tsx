@@ -6,7 +6,8 @@ import {
   HoverCardTrigger,
 } from "@/components/ui/hover-card"
 import { weatherSiteAtomFamily } from "../state/weatherObserversAtom";
-import { formatUnixToTime, getStatusColor } from "./utils";
+import { formatUnixToTime, formatReceivingStatusText, getStatusColor } 
+    from "./utils";
 
 export default function WeatherItem({ siteId }: { siteId: string }) {
     const siteWeather = useAtomValue(weatherSiteAtomFamily(siteId));
@@ -17,7 +18,6 @@ export default function WeatherItem({ siteId }: { siteId: string }) {
 
     // TODO 
     // implement windCalculations (cross/headtail/quad/cFactor/cType)
-    // Popover shadcn: specify range on each site?
     // return text value of windState
 
     return (
@@ -30,7 +30,7 @@ export default function WeatherItem({ siteId }: { siteId: string }) {
                         <span className="font-bold text-sm">{siteWeather.siteId}</span>
                         <span>{formatUnixToTime(siteWeather.time)}</span>
                         <span className="px-2 py-0.5 mb-1 rounded bg-muted">
-                            {siteWeather.status}
+                            {formatReceivingStatusText(siteWeather.status)}
                         </span>
                     </div>
                     <div className="flex gap-2 justify-end">

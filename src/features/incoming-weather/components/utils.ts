@@ -23,3 +23,17 @@ export function getStatusColor(status: WeatherS, state: WindState): string {
   
   return "bg-gray-500";
 }
+
+export function formatReceivingStatusText(status: WeatherS): string {
+  switch (status) {
+    case WeatherStatus.Receiving:
+      return "Receiving";
+    case WeatherStatus.Stale:
+      return "Stale";
+    case WeatherStatus.NotReceiving:
+      return "Not Receiving";
+    default:
+      return "Unknown";
+  }
+
+}
