@@ -85,3 +85,45 @@ export const deleteWeatherObserverAtom = atom(
     });
   }
 );
+
+
+/*
+TODO: build out weatherSettingsAtom inside features/wind-warnings
+implement sorted derived atom for WeatherSites
+
+const [siteIds] = useAtom(sortedSiteIdsAtom);
+
+export const sortedSiteIdsAtom = atom((get) => {
+  const observers = get(weatherObserversAtom);
+  const settings = get(weatherSettingsAtom);
+
+  return Object.values(observers)
+    .slice() // avoid mutating source
+    .sort((a, b) => {
+      const aPriority = evaluateWindState(a, settings);
+      const bPriority = evaluateWindState(b, settings);
+
+      return aPriority - bPriority;
+    })
+    .map(obs => obs.siteId);
+});
+
+function evaluateWindState(
+  obs: WeatherObservation,
+  settings: WeatherSettings
+) {
+  if (obs.status !== "receiving") {
+    return 3; // worst priority
+  }
+
+  if (Math.abs(obs.cross) > settings.maxCrosswind) {
+    return 0; // critical
+  }
+
+  if (Math.abs(obs.headTail) > settings.maxHeadTail) {
+    return 1; // warning
+  }
+
+  return 2; // normal
+}
+*/
