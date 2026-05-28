@@ -1,32 +1,59 @@
-import { useAtom } from "jotai";
+import { useAtomValue } from "jotai";
 
-import { getWeatherSiteAtom } from "../state/weatherObserversAtom";
-import { formatUnixToTime } from "./utils";
+import {
+  HoverCard,
+  HoverCardContent,
+  HoverCardTrigger,
+} from "@/components/ui/hover-card"
+import { weatherSiteAtomFamily } from "../state/weatherObserversAtom";
+import { formatUnixToTime, getStatusColor } from "./utils";
 
 export default function WeatherItem({ siteId }: { siteId: string }) {
-    const [siteWeather] = useAtom(getWeatherSiteAtom(siteId));
+    const siteWeather = useAtomValue(weatherSiteAtomFamily(siteId));
 
     // NOTE: will never occur since parent is mapping siteId from an atom
     // but include for undefined occurance in getWeatherSiteAtom
     if (!siteWeather) return null;
 
     // TODO 
-    // implement background color for siteWeather.status
     // implement windCalculations (cross/headtail/quad/cFactor/cType)
-    // HoverCard shadcn: altitude, temp, humidity, baro
     // Popover shadcn: specify range on each site?
     // return text value of windState
+
     return (
-        <div className="shadow-md rounded-2xl w-full">
-            <h2 className="font-bold text-lg">{siteWeather.siteId}</h2>
-            <span>{formatUnixToTime(siteWeather.time)}</span>
-            <div>
-                <span>{siteWeather.windFull} mph</span>
-                <span>{siteWeather.windDir}°</span>
-            </div>
-            <div>
-                <span></span>
-            </div>
-        </div>
+        <HoverCard>
+            <HoverCardTrigger asChild>
+                <div className={`
+                    ${getStatusColor(siteWeather.status, siteWeather.windState)}
+                    shadow-md rounded-2xl w-full p-3`}>
+                    <div className="flex justify-between text-xs text-muted-foreground mx-3">
+                        <span>{siteWeather.siteId}</span>
+                        <span>{formatUnixToTime(siteWeather.time)}</span>
+                    </div>
+                    <div className="flex items-center gap-2 text-sm">
+                        {/* <WindIcon className="h-4 w-4" /> */}
+                        <span>{siteWeather.windFull} mph</span>
+                        <span>{siteWeather.windDir}° N</span>
+                    </div>
+                    <div className="flex items-center gap-4 text-sm">
+                        <span className="text-xs px-2 py-0.5 rounded bg-muted">
+                            {siteWeather.status}
+                        </span>
+                        <span>→ {siteWeather.cross.toFixed(1)} mph</span>
+                        <span>↑ {siteWeather.headTail.toFixed(1)} mph</span>
+                    </div>
+                </div>
+            </HoverCardTrigger>
+            <HoverCardContent
+                side="right"
+                align="center"
+                sideOffset={-150}
+                className="flex flex-col text-xs p-1">
+                <div>Altitude: {siteWeather.altitude} m</div>
+                <div>Temperature: {siteWeather.temp} °F</div>
+                <div>Humidity: {siteWeather.humidity} %</div>
+                <div>Barometer: {siteWeather.baro} inHg</div>
+            </HoverCardContent>
+        </HoverCard>    
     );
 };
