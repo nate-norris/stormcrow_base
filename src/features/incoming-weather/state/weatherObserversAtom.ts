@@ -1,6 +1,7 @@
-import { atom, Atom } from 'jotai'
+import { atom, Atom } from "jotai";
+import { atomFamily } from "jotai/utils";
 
-import { WeatherObservation, WeatherUpdate } from '../core/models';
+import { WeatherObservation, WeatherUpdate } from "../core/models";
 import { mockData } from "./mockWeather";
 
 // set if Vite .env is set to use mock weather
@@ -21,8 +22,12 @@ export const weatherObserversAtom = atom<WeatherObservers>(initialWeather);
  * @param siteId - identifier for the specific weather site
  * @returns A Jotai atom containing the WeatherObservation for the site, or undefined if it does not exist
  */
-export const getWeatherSiteAtom = (siteId: string): Atom<WeatherObservation | undefined> =>
-    atom((get) => get(weatherObserversAtom)[siteId]);
+export const weatherSiteAtomFamily: (param: string) => 
+  Atom<WeatherObservation | undefined> 
+  = atomFamily((siteId: string) =>
+    atom((get) => get(weatherObserversAtom)[siteId])
+);
+
 
 /**
  * Supply all active siteIds tracked.
