@@ -1,0 +1,1 @@
+export type { WindWarningConfig } from "./core/models";
