@@ -6,7 +6,7 @@ import {
   SelectValue,
 } from "@/components/ui/select"
 
-import { Test } from "@/models";
+import { Test } from "../core//models";
 
 type Props = {
     tests: Test[];

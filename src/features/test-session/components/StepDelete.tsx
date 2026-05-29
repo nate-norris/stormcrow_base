@@ -3,10 +3,10 @@ import { useAtom } from "jotai";
 
 import { ModalBackButton } from "@/components/ui/modal";
 import { Button } from "@/components/ui/button";
-import { Test } from "@/models";
-import { TestSessionSelector } from "./widgets";
-import { deleteTest } from "./sessionService";
-import { activeTestAtom } from "@/state";
+import { Test } from "../core/models";
+import { TestSessionSelector } from "./sessionSelectorWidget";
+import { deleteTest } from "../core/sessionService";
+import { activeTestAtom } from "../state/testAtom";
 
 import {
     AlertDialog,

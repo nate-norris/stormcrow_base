@@ -4,9 +4,10 @@ import { useAtom } from "jotai";
 import { Button } from "@/components/ui/button";
 import { ModalBackButton } from "@/components/ui/modal";
 import { Input } from "@/components/ui/input";
-import { Test, WindWarningConfig } from "@/models";
-import { initiateTest } from "./sessionService";
-import { activeTestAtom, activeConfigAtom } from "@/state";
+import { Test } from "../core/models";
+import { WindWarningConfig, activeWindConfigAtom } from "@/features/wind-warnings";
+import { initiateTest } from "../core/sessionService";
+import { activeTestAtom } from "../state/testAtom";
 
 // define the props
 type NewProps = {
@@ -20,7 +21,7 @@ export default function NewView({ onBack, onSubmit, tests }: NewProps) {
     const [isNameConflict, setIsNameConflict] = useState(false); // name already added
     // global active test and wind warning configurations
     const [, setActiveTest] = useAtom(activeTestAtom);
-    const [, setActiveConfig] = useAtom(activeConfigAtom);
+    const [, setActiveConfig] = useAtom(activeWindConfigAtom);
 
     const handleSubmit = async () => {
         

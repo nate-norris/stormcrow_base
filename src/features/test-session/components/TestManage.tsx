@@ -1,14 +1,13 @@
 import { useState, useEffect } from "react";
 
-import { Test } from "@/models"
-import type { StepMode } from "./models";
-import { Step } from "./models";
+import type { Test, StepMode } from "../core/models";
+import { Step } from "../core/models";
 import MenuView from "./StepMenu";
 import NewView from "./StepNew";
 import ContinueView from "./StepContinue";
 import DeleteView from "./StepDelete";
-import { createNavigation } from "./navigation";
-import * as service from "./sessionService";
+import { createNavigation } from "../core/navigation";
+import * as service from "../core/sessionService";
 
 /*
 TODO:

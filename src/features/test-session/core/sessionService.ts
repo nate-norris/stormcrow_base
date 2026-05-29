@@ -1,5 +1,5 @@
 import { invoke } from "@tauri-apps/api/core";
-import type { Test } from "@/models";
+import type { Test } from "../core/models";
 import type { WindWarningConfig } from "@/features/wind-warnings";
 
 export async function getLastTest(): Promise<Test | null> {
@@ -11,7 +11,6 @@ export async function getTests(): Promise<Test[]> {
 }
 
 export async function initiateTest(name: string): Promise<[Test, WindWarningConfig]> {
-  // TODO update WindWarn atom
   return await invoke<[Test, WindWarningConfig]>("initiate_test_command", { name });
 }
 

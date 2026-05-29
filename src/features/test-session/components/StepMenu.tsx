@@ -1,4 +1,4 @@
-import { Step } from "./models";
+import { Step } from "../core/models";
 
 // limited sub selection of StepMode
 type MenuSteps =

@@ -1,12 +1,13 @@
 import { useState } from "react";
 import { useAtom } from "jotai";
 
-import { TestSessionSelector } from "./widgets";
-import { Test, WindWarningConfig } from "@/models";
+import { TestSessionSelector } from "./sessionSelectorWidget";
+import { Test } from "../core/models";
+import { WindWarningConfig, activeWindConfigAtom } from "@/features/wind-warnings"
 import { ModalBackButton } from "@/components/ui/modal";
 import { Button } from "@/components/ui/button";
-import { initiateTest } from "./sessionService";
-import { activeTestAtom, activeConfigAtom } from "@/state";
+import { initiateTest } from "../core/sessionService";
+import { activeTestAtom } from "../state/testAtom";;
 
 // define the props
 type ContinueProps = {
@@ -21,7 +22,7 @@ export default function ContinueView({ onBack, onSubmit, tests, lastTest }: Cont
     const [isSelectionConflict, setIsSelectionConflict] = useState<boolean>(false);
     // global active test and wind warning configurations
     const [activeTest, setActiveTest] = useAtom(activeTestAtom);
-    const [, setActiveConfig] = useAtom(activeConfigAtom);
+    const [, setActiveConfig] = useAtom(activeWindConfigAtom);
 
      const handleSubmit = async () => {
         // confirm user is not attempting to continue a test already in session
