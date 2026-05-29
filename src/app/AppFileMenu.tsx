@@ -16,15 +16,18 @@ export function AppMenu({ onOpenTestManagement }: Props) {
         <div className="w-full flex items-center px-2 py-1">
             <DropdownMenu>
                 <DropdownMenuTrigger asChild>
-                <Button variant="ghost" className="px-2">
-                    File
-                </Button>
+                    <Button variant="ghost" className="px-2">
+                        File
+                    </Button>
                 </DropdownMenuTrigger>
 
                 <DropdownMenuContent align="start">
-                <DropdownMenuItem onClick={onOpenTestManagement}>
-                    Test Management
-                </DropdownMenuItem>
+                    <DropdownMenuItem onClick={onOpenTestManagement}>
+                        Test Management
+                    </DropdownMenuItem>
+                    <DropdownMenuItem>
+                        Help
+                    </DropdownMenuItem>
                 </DropdownMenuContent>
             </DropdownMenu>
         </div>
