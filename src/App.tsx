@@ -1,6 +1,7 @@
 import "./index.css";
 import { useEffect, useState } from "react";
 import { Provider } from "jotai";
+import { Toaster } from "@/components/ui/sonner";
 
 import { store } from "@/state";
 import { bootstrapApp } from "./bootstrap";
@@ -54,6 +55,7 @@ function App() {
           entryMode={isBooting ? "continue-if-possible" : "menu"}
           onClose={handleTestManagementClose}
         />
+        <Toaster />
       </div>
     </Provider>
   );
