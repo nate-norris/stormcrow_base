@@ -11,7 +11,7 @@ type Props = {
     onOpenTestManagement: () => void;
 }
 
-export function AppMenu({ onOpenTestManagement }: Props) {
+export function AppFileMenu({ onOpenTestManagement }: Props) {
     return (
         <div className="w-full flex items-center px-2 py-1">
             <DropdownMenu>

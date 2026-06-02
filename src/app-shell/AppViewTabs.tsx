@@ -1,13 +1,15 @@
 import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
 
+import { ViewOptions } from "./models";
+
 type Props = {
-  view: string;
-  onChange: (value: string) => void;
+  view: ViewOptions;
+  onChange: (value: ViewOptions) => void;
 }
 
-export function AppTabs({ view, onChange }: Props) {
+export function AppViewTabs({ view, onChange }: Props) {
   return (
-    <Tabs value={view} onValueChange={onChange} className="w-full">
+    <Tabs value={view} onValueChange={(value) => onChange(value as ViewOptions)} className="w-full">
       <TabsList>
         <TabsTrigger value="firing">Firing</TabsTrigger>
         <TabsTrigger value="qes">QE Table</TabsTrigger>
