@@ -9,8 +9,7 @@ export default function WeatherSites() {
     const [siteIds] = useAtom(siteIdsAtom);
 
     return (
-        <ScrollArea className="w-1/5 max-w-96 min-w-64
-        p-2 border-r-2">
+        <ScrollArea>
             {siteIds.length === 0 ?
                 (<SkeletonWeather />) :
                 (
