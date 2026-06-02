@@ -7,7 +7,7 @@ import {
   FieldLabel,
 } from "@/components/ui/field"
 import { Switch } from "@/components/ui/switch"
-import { autoLogAtom } from "@/state/logQEAtom";
+import { autoLogAtom } from "../state/loggingAtom";
 
 export default function AutoLog() {
     const [autoLog, setAutoLog] = useAtom(autoLogAtom);
