@@ -2,14 +2,14 @@
 import { useAtom } from "jotai";
 import { siteIdsAtom } from "../state/weatherObserversAtom";
 import { SkeletonWeather } from "./SkeletonItem";
-import { ScrollArea } from "@/components/ui/scroll-area"
+// import { ScrollArea } from "@/components/ui/scroll-area"
 import WeatherItem from "./WeatherItem";
 
 export default function WeatherSites() {
     const [siteIds] = useAtom(siteIdsAtom);
 
     return (
-        <ScrollArea>
+        <div>
             {siteIds.length === 0 ?
                 (<SkeletonWeather />) :
                 (
@@ -20,6 +20,6 @@ export default function WeatherSites() {
                     </div>
                 )
             }
-        </ScrollArea>
+        </div>
     );
 }

@@ -4,30 +4,35 @@ import {
   AccordionItem,
   AccordionTrigger,
 } from "@/components/ui/accordion"
+import { ScrollArea } from "@/components/ui/scroll-area"
 import { WeatherSites } from "@/features/incoming-weather";
 import { WindWarningForm } from "@/features/wind-warnings";
+import { QEForm } from "@/features/qe-firing";
 
 export function FiringView() {
   return (
-    <div className="flex h-full">
+    <div className="flex h-full min-h-0">
       {/* LEFT SIDE PANEL */}
-      <div className="w-1/5 max-w-96 min-w-64 p-2">
-        <Accordion type="multiple" defaultValue={["sites"]}>
-          <AccordionItem value="sites">
+      <div className="w-1/5 max-w-96 min-w-72 p-2 min-h-0 flex flex-col">
+        <Accordion type="multiple" defaultValue={["sites"]} className="flex-1 overflow-auto">
+          <AccordionItem value="sites" className="">
             <AccordionTrigger>Weather Sites</AccordionTrigger>
-            <AccordionContent><WeatherSites /></AccordionContent>
+            <AccordionContent className="h-96">
+              <ScrollArea className="h-full">
+                <WeatherSites />
+              </ScrollArea>
+            </AccordionContent>
           </AccordionItem>
           <AccordionItem value="config">
             <AccordionTrigger>Wind Configuration</AccordionTrigger>
             <AccordionContent><WindWarningForm /></AccordionContent>
           </AccordionItem>
-
         </Accordion>
       </div>
 
       {/* RIGHT SIDE */}
-      <div className="flex-1 bg-gray-500">
-        {/* Main content here */}
+      <div className="flex-1 min-h-0 bg-gray-500">
+        <QEForm />
       </div>
     </div>
   );
