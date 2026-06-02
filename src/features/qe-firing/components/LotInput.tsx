@@ -1,13 +1,13 @@
 import { useAtom } from "jotai";
 import { Input } from "@/components/ui/input";
-import { lotAtom } from "@/state/logQEAtom";
+import { lotAtom } from "../state/loggingAtom";
 
 export default function LotInput() {
     const [lot, setLot] = useAtom(lotAtom);
 
     return (
         <Input
-            id="dodic"  
+            id="lot"  
             value={lot}
             onChange={(e) => setLot(e.target.value.toUpperCase())}
             placeholder="LS-06E071H013BDW"

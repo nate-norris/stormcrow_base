@@ -2,7 +2,7 @@ import { useAtom } from "jotai";
 
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
-import { qeCountAtom } from "@/state/logQEAtom";
+import { qeCountAtom } from "../state/loggingAtom";
 
 export default function QECountSpinner() {
   const [value, setValue] = useAtom(qeCountAtom);
