@@ -1,7 +1,7 @@
 import { useAtom } from "jotai";
 
 import { Input } from "@/components/ui/input";
-import { dodicAtom } from "@/state/logQEAtom";
+import { dodicAtom } from "../state/loggingAtom";
 
 // character matching for dodic regex
 const dodicRegex: RegExp[] = [
