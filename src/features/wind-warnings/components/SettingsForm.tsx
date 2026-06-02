@@ -28,70 +28,54 @@ export default function WindWarningForm() {
   }
 
   return (
-    <div className="max-w-md mx-auto p-6 rounded-2xl shadow-lg border text-sm font-medium items-center space-y-4">
-      <h2 className="text-xl font-semibold mb-4">Wind Configuration</h2>
-
+    <div className="max-w-md mx-auto p-6 text-sm font-medium items-center space-y-2">
       {/* Max Wind Speed */}
       <div className="flex items-center gap-4">
-        <label>Max Wind Speed</label>
-        <span>
-          <input
-            type="number"
-            step="1"
-            value={draftConfig.maxWind}
-            onChange={(e) =>
-              setDraftConfig(prev => ({
-                ...prev,
-                maxWind: Number(e.target.value)
-              }))
-            }
-            className="w-25 p-2 border rounded-lg"
-          />
-          <label> mph</label>
-        </span>
-        
+        <label>Max Wind Speed (mph)</label>
+        <input
+          type="number"
+          step="1"
+          value={draftConfig.maxWind}
+          onChange={(e) =>
+            setDraftConfig(prev => ({
+              ...prev,
+              maxWind: Number(e.target.value)
+            }))
+          }
+          className="w-25 p-2 border rounded-lg"
+        />
       </div>
 
       {/* Threshold Percent */}
       <div className="flex items-center gap-4">
-        <label>Threshold</label>
-        <span>
-          <input
-            type="number"
-            // placeholder="1 - 100"
-            value={draftConfig.thresholdPercent}
-            onChange={(e) =>
-              setDraftConfig(prev => ({
-                ...prev,
-                thresholdPercent: Number(e.target.value)
-              }))
-            }
-            className="w-25 p-2 border rounded-lg"
-          />
-          <label className="font-bold"> %</label>
-
-        </span>
-        
+        <label>Threshold (%)</label>
+        <input
+          type="number"
+          value={draftConfig.thresholdPercent}
+          onChange={(e) =>
+            setDraftConfig(prev => ({
+              ...prev,
+              thresholdPercent: Number(e.target.value)
+            }))
+          }
+          className="w-25 p-2 border rounded-lg"
+        />
       </div>
 
       {/* Weapon Orientation */}
       <div className="flex items-center gap-4">
-        <label>Weapon</label>
-        <span>
-          <input
-            type="number"
-            placeholder="0 - 360"
-            value={draftConfig.gunOrient}
-            onChange={(e) =>
-              setDraftConfig(prev => ({
-                ...prev,
-                gunOrient: Number(e.target.value)
-              }))
-            }
-            className="w-25 p-2 border rounded-lg"
-          />
-          <label> ° N True</label>
-        </span>
+        <label>Weapon (° N True)</label>
+        <input
+          type="number"
+          value={draftConfig.gunOrient}
+          onChange={(e) =>
+            setDraftConfig(prev => ({
+              ...prev,
+              gunOrient: Number(e.target.value)
+            }))
+          }
+          className="w-25 p-2 border rounded-lg"
+        />
       </div>
 
       {/* Expected Sites */}
