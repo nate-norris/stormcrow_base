@@ -27,7 +27,8 @@ export default function DodicInput() {
 
     return (
         <Input
-            id="dodic"  
+            id="dodic" 
+            autoComplete="off"
             value={dodic}
             onChange={handleChange}
             placeholder="A062" 
