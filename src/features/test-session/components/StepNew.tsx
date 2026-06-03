@@ -8,6 +8,7 @@ import { Test } from "../core/models";
 import { WindWarningConfig, activeWindConfigAtom } from "@/features/wind-warnings";
 import { initiateTest } from "../core/sessionService";
 import { activeTestAtom } from "../state/testAtom";
+import { activeQEFormAtom, resetQEForm } from "@/features/qe-firing";
 
 // define the props
 type NewProps = {
@@ -22,6 +23,7 @@ export default function NewView({ onBack, onSubmit, tests }: NewProps) {
     // global active test and wind warning configurations
     const [, setActiveTest] = useAtom(activeTestAtom);
     const [, setActiveConfig] = useAtom(activeWindConfigAtom);
+    const [, setActiveQEForm] = useAtom(activeQEFormAtom);
 
     const handleSubmit = async () => {
         
@@ -43,6 +45,7 @@ export default function NewView({ onBack, onSubmit, tests }: NewProps) {
             const [test, windConfig]: [Test, WindWarningConfig] = await initiateTest(n);
             setActiveTest(test);
             setActiveConfig(windConfig);
+            setActiveQEForm(resetQEForm());
         } catch (error) {
             alert('error');
         }
