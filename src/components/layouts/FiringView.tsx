@@ -37,5 +37,3 @@ export function FiringView() {
     </div>
   );
 }
-
-// min-h-0, h-full, h-screen
