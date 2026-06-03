@@ -1,19 +1,36 @@
 import { atom } from "jotai";
+import { QEFormState, defaultQEFormValues } from "../core/models";
 
-export const dodicAtom = atom<string>("");
-export const lotAtom = atom<string>("");
-export const qeCountAtom = atom<string>("1");
-export const qeTypeAtom = atom<string>("");
-export const autoLogAtom = atom<boolean>(false);
+export const activeQEFormAtom = atom<QEFormState>(defaultQEFormValues);
 
-//TODO overwrite DODIC on test change to null if not QEs for this test or last logged QE
 /*
 TODO
-overwrite the above atoms upon activeTestAtomChange
-if there are no QEs logged for the test then empty values for all
-if there is at least one QE then for the last time stamped log
-DODIC = last DODIC
-LOT = last LOT
-qeCount = last count + 1
-qeType = last qeType (TR or WS)
+ensure activeQEFormAtom states below are implemented
+
+State 1
+No test selected
+activeTestAtom = null
+QE form isn't shown.
+
+State 2
+Test selected, no QE logged yet
+activeTestAtom = test
+qeFormAtom = {
+  dodic: "",
+  lot: "",
+  qeCount: 1,
+  qeType: "TR"
+}
+Form is shown.
+
+State 3
+Test selected, previous QE exists
+activeTestAtom = test
+qeFormAtom = {
+  dodic: lastQe.dodic,
+  lot: lastQe.lot,
+  qeCount: lastQe.qeCount + 1,
+  qeType: lastQe.qeType
+}
+Form is shown
 */
