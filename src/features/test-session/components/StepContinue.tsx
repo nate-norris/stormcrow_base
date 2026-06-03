@@ -7,7 +7,8 @@ import { WindWarningConfig, activeWindConfigAtom } from "@/features/wind-warning
 import { ModalBackButton } from "@/components/ui/modal";
 import { Button } from "@/components/ui/button";
 import { initiateTest } from "../core/sessionService";
-import { activeTestAtom } from "../state/testAtom";;
+import { activeTestAtom } from "../state/testAtom";
+import { activeQEFormAtom, updateQEFormFromLast } from "@/features/qe-firing";
 
 // define the props
 type ContinueProps = {
@@ -23,6 +24,7 @@ export default function ContinueView({ onBack, onSubmit, tests, lastTest }: Cont
     // global active test and wind warning configurations
     const [activeTest, setActiveTest] = useAtom(activeTestAtom);
     const [, setActiveConfig] = useAtom(activeWindConfigAtom);
+    const [, setActiveQEForm] = useAtom(activeQEFormAtom);
 
      const handleSubmit = async () => {
         // confirm user is not attempting to continue a test already in session
@@ -38,6 +40,8 @@ export default function ContinueView({ onBack, onSubmit, tests, lastTest }: Cont
                     await initiateTest(continuingTest.name);
                 setActiveTest(test);
                 setActiveConfig(windConfig);
+                // TODO: retrieve last QE and pass to update qe form
+                // setActiveQEForm(updateQEFormFromLast())
                 onSubmit(); // close the modal
             }
         } catch (error) {
