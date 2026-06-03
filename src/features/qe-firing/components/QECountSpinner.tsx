@@ -1,28 +1,49 @@
+import { useState, useEffect } from "react";
 import { useAtom } from "jotai";
 
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
-import { qeCountAtom } from "../state/loggingAtom";
+import { qeCountAtom } from "../state/derivedLoggingAtom";
 
 export default function QECountSpinner() {
   const [value, setValue] = useAtom(qeCountAtom);
+  const [input, setInput] = useState(value.toString());
 
-  function qeUp() {
-    const v = parseInt(value) + 1;
-    setValue(v.toString());
-  }
+  // update local state when atom changes
+  useEffect(() => {
+    setInput(value.toString());
+  }, []);
 
-  function qeDown() {
-    // ensure cannot decrement below 1
-    const v = value == "1" ? value : (parseInt(value)-1).toString()
-    setValue(v);
+  function commit(val: string) {
+    if (val ==="") return; // check empty input
+
+    // check positive number input
+    const n = Number(val);
+    if (!Number.isNaN(n) && n >= 1) {
+      setValue(n);
+    }
   }
 
   function handleChange(e: React.ChangeEvent<HTMLInputElement>){
     const val = e.target.value
-    if (val == "" || /^\d+$/.test(val)) {
-        setValue(val);
+    // allow empty or digits while typing
+    if (val === "" || /^\d+$/.test(val)) {
+        setInput(val);
     }
+  }
+
+  function handleBlur() {
+    commit(input);
+    setInput(value.toString())
+  }
+
+  function qeUp() {
+    setValue(value + 1);
+  }
+
+  function qeDown() {
+    // ensure cannot decrement below 1
+    setValue(Math.max(1, value - 1));
   }
 
   return (
@@ -32,6 +53,7 @@ export default function QECountSpinner() {
         type="text"
         value={value}
         onChange={handleChange}
+        onBlur={handleBlur}
         className="w-20 rounded-r-none text-center h-10"
       />
 
