@@ -1,5 +1,6 @@
 import { Skeleton } from "@/components/ui/skeleton"
 
+// TODO: swap with shadcn Empty
 export function SkeletonForm() {
   return (
     <div className="flex w-full max-w-2xl flex-col gap-7">
