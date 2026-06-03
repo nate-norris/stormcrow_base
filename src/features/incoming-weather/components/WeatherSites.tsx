@@ -13,7 +13,7 @@ export default function WeatherSites() {
             {siteIds.length === 0 ?
                 (<SkeletonWeather />) :
                 (
-                    <div className="flex flex-wrap gap-3">
+                    <div className="flex flex-wrap gap-3 pr-4">
                         {siteIds.map(id => (
                             <WeatherItem key={id} siteId={id} />))
                         }
