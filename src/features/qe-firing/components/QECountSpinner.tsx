@@ -19,6 +19,7 @@ export default function QECountSpinner() {
 
     // check positive number input
     const n = Number(val);
+    // alert(n);
     if (!Number.isNaN(n) && n >= 1) {
       setValue(n);
     }
@@ -26,24 +27,30 @@ export default function QECountSpinner() {
 
   function handleChange(e: React.ChangeEvent<HTMLInputElement>){
     const val = e.target.value
-    // allow empty or digits while typing
+
     if (val === "" || /^\d+$/.test(val)) {
-        setInput(val);
+      setInput(val);
     }
   }
 
   function handleBlur() {
     commit(input);
-    setInput(value.toString())
   }
 
   function qeUp() {
-    setValue(value + 1);
+    if (input === "") return;
+
+    const i = (parseInt(input) + 1).toString();
+    setInput(i);
+    commit(i);
   }
 
   function qeDown() {
+    if (input === "") return;
     // ensure cannot decrement below 1
-    setValue(Math.max(1, value - 1));
+    const i = (Math.max(1, parseInt(input) - 1)).toString();
+    setInput(i);
+    commit(i);
   }
 
   return (
@@ -51,7 +58,7 @@ export default function QECountSpinner() {
       <Input
         id="count"
         type="text"
-        value={value}
+        value={input}
         onChange={handleChange}
         onBlur={handleBlur}
         className="w-20 rounded-r-none text-center h-10"
