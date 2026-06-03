@@ -1,19 +1,28 @@
-import { useAtom } from "jotai";
+import { useAtomValue } from "jotai";
 
 // TODO implement collapsible/dialog/sheet so that only qe count and type are visible
 //  add Field to combine labels and inputs
-
 import { activeTestAtom } from "@/features/test-session";
-import DodicInput from "./input_dodic";
-import LotInput from "./input_lot";
-import QECountSpinner from "./qe_count";
-import QETypeSelector from "./qe_type";
-import AutoLog from "./auto_log";
-import LogQE from "./log_qe";
+import DodicInput from "./DodicInput";
+import LotInput from "./LotInput";
+import QECountSpinner from "./QECountSpinner";
+import QETypeSelector from "./QETypeSelector";
+import AutoLog from "./AutoLog";
+import LogQE from "./LogQE";
+import { SkeletonForm } from "./SkeletonForm";
 
 export function QEForm() {
 
-    const [test] = useAtom(activeTestAtom);
+    const test = useAtomValue(activeTestAtom);
+
+    // do not display form if not test selected
+    if (!test) {
+        return (
+            <div className="m-14">
+                <SkeletonForm />
+            </div>
+        );
+    }
 
     return (
         <div className="m-6">
