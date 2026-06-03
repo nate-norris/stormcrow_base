@@ -10,7 +10,7 @@ type Props = {
 export function AppViewTabs({ view, onChange }: Props) {
   return (
     <Tabs value={view} onValueChange={(value) => onChange(value as ViewOptions)} className="w-full">
-      <TabsList>
+      <TabsList className="bg-gray-500">
         <TabsTrigger value="firing">Firing</TabsTrigger>
         <TabsTrigger value="qes">QE Table</TabsTrigger>
       </TabsList>
