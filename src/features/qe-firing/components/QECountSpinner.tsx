@@ -56,20 +56,20 @@ export default function QECountSpinner() {
   return (
     <div className="flex items-stretch">
       <Input
-        id="count"
+        id="qe-count"
         type="text"
         value={input}
         onChange={handleChange}
         onBlur={handleBlur}
-        className="w-20 rounded-r-none text-center h-10"
+        className="w-20 rounded-r-none text-center h-9 bg-white"
       />
 
       {/* vertical button group */}
-      <div className="flex flex-col">
+      <div className="flex flex-col h-9 justify-center">
         <Button
           type="button"
           variant="outline"
-          className="h-5 px-2 rounded-l-none rounded-b-none"
+          className="h-4 px-2 rounded-l-none rounded-b-none bg-gray-200"
           onClick={qeUp}
         >
           ▲
@@ -78,7 +78,7 @@ export default function QECountSpinner() {
         <Button
           type="button"
           variant="outline"
-          className="h-5 px-2 rounded-l-none rounded-t-none border-t-0"
+          className="h-4 px-2 rounded-l-none rounded-t-none border-t-0 bg-gray-200"
           onClick={qeDown}
         >
           ▼
