@@ -1,1 +1,1 @@
-export type ViewOptions = "firing" | "qes";
+export type ViewOptions = "logging" | "qes";

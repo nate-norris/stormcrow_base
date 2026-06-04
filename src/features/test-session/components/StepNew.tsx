@@ -8,7 +8,7 @@ import { Test } from "../core/models";
 import { WindWarningConfig, activeWindConfigAtom } from "@/features/wind-warnings";
 import { initiateTest } from "../core/sessionService";
 import { activeTestAtom } from "../state/testAtom";
-import { activeQEFormAtom, resetQEForm } from "@/features/qe-firing";
+import { activeQEFormAtom, resetQEForm } from "@/features/qe-logging";
 
 // define the props
 type NewProps = {

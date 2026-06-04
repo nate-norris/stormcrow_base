@@ -3,7 +3,7 @@ import { QETableView } from "@/components/layouts/QETableView";
 
 export function LayoutRouter({ view }: {view: string}) {
   switch (view) {
-    case "firing":
+    case "logging":
       return <FiringView />;
     case "qes":
       return <QETableView />;

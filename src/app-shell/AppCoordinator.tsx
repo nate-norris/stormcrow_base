@@ -17,7 +17,7 @@ export default function AppCoordinator() {
   // booting only once to allow continue in TestModal view
   const [isBooting, setIsBooting] = useState<boolean>(true);
   // view changes by TopNav
-  const [view, setView] = useState<ViewOptions>("firing");
+  const [view, setView] = useState<ViewOptions>("logging");
 
   const handleTestManagementClose = () => {
     setIsTestManagementOpen(false);

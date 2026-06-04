@@ -7,7 +7,7 @@ import {
 import { ScrollArea } from "@/components/ui/scroll-area"
 import { WeatherSites } from "@/features/incoming-weather";
 import { WindWarningForm } from "@/features/wind-warnings";
-import { QEForm } from "@/features/qe-firing";
+import { QEForm } from "@/features/qe-logging";
 
 export function FiringView() {
   return (
