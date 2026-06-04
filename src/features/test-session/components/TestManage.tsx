@@ -52,12 +52,13 @@ export default function TestManagement({ onComplete, allowDefaultContinue }: Pro
         const last = new Date(lastTest.time).getTime();
 
         if (now - (last*1000) < 1000*60*60*24) {
+            alert(allowDefaultContinue + lastTest.name)
             setDefaultLastTest(lastTest);
             nav.go(Step.Continue);
+            setInitialized(true); // do not allow continue jump again
+            return;
         }
         nav.go(Step.Menu);
-
-        setInitialized(true); // do not allow continue jump again
     }, [lastTest, allowDefaultContinue]);
 
     // populate tests and last test
