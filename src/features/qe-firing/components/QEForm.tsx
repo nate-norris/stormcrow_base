@@ -1,7 +1,9 @@
 import { useAtomValue } from "jotai";
 
 // TODO implement collapsible/dialog/sheet so that only qe count and type are visible
-//  add Field to combine labels and inputs
+import { FieldSet, FieldLegend, FieldGroup, Field, FieldLabel, 
+    FieldDescription } from "@/components/ui/field";
+import { Separator } from "@/components/ui/separator"
 import { activeTestAtom } from "@/features/test-session";
 import DodicInput from "./DodicInput";
 import LotInput from "./LotInput";
@@ -25,36 +27,46 @@ export function QEForm() {
     }
 
     return (
-        <div className="m-6">
+        <div className="m-12 mr-48 ml-24">
             <h2 className="text-center text-lg font-semibold">Current QE</h2>
-            <div className="font-medium space-y-2 items-center bg-blue-500">
-                <div>
-                    <label>Test:</label>
-                    <label>{test ? test.name : ""}</label>
-                </div>
-                <div className="flex">
-                    <label>DODIC:</label>
-                    <DodicInput />
-                </div>
-                <div className="flex">
-                    <label>LOT:</label>
-                    <LotInput />
-                </div>
-                <div className="flex">
-                    <label>QE:</label>
-                    <QECountSpinner />
-                </div>
-                <div className="flex">
-                    <label>QE Type:</label>
-                    <QETypeSelector />
-                </div>
-                <div>
-                    <AutoLog />
-                </div>
-                <div>
-                    <LogQE />
-                </div>
-            </div>
+            <FieldSet>
+                <FieldLegend>Test</FieldLegend>
+                <FieldDescription>{test ? test.name : ""}</FieldDescription>
+                <FieldGroup>
+                    <div className="grid grid-cols-3 gap-12">
+                        <Field>
+                            <FieldLabel htmlFor="qe-dodic" className="ml-auto">DODIC</FieldLabel>
+                            <DodicInput />
+                        </Field>
+                        <Field>
+                            <FieldLabel htmlFor="qe-lot" >LOT</FieldLabel>
+                            <LotInput />
+                        </Field>
+                    </div>
+                    <Separator />
+                    <div className="grid grid-cols-3 gap-12">
+                        <Field>
+                            <FieldLabel htmlFor="qe-count" >QE</FieldLabel>
+                            <QECountSpinner />
+                        </Field>
+                        <Field>
+                            <FieldLabel htmlFor="qe-type" >QE Type</FieldLabel>
+                            <QETypeSelector />
+                        </Field>
+                        
+                    </div>
+                    <div className="grid grid-cols-3 gap-12">
+                        <div></div>
+                        <Field>
+                            <AutoLog />
+                            <FieldDescription>logging initiated from sound trigger</FieldDescription>
+                        </Field>
+                        <Field>
+                            <LogQE />
+                        </Field>
+                    </div>
+                </FieldGroup>
+            </FieldSet>
         </div>
     );
 }
