@@ -8,7 +8,7 @@ import { ModalBackButton } from "@/components/ui/modal";
 import { Button } from "@/components/ui/button";
 import { initiateTest } from "../core/sessionService";
 import { activeTestAtom } from "../state/testAtom";
-import { activeQEFormAtom, updateQEFormFromLast } from "@/features/qe-logging";
+import { activeQEFormAtom, updateQEFormFromLast } from "@/features/qe-logging"; // TODO: looks like updateQEFormFromLast will be duplicating setActiveQEForm accessibility to the atom
 
 // define the props
 type ContinueProps = {
