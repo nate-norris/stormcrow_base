@@ -14,9 +14,9 @@ export default function LogQE() {
     }
 
     return (
-        <div className="flex flex-col items-center gap-1">
+        <div className="flex flex-col gap-1">
+            <Button onClick={handleClick} className="bg-blue-600">Log QE</Button>
             <Badge variant="destructive">Overwriting</Badge>
-            <Button onClick={handleClick} className="w-30">Log QE</Button>
         </div>
     );
 }
