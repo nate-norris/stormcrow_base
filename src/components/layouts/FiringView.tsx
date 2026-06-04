@@ -9,7 +9,7 @@ import { WeatherSites } from "@/features/incoming-weather";
 import { WindWarningForm } from "@/features/wind-warnings";
 import { QEForm } from "@/features/qe-logging";
 
-export function FiringView() {
+export function LoggingView() {
   return (
     <div className="flex h-full min-h-0">
       {/* LEFT SIDE PANEL */}
