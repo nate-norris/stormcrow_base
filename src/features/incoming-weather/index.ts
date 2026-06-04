@@ -7,6 +7,6 @@
  */
 
 export type { WeatherPacket } from "./core/models";
-export { weatherSiteAtomFamily, siteIdsAtom } from "./state/weatherObserversAtom";
+export { weatherSiteAtomFamily, siteIdsAtom, weatherObserversAtom } from "./state/weatherObserversAtom";
 export { default as WeatherStreamProcessor } from "./core/processor";
 export { default as WeatherSites } from "./components/WeatherSites";
