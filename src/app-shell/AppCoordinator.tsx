@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { useAtom } from "jotai";
 
 import { LayoutRouter } from "./LayoutRouter";
 import { TopNav } from "@/components/layouts/TopNav";
@@ -6,22 +7,16 @@ import { AppViewTabs } from "./AppViewTabs";
 import { AppFileMenu } from "./AppFileMenu";
 import { ViewOptions } from "./models";
 import { TestModal } from "@/features/test-session";
+import { isTestModalOpenAtom } from "./state";
 
 export default function AppCoordinator() {
-  // Test session configuration including adding, deleting or continuing
-  //    previous test sessions.
-  //
-  // TestModal can be revealed by:
-  // 1. On booting the test session should be selected
-  // 2. When the user selects the option from the app menu
-  //
-  // TestModal can be hidden by:
-  // 1: Selecting outside of the modal
-  // 2: Selecting the exit button within the modal
-  // 3: Finilizing actions within the modal (New/Continue)
-  const [isTestManagementOpen, setIsTestManagementOpen] = useState<boolean>(true);
+
+  // test modal open atom configued to properly close on startup and
+  //    allow TestModal to open/close
+  const [isTestManagementOpen, setIsTestManagementOpen] = useAtom(isTestModalOpenAtom);
+  // booting only once to allow continue in TestModal view
   const [isBooting, setIsBooting] = useState<boolean>(true);
-  // const [view, setView] = useState("firing");
+  // view changes by TopNav
   const [view, setView] = useState<ViewOptions>("firing");
 
   const handleTestManagementClose = () => {
