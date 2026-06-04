@@ -13,7 +13,7 @@ type Props = {
 
 export function AppFileMenu({ onOpenTestManagement }: Props) {
     return (
-        <div className="w-full flex items-center px-2 py-1">
+        <div className="w-full flex items-center px-2">
             <DropdownMenu>
                 <DropdownMenuTrigger asChild>
                     <Button variant="ghost" className="px-2">
