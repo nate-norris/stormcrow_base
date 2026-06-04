@@ -27,13 +27,13 @@ export default function DodicInput() {
 
     return (
         <Input
-            id="dodic" 
+            id="qe-dodic" 
             autoComplete="off"
             value={dodic}
             onChange={handleChange}
             placeholder="A062" 
             maxLength={4}
-            className="w-24"
+            className="bg-white"
             />
     );
 }
