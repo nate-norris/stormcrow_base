@@ -1,6 +1,5 @@
 import { useAtomValue } from "jotai";
 
-// TODO implement collapsible/dialog/sheet so that only qe count and type are visible
 import { FieldSet, FieldLegend, FieldGroup, Field, FieldLabel, 
     FieldDescription } from "@/components/ui/field";
 import { Separator } from "@/components/ui/separator"
@@ -11,7 +10,7 @@ import QECountSpinner from "./QECountSpinner";
 import QETypeSelector from "./QETypeSelector";
 import AutoLog from "./AutoLog";
 import LogQE from "./LogQE";
-import { SkeletonForm } from "./SkeletonForm";
+import { EmptyForm } from "./EmptyForm";
 
 export function QEForm() {
 
@@ -21,7 +20,7 @@ export function QEForm() {
     if (!test) {
         return (
             <div className="m-14">
-                <SkeletonForm />
+                <EmptyForm />
             </div>
         );
     }
