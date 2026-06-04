@@ -1,3 +1,5 @@
+import { Menu } from "lucide-react";
+
 import {
     DropdownMenu,
     DropdownMenuTrigger,
@@ -17,7 +19,7 @@ export function AppFileMenu({ onOpenTestManagement }: Props) {
             <DropdownMenu>
                 <DropdownMenuTrigger asChild>
                     <Button variant="ghost" className="px-2">
-                        File
+                        <Menu className="size-6" />
                     </Button>
                 </DropdownMenuTrigger>
 
