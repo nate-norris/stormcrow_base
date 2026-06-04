@@ -1,5 +1,5 @@
 import { atom } from "jotai";
-import { QEFormState, defaultQEFormValues } from "../core/models";
+import { QEFormState, defaultQEFormValues } from "../core/qe-form";
 
 export const activeQEFormAtom = atom<QEFormState>(defaultQEFormValues);
 
