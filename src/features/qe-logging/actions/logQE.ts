@@ -1,19 +1,12 @@
-// import { getDefaultStore } from "jotai";
-
-// import { buildPayload } from "./buildPayload";
-// import { validateQE } from "./validateQE";
-// import { persistQE } from "./persistQE";
-// import { applyQEState } from "./applyQEState";
+import { getDefaultStore } from "jotai";
+import { buildQEEntry } from "./buildQEEntry";
 
 export default async function logQE() {
-  // const store = getDefaultStore();
+  const store = getDefaultStore();
 
-  // const payload = buildPayload(store);
+  const entry = buildQEEntry(store);
 
-  // validateQE(payload);
-
-  // await persistQE(payload);
-
-  // applyQEState(store, payload);
-  alert("logging qe");
+  // validateQEEntry(entry);
+  // await submitQEEntry(entry);
+  // updateQEState();
 }
