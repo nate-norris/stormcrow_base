@@ -1,31 +1,23 @@
-import { store } from "@/state";
-
-// atom inputs
-import { activeTestAtom } from "@/features/test-session";
-import { activeQEFormAtom } from "../state/loggingAtom";
-import { activeWindConfigAtom } from "@/features/wind-warnings";
-import { weatherObserversAtom } from "@/features/incoming-weather";
-// types returned from input atoms
+// input types
+import type { QEInputs } from "../core/qe_inputs";
 import type { Test } from "@/features/test-session";
 import { QEFormState } from "../core/qe-form";
 import type { WindWarningConfig } from "@/features/wind-warnings";
 import type { WeatherObservers } from "@/features/incoming-weather";
 // types required to build QEEntry
-import { QEBase, QEConfiguration, SiteWeatherInput, QEEntry} from "../core/qe-log";
+import type { QEBase, QEConfiguration, SiteWeatherInput, QEEntry} 
+  from "../core/qe-log";
 
-export function buildQEEntry(): QEEntry {
-  // return active atom values needed for QEEntry
-  const test: Test | null = store.get(activeTestAtom);
-  const form: QEFormState = store.get(activeQEFormAtom);
-  const warn_config: WindWarningConfig = store.get(activeWindConfigAtom);
-  const observers: WeatherObservers = store.get(weatherObserversAtom);
-
+export default function buildQEEntry(storeInputs: QEInputs): QEEntry {
   // TODO handle thrown error; propagate to UI
-  if (!test) throw new Error("Test selection required to log QEs.");
+  if (!storeInputs.test) 
+    throw new Error("Test selection required to log QEs.");
 
-  const base: QEBase = buildQEBase(test, form);
-  const config: QEConfiguration = buildQEConfiguration(form, warn_config);
-  const sites: SiteWeatherInput[] = buildSiteWeatherInputs(observers);
+  const base: QEBase = buildQEBase(storeInputs.test, storeInputs.qeForm);
+  const config: QEConfiguration = buildQEConfiguration(storeInputs.qeForm, 
+    storeInputs.warnConfig);
+  const sites: SiteWeatherInput[] = 
+    buildSiteWeatherInputs(storeInputs.observers);
   
   return {
     base: base,
