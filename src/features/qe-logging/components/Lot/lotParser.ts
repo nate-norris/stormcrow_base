@@ -9,6 +9,12 @@ Moving forward the ParsedLot will need to be constantly updated and properly for
 upon every key stroke.
 */
 
+// placeholder verification on lot
+export function isCompleteLotInput(text: string) {
+    return text.length >= 14 &&
+        text.length <= 16
+}
+
 
 export const LotState = {
   MFR_1: "MFR_1",
