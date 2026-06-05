@@ -10,7 +10,7 @@ const useMock =
 // pull initial mocked weather if present
 const initialWeather = useMock ? mockData : {};
 // define the primary atom
-type WeatherObservers = Record<string, WeatherObservation>;
+export type WeatherObservers = Record<string, WeatherObservation>;
 export const weatherObserversAtom = atom<WeatherObservers>(initialWeather);
 
 /**
