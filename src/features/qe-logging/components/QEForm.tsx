@@ -5,7 +5,7 @@ import { FieldSet, FieldLegend, FieldGroup, Field, FieldLabel,
 import { Separator } from "@/components/ui/separator"
 import { activeTestAtom } from "@/features/test-session";
 import DodicInput from "./DodicInput";
-import LotInput from "./LotInput";
+import LotInput from "./Lot/LotInput";
 import QECountSpinner from "./QECountSpinner";
 import QETypeSelector from "./QETypeSelector";
 import AutoLog from "./AutoLog";
