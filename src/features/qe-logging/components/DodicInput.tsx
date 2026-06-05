@@ -19,7 +19,7 @@ export default function DodicInput() {
         
         // confirm matches critera for dodic regex
         if (typed.length > 0 && 
-            !(dodicRegex[typed.length-1].test(typed.slice(-1)) || typed.length > 4)) 
+            !(matchesDODICRegexPartial(typed) || typed.length > 4)) 
             return;
 
         setDodic(typed);
@@ -36,4 +36,13 @@ export default function DodicInput() {
             className="bg-white"
             />
     );
+}
+
+function matchesDODICRegexPartial(text: string): boolean {
+    return dodicRegex[text.length-1].test(text.slice(-1))
+}
+
+export function isCompleteDODICInput(text: string): boolean {
+    return text.length === 4 &&
+        matchesDODICRegexPartial(text);
 }
