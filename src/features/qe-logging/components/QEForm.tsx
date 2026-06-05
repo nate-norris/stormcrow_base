@@ -28,10 +28,10 @@ export function QEForm() {
     return (
         <div className="m-12 mr-48 ml-24">
             <h2 className="text-center text-lg font-semibold">Current QE</h2>
-            <FieldSet>
+            <FieldSet className="gap-3">
                 <FieldLegend>Test</FieldLegend>
                 <FieldDescription>{test ? test.name : ""}</FieldDescription>
-                <FieldGroup>
+                <FieldGroup className="gap-3">
                     <div className="grid grid-cols-3 gap-12">
                         <Field>
                             <FieldLabel htmlFor="qe-dodic" className="ml-auto">DODIC</FieldLabel>
