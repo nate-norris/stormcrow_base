@@ -1,23 +1,19 @@
 import { QEType } from "./qe-types";
 
-export type QEEntry = {
-  base: {
-    count: number;
-    qeType: QEType;
-    testId: number;
-  };
-
-  config: {
-    dodic: string;
-    lot: string;
-    gunOrient: number;
-    time: number;
-  };
-
-  sites: SiteWeatherInput[];
+export type QEBase = {
+  count: number;
+  qeType: QEType;
+  testId: number;
 };
 
-type SiteWeatherInput = {
+export type QEConfiguration = {
+  dodic: string;
+  lot: string;
+  gunOrient: number;
+  time: number;
+};
+
+export type SiteWeatherInput = {
   siteId: number;
   altitude: number;
   windFull: number;
@@ -28,3 +24,9 @@ type SiteWeatherInput = {
   humidity: number;
   baro: number;
 }
+
+export type QEEntry = {
+  base: QEBase;
+  config: QEConfiguration;
+  sites: SiteWeatherInput[];
+};
