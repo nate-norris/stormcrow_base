@@ -32,5 +32,5 @@ dirs-next = "2.0.0"
 [dependencies.utils]
 git = "ssh://git@github.com/nate-norris/stormcrow_utils.git"
 package = "stormcrow_utils"
-tag = "v0.1.27"
+tag = "v0.1.28"
 features = ["mm2t-rx"]
