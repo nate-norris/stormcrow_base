@@ -69,7 +69,6 @@ pub struct WindWarningConfig {
 /// # Fields
 /// - `id` — Primary key of this weather entry.
 /// - `site_id` — Identifier of the weather site where measurements were taken.
-/// - `range` — Distance from the gun position in meters.
 /// - `altitude` — Altitude in meters.
 /// - `gun_orient` — Orientation of the gun in degrees (`DegreesCircle` enum).
 /// - `qe` — QE count value.
@@ -90,7 +89,6 @@ pub struct WindWarningConfig {
 pub struct WeatherRow {
     pub id: Option<i64>,
     pub site_id: i64, // weather site
-    pub range: i64, // from gun position in meters
     pub altitude: i64, //meters
     pub gun_orient: i64, //DegreesCircle,
     pub count: i64,
@@ -111,7 +109,6 @@ pub struct WeatherRow {
 #[derive(Debug, Clone, Deserialize)]
 pub struct SiteWeather {
     pub site_id: i64, // unique id for site
-    pub range: i64, // from gun position in meters
     pub altitude: i64, //meters
     pub wind_full: f64, // mph
     pub wind_direction: f64, //floating point degrees
@@ -180,7 +177,6 @@ impl From<WeatherRow> for SiteWeather {
     fn from(row: WeatherRow) -> Self {
         SiteWeather {
             site_id: row.site_id,
-            range: row.range,
             altitude: row.altitude,
             wind_full: row.wind_full,
             wind_direction: row.wind_direction,

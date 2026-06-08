@@ -8,7 +8,7 @@ pub(crate) async fn get_test_qes<'e, E>(executor: E, test_id: i64) ->
 	let sites = sqlx::query_as!(
 		WeatherRow,
 		r#"
-		SELECT id, site_id, range, altitude, gun_orient, count, qe_type, dodic, lot, wind_full, wind_direction, cross, tail, temp, humidity, baro, time, test_id
+		SELECT id, site_id, altitude, gun_orient, count, qe_type, dodic, lot, wind_full, wind_direction, cross, tail, temp, humidity, baro, time, test_id
 		FROM qe
 		WHERE test_id = ?
 		"#, 
@@ -29,12 +29,11 @@ pub(crate) async fn insert_qe_site<'e, E>(executor: E, base: &QEBase, config: &Q
 	sqlx::query_as!(
         WeatherRow,
         r#"
-        INSERT INTO qe (site_id, range, altitude, gun_orient, count, qe_type, dodic, lot, wind_full, wind_direction, cross, tail, temp, humidity, baro, time, test_id)
-        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
-        RETURNING id, site_id, range, altitude, gun_orient, count, qe_type, dodic, lot, wind_full, wind_direction, cross, tail, temp, humidity, baro, time, test_id
+        INSERT INTO qe (site_id, altitude, gun_orient, count, qe_type, dodic, lot, wind_full, wind_direction, cross, tail, temp, humidity, baro, time, test_id)
+        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+        RETURNING id, site_id, altitude, gun_orient, count, qe_type, dodic, lot, wind_full, wind_direction, cross, tail, temp, humidity, baro, time, test_id
         "#,
         qe_site.site_id,
-		qe_site.range,
 		qe_site.altitude,
 		config.gun_orient,
 		base.count,
@@ -62,7 +61,7 @@ pub(crate) async fn get_qe_rows<'e, E>(executor: E, base: &QEBase) ->
 	let sites = sqlx::query_as!(
 		WeatherRow,
 		r#"
-		SELECT id, site_id, range, altitude, gun_orient, count, qe_type, dodic, lot, wind_full, wind_direction, cross, tail, temp, humidity, baro, time, test_id
+		SELECT id, site_id, altitude, gun_orient, count, qe_type, dodic, lot, wind_full, wind_direction, cross, tail, temp, humidity, baro, time, test_id
 		FROM qe
 		WHERE count = ? AND qe_type = ? AND test_id = ?
 		"#, 
