@@ -1,3 +1,6 @@
+import { toast } from "sonner";
+
+import { speakerNotify, SpeakerNotification } from "@/lib/sound-notifications";
 import { gatherQEStoreInputs } from "./gatherStore";
 import { canLogQE } from "./validateQE";
 // import { default as buildQEEntry } from "./buildQEEntry";
@@ -8,9 +11,8 @@ export default async function logQE() {
   const inputs = gatherQEStoreInputs();
 
   if (!canLogQE(inputs)) {
-    //notifyErrorUI
-    //playErrorSounds
-    console.log("cant log");
+    toast.error("QE Log Error: There are missing inputs or no weather available");
+    await speakerNotify(SpeakerNotification.GeneralError);
     return;
   }
   // const entry = buildQEEntry(gatherQEStoreInputs());
