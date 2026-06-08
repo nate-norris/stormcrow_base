@@ -12,7 +12,7 @@ export default function QECountSpinner() {
   // update local state when atom changes
   useEffect(() => {
     setInput(value.toString());
-  }, []);
+  }, [value]);
 
   function commit(val: string) {
     if (val ==="") return; // check empty input
