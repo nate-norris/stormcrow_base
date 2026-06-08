@@ -5,7 +5,7 @@ import { gatherQEStoreInputs } from "./gatherStore";
 import { canLogQE } from "./validateQE";
 import { default as buildQEEntry } from "./buildQEEntry";
 import { dbPersistQEEntry } from "./persistQE";
-import { prepareNextQE } from "./prepareNextQE";
+import { updateStateUponLog } from "./updateQEState";
 
 export default async function logQE() {
   try {
@@ -22,13 +22,14 @@ export default async function logQE() {
     const entry = buildQEEntry(inputs);
 
      // pass QEEntry to tauri command
-    await dbPersistQEEntry(entry);
-    prepareNextQE(inputs.qeForm);
-    // console.log(JSON.stringify(entry, null, 2));
-    // updateQEState();
+    const weatherRow = await dbPersistQEEntry(entry);
+
+    // console.log(JSON.stringify(w, null, 2));
+    updateStateUponLog(inputs.qeForm, weatherRow);
 
   } catch(err) {
     toast.error("QE Log Error: failed to log to database.")
     // TODO: log file
   }
 }
+
