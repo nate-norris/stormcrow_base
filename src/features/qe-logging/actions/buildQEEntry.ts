@@ -47,7 +47,7 @@ function buildQEConfiguration(form: QEFormState, windConfig: WindWarningConfig):
 function buildSiteWeatherInputs(observers: WeatherObservers): 
   SiteWeatherInput[] {
   return Object.values(observers).map(obs => ({
-    siteId: Number(obs.siteId),
+    siteId: obs.siteId,
     altitude: obs.altitude,
     windFull: obs.windFull,
     windDirection: obs.windDir,

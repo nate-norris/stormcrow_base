@@ -16,7 +16,7 @@ function generateMockObservers(): Record<string, WeatherObservation> {
 
 function makeSiteA(siteId: string): WeatherObservation {
   return {
-    siteId,
+    siteId: siteId,
     altitude: 700,
     windFull: 4.5,
     windDir: 234,
@@ -36,7 +36,7 @@ function makeSiteA(siteId: string): WeatherObservation {
 
 function makeSiteB(siteId: string): WeatherObservation {
   return {
-    siteId,
+    siteId: siteId,
     altitude: 700,
     windFull: 4.5,
     windDir: 234,
@@ -56,7 +56,7 @@ function makeSiteB(siteId: string): WeatherObservation {
 
 function makeSiteC(siteId: string): WeatherObservation {
   return {
-    siteId,
+    siteId: siteId,
     altitude: 700,
     windFull: 4.5,
     windDir: 234,

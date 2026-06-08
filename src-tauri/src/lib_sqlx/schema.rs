@@ -179,7 +179,7 @@ async fn create_tables(pool: &DbPool) -> Result<(), sqlx::Error> {
         r#"
         CREATE TABLE IF NOT EXISTS qe (
             id INTEGER PRIMARY KEY AUTOINCREMENT,
-            site_id INTEGER NOT NULL,
+            site_id TEXT NOT NULL,
             altitude INTEGER NOT NULL,
             gun_orient INTEGER NOT NULL,
             count INTEGER NOT NULL,

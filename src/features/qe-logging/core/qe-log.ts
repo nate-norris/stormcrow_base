@@ -14,7 +14,7 @@ export type QEConfiguration = {
 };
 
 export type SiteWeatherInput = {
-  siteId: number;
+  siteId: string;
   altitude: number;
   windFull: number;
   windDirection: number;
