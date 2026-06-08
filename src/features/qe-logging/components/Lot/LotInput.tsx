@@ -10,7 +10,8 @@ export default function LotInput() {
 
     return (
         <Input
-            id="qe-lot"  
+            id="qe-lot"
+            autoComplete="off"
             value={lot}
             onChange={(e) => setLot(e.target.value.toUpperCase())}
             onBlur={() => setLotVisited(true)}
