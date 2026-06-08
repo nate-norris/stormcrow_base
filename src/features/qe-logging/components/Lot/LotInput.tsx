@@ -1,6 +1,6 @@
 import { useAtom } from "jotai";
 import { Input } from "@/components/ui/input";
-import { lotAtom } from "../state/derivedLoggingAtom";
+import { lotAtom } from "../../state/derivedLoggingAtom";
 
 export default function LotInput() {
     const [lot, setLot] = useAtom(lotAtom);
