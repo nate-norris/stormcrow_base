@@ -90,17 +90,6 @@ pub async fn reassign_qe_command(state: tauri::State<'_, DbState>,
 }
 
 #[tauri::command]
-pub async fn speaker_boom_command(state: tauri::State<'_, SpeakerState>)
-    -> Result<(), String> {
-    let tx = state.0.as_ref();
-    tx.send(SpeakerNotification::Boom)
-        .await
-        .map_err(|e| e.to_string())
-}
-
-
-#[allow(dead_code)]
-#[tauri::command]
 pub async fn speaker_command(state: tauri::State<'_, SpeakerState>, 
     notification: SpeakerNotification) -> Result<(), String> {
     let tx = state.0.as_ref();
