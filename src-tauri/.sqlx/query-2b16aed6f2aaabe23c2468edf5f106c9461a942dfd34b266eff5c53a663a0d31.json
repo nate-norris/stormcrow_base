@@ -1,6 +1,6 @@
 {
   "db_name": "SQLite",
-  "query": "\n        INSERT INTO qe (site_id, range, altitude, gun_orient, count, qe_type, dodic, lot, wind_full, wind_direction, cross, tail, temp, humidity, baro, time, test_id)\n        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)\n        RETURNING id, site_id, range, altitude, gun_orient, count, qe_type, dodic, lot, wind_full, wind_direction, cross, tail, temp, humidity, baro, time, test_id\n        ",
+  "query": "\n\t\tSELECT id, site_id, altitude, gun_orient, count, qe_type, dodic, lot, wind_full, wind_direction, cross, tail, temp, humidity, baro, time, test_id\n\t\tFROM qe\n\t\tWHERE count = ? AND qe_type = ? AND test_id = ?\n\t\t",
   "describe": {
     "columns": [
       {
@@ -14,91 +14,85 @@
         "type_info": "Integer"
       },
       {
-        "name": "range",
+        "name": "altitude",
         "ordinal": 2,
         "type_info": "Integer"
       },
       {
-        "name": "altitude",
+        "name": "gun_orient",
         "ordinal": 3,
         "type_info": "Integer"
       },
       {
-        "name": "gun_orient",
+        "name": "count",
         "ordinal": 4,
         "type_info": "Integer"
       },
       {
-        "name": "count",
-        "ordinal": 5,
-        "type_info": "Integer"
-      },
-      {
         "name": "qe_type",
-        "ordinal": 6,
+        "ordinal": 5,
         "type_info": "Text"
       },
       {
         "name": "dodic",
-        "ordinal": 7,
+        "ordinal": 6,
         "type_info": "Text"
       },
       {
         "name": "lot",
-        "ordinal": 8,
+        "ordinal": 7,
         "type_info": "Text"
       },
       {
         "name": "wind_full",
-        "ordinal": 9,
+        "ordinal": 8,
         "type_info": "Float"
       },
       {
         "name": "wind_direction",
-        "ordinal": 10,
+        "ordinal": 9,
         "type_info": "Float"
       },
       {
         "name": "cross",
-        "ordinal": 11,
+        "ordinal": 10,
         "type_info": "Float"
       },
       {
         "name": "tail",
-        "ordinal": 12,
+        "ordinal": 11,
         "type_info": "Float"
       },
       {
         "name": "temp",
-        "ordinal": 13,
+        "ordinal": 12,
         "type_info": "Float"
       },
       {
         "name": "humidity",
-        "ordinal": 14,
+        "ordinal": 13,
         "type_info": "Float"
       },
       {
         "name": "baro",
-        "ordinal": 15,
+        "ordinal": 14,
         "type_info": "Float"
       },
       {
         "name": "time",
-        "ordinal": 16,
+        "ordinal": 15,
         "type_info": "Integer"
       },
       {
         "name": "test_id",
-        "ordinal": 17,
+        "ordinal": 16,
         "type_info": "Integer"
       }
     ],
     "parameters": {
-      "Right": 17
+      "Right": 3
     },
     "nullable": [
-      true,
       false,
       false,
       false,
@@ -118,5 +112,5 @@
       false
     ]
   },
-  "hash": "4ff099cc1b1d9c80c1fff75ea4106765bed75b6f7f3640f40559bfb14aacb6aa"
+  "hash": "2b16aed6f2aaabe23c2468edf5f106c9461a942dfd34b266eff5c53a663a0d31"
 }
