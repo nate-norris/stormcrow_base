@@ -5,6 +5,7 @@ import { gatherQEStoreInputs } from "./gatherStore";
 import { canLogQE } from "./validateQE";
 import { default as buildQEEntry } from "./buildQEEntry";
 import { dbPersistQEEntry } from "./persistQE";
+import { prepareNextQE } from "./prepareNextQE";
 
 export default async function logQE() {
   try {
@@ -22,6 +23,7 @@ export default async function logQE() {
 
      // pass QEEntry to tauri command
     await dbPersistQEEntry(entry);
+    prepareNextQE(inputs.qeForm);
     // console.log(JSON.stringify(entry, null, 2));
     // updateQEState();
 
