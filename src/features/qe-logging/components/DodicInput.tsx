@@ -1,4 +1,5 @@
 import { useAtom } from "jotai";
+import { useState } from "react";
 
 import { Input } from "@/components/ui/input";
 import { dodicAtom } from "../state/derivedLoggingAtom";
@@ -13,6 +14,7 @@ const dodicRegex: RegExp[] = [
 
 export default function DodicInput() {
     const [dodic, setDodic] = useAtom(dodicAtom);
+    const [dodicVisited, setDodicVisited] = useState(false);
 
     function handleChange(e: React.ChangeEvent<HTMLInputElement>) {
         let typed = e.target.value.toUpperCase();
@@ -31,9 +33,11 @@ export default function DodicInput() {
             autoComplete="off"
             value={dodic}
             onChange={handleChange}
+            onBlur={() => setDodicVisited(true)}
             placeholder="A062" 
             maxLength={4}
-            className="bg-white"
+            className={`${dodicVisited && !isCompleteDODICInput(dodic) ? "border-red-500 border-2" : ""}
+                bg-white`}
             />
     );
 }
