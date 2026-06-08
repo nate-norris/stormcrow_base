@@ -88,7 +88,7 @@ pub struct WindWarningConfig {
 #[serde(rename_all = "camelCase")]
 pub struct WeatherRow {
     pub id: Option<i64>,
-    pub site_id: i64, // weather site
+    pub site_id: String, // weather site
     pub altitude: i64, //meters
     pub gun_orient: i64, //DegreesCircle,
     pub count: i64,
@@ -107,8 +107,9 @@ pub struct WeatherRow {
 }
 
 #[derive(Debug, Clone, Deserialize)]
+#[serde(rename_all = "camelCase")]
 pub struct SiteWeather {
-    pub site_id: i64, // unique id for site
+    pub site_id: String, // unique id for site
     pub altitude: i64, //meters
     pub wind_full: f64, // mph
     pub wind_direction: f64, //floating point degrees
@@ -120,6 +121,7 @@ pub struct SiteWeather {
 }
 
 #[derive(Debug, Clone, Deserialize)]
+#[serde(rename_all = "camelCase")]
 pub struct QEConfiguration {
     pub dodic: String,
     pub lot: String,
@@ -128,6 +130,7 @@ pub struct QEConfiguration {
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize)]
+#[serde(rename_all = "camelCase")]
 pub struct QEBase {
     pub count: i64,
     pub qe_type: String,
@@ -135,6 +138,7 @@ pub struct QEBase {
 }
 
 #[derive(Debug, Clone, Deserialize)]
+#[serde(rename_all = "camelCase")]
 pub struct QEEntry {
     pub base: QEBase,
     pub config: QEConfiguration,
@@ -190,8 +194,9 @@ impl From<WeatherRow> for SiteWeather {
 }
 
 #[derive(Debug, Clone, Deserialize)]
+#[serde(rename_all = "camelCase")]
 pub struct QEDeleteSite {
-    pub site_id: i64,
+    pub site_id: String,
     #[serde(flatten)]
     pub base: QEBase
 }
