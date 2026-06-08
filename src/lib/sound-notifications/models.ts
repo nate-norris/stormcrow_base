@@ -1,4 +1,4 @@
-const SpeakerNotification = {
+export const SpeakerNotification = {
     Boom: "Boom",
     SoundSensorError: "SoundSensorError",
     RadioError: "RadioError",
