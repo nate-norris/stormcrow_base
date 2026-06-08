@@ -109,7 +109,7 @@ mkdir migrations
 cargo sqlx migrate add init 
 # 4. Populate with migrations/ with +migrate Up and +migrate Down logic for table creation
 # 5. run migrations (under src-tauri)
-cargo sqlx migrate run
+sqlx migrate run
 # 4. Regenerate sqlx metadta (queries in .sqlx/)
 cargo sqlx prepare
 
