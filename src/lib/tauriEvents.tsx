@@ -61,6 +61,6 @@ export async function initTauriListeners() {
     });
 
     await listen<TauriEvents["boom"]>("boom", (_event) => {
-
+        // TODO: log QE w/ auto log
     });
 }
