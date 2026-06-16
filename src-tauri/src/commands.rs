@@ -1,17 +1,17 @@
 //! Define tauri commands that are available outside of any specific module/file
 //! 
 use crate::t_state::{DbState, SpeakerState};
-use crate::lib_sqlx::{QEDeleteSite, QEBase, QEEntry, Test, WindWarningConfig, WeatherRow, 
+use crate::lib_sqlx::{QEDeleteSite, QEBase, QEEntry, TestSession, Test, WindWarningConfig, WeatherRow, 
     delete_qe_site, delete_test, get_last_test, get_tests, initiate_test, 
     get_test_qes, insert_new_qe, update_configuration, reassign_qe};
 use utils::speaker::SpeakerNotification;
 
 #[tauri::command]
 pub async fn initiate_test_command(state: tauri::State<'_, DbState>, name: String) -> 
-    Result<(Test, WindWarningConfig), String> {
+    Result<TestSession, String> {
 
     let pool = state.0.as_ref();
-    let result: (Test, WindWarningConfig) = initiate_test(pool, &name)
+    let result: TestSession = initiate_test(pool, &name)
         .await
         .map_err(|_| "Failed to initiate the test".to_string())?;
 

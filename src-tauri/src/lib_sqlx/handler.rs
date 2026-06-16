@@ -3,7 +3,7 @@
 //! 
 use chrono::{Utc};
 
-use super::models::{NewTest, Test, WindWarningConfig, QEDeleteSite, QEBase, WeatherRow};//, VelocityType, DegreesCircle, Percent};
+use super::models::{TestSession, NewTest, Test, WindWarningConfig, QEDeleteSite, QEBase, WeatherRow};//, VelocityType, DegreesCircle, Percent};
 use super::schema::DbPool;
 use crate::lib_sqlx::models::QEEntry;
 use crate::lib_sqlx::q_tests;
@@ -12,7 +12,7 @@ use crate::lib_sqlx::q_qe;
 
 
 pub async fn initiate_test(pool: &DbPool, name: &str) -> 
-    Result<(Test, WindWarningConfig), sqlx::Error> {
+    Result<TestSession, sqlx::Error> {
     
     // test reference
     let new_test: NewTest = NewTest {
@@ -22,10 +22,16 @@ pub async fn initiate_test(pool: &DbPool, name: &str) ->
 
     //returns existing test and configs if already created
     if let Some(existing) = q_tests::get_test_by_name(pool, &new_test.name).await? {
-        if let Some(config) = q_configs::get_test_config_by_id(pool, existing.id).await? {
-            q_tests::update_last_test(pool, Some(&existing.name)).await?;
-            return Ok((existing, config));
-        }
+        let config =  q_configs::get_test_config_by_id(pool, existing.id).await?;
+        let qes = q_qe::get_test_qes(pool, existing.id).await?;
+
+        q_tests::update_last_test(pool, Some(&existing.name)).await?;
+
+        return Ok(TestSession { 
+            test: existing, 
+            config: config.unwrap(), 
+            qes
+        });
     }
 
     // test name not entered insert into db
@@ -41,7 +47,11 @@ pub async fn initiate_test(pool: &DbPool, name: &str) ->
     //finalize transaction
     tx.commit().await?;
     
-    Ok((test, config))
+    Ok(TestSession {
+        test,
+        config,
+        qes: Vec::new(),
+    })
 }
 
 

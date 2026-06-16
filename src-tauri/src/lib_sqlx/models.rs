@@ -34,6 +34,19 @@ pub struct NewTest {
     pub time: i64,
 }
 
+/// Represents the required data when initiating a test
+/// 
+/// Contains the following:
+/// - Test for the selected test
+/// - WindWarningConfig settings for wind warnings
+/// - Vec<WeatherRow> for all QEs that have been logged
+#[derive(Debug, Serialize)]
+pub struct TestSession {
+    pub test: Test,
+    pub config: WindWarningConfig,
+    pub qes: Vec<WeatherRow>,
+}
+
 /// Represents a row in `test_configs`
 /// 
 /// The struct will retrieve updates for configurations aligning
