@@ -22,10 +22,10 @@ export default async function logQE() {
     const entry = buildQEEntry(inputs);
 
      // pass QEEntry to tauri command
-    const weatherRow = await dbPersistQEEntry(entry);
+    const weatherRows = await dbPersistQEEntry(entry);
 
-    // console.log(JSON.stringify(w, null, 2));
-    updateStateUponLog(inputs.qeForm, weatherRow);
+    // console.log(JSON.stringify(weatherRows, null, 2));
+    updateStateUponLog(inputs.qeForm, weatherRows);
 
   } catch(err) {
     toast.error("QE Log Error: failed to log to database.")
