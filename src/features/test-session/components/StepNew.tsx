@@ -4,8 +4,8 @@ import { useAtom } from "jotai";
 import { Button } from "@/components/ui/button";
 import { ModalBackButton } from "@/components/ui/modal";
 import { Input } from "@/components/ui/input";
-import { Test } from "../core/models";
-import { WindWarningConfig, activeWindConfigAtom } from "@/features/wind-warnings";
+import { TestSession, Test } from "../core/models";
+import { activeWindConfigAtom } from "@/features/wind-warnings";
 import { initiateTest } from "../core/sessionService";
 import { activeTestAtom } from "../state/testAtom";
 import { activeQEFormAtom, resetQEForm } from "@/features/qe-logging";
@@ -42,16 +42,16 @@ export default function NewView({ onBack, onSubmit, tests }: NewProps) {
         
         // submit the name and retrieve the Test and WindWarningConfig
         try {
-            const [test, windConfig]: [Test, WindWarningConfig] = await initiateTest(n);
-            setActiveTest(test);
-            setActiveConfig(windConfig);
-            setActiveQEForm(resetQEForm());
+          const testSession: TestSession= await initiateTest(n);
+          setActiveTest(testSession.test);
+          setActiveConfig(testSession.config);
+          setActiveQEForm(resetQEForm());
+          // close the modal
+          onSubmit();
         } catch (error) {
-            alert('error');
+          // TODO handle error
+          alert('error');
         }
-
-        // close the modal
-        onSubmit();
     };
 
     return (
