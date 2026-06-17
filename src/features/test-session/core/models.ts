@@ -1,5 +1,5 @@
 import type { WindWarningConfig } from "@/features/wind-warnings";
-import type { WeatherRow } from "@/features/qe-logging";
+import type { WeatherRow } from "@/features/qe-table";
 
 export interface Test {
   id: number;

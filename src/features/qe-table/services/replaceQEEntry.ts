@@ -1,7 +1,8 @@
 import { store } from "@/state/store"
 
-import { type WeatherRow, QEType } from "@/features/qe-logging";
-import { type QEKey } from "../core/qeKey";
+import type { QEType } from "@/features/qe-logging";
+import type { WeatherRow } from "../core/weatherRow";
+import type { QEKey } from "../core/qeKey";
 import { qeEntriesAtom } from "../state/qeEntries";
 import { removeQERows } from "../actions/removeQERows";
 

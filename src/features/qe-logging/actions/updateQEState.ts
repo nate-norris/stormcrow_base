@@ -1,7 +1,7 @@
 import { store } from "@/state";
 
 import { QEFormState } from "../core/qe-form";
-import { WeatherRow } from "../core/qe_outputs";
+import type { WeatherRow } from "@/features/qe-table";
 import { activeQEFormAtom } from "../state/loggingAtom";
 import { replaceQE } from "@/features/qe-table";
 

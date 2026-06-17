@@ -1,5 +1,5 @@
 import { atom } from "jotai";
 
-import { WeatherRow } from "@/features/qe-logging";
+import type { WeatherRow } from "../core/weatherRow";
 
 export const qeEntriesAtom = atom<WeatherRow[]>([]);
