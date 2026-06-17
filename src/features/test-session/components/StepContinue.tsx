@@ -2,13 +2,14 @@ import { useState } from "react";
 import { useAtom } from "jotai";
 
 import { TestSessionSelector } from "./sessionSelectorWidget";
-import { Test } from "../core/models";
-import { WindWarningConfig, activeWindConfigAtom } from "@/features/wind-warnings"
+import { Test, TestSession } from "../core/models";
+import { activeWindConfigAtom } from "@/features/wind-warnings"
 import { ModalBackButton } from "@/components/ui/modal";
 import { Button } from "@/components/ui/button";
 import { initiateTest } from "../core/sessionService";
 import { activeTestAtom } from "../state/testAtom";
 import { activeQEFormAtom, updateQEFormFromLast } from "@/features/qe-logging"; // TODO: looks like updateQEFormFromLast will be duplicating setActiveQEForm accessibility to the atom
+import { hydrateQEs } from "@/features/qe-table";
 
 // define the props
 type ContinueProps = {
@@ -36,10 +37,12 @@ export default function ContinueView({ onBack, onSubmit, tests, lastTest }: Cont
         try {
             const continuingTest = tests.find(test => test.id === selectedId);
             if (continuingTest) {
-                const [test, windConfig]: [Test, WindWarningConfig] =
+                const testSession: TestSession =
                     await initiateTest(continuingTest.name);
-                setActiveTest(test);
-                setActiveConfig(windConfig);
+
+                setActiveTest(testSession.test);
+                setActiveConfig(testSession.config);
+                hydrateQEs(testSession.qes);
                 // TODO: retrieve last QE and pass to update qe form
                 // setActiveQEForm(updateQEFormFromLast())
                 onSubmit(); // close the modal
