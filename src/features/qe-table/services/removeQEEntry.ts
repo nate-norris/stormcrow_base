@@ -1,13 +1,13 @@
 import { store } from "@/state/store"
 
 import { type QEKey } from "../core/qeKey";
-import { qeEntriesAtom } from "../state/qeEntries";
+import { weatherRowsAtom } from "../state/weatherRowsAtom";
 import { removeQERows } from "../actions/removeQERows";
 
 export function removeQE(key: QEKey) {
-  store.set(qeEntriesAtom,
+  store.set(weatherRowsAtom,
     removeQERows(
-      store.get(qeEntriesAtom),
+      store.get(weatherRowsAtom),
       key
     )
   );

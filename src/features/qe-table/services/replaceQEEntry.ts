@@ -3,7 +3,7 @@ import { store } from "@/state/store"
 import type { QEType } from "@/features/qe-logging";
 import type { WeatherRow } from "../core/weatherRow";
 import type { QEKey } from "../core/qeKey";
-import { qeEntriesAtom } from "../state/qeEntries";
+import { weatherRowsAtom } from "../state/weatherRowsAtom";
 import { removeQERows } from "../actions/removeQERows";
 
 export function replaceQE(rows: WeatherRow[]) {
@@ -18,8 +18,8 @@ export function replaceQE(rows: WeatherRow[]) {
         qeType: rows[0].qeType as QEType,
     }
     
-    const allRows = store.get(qeEntriesAtom);
-    store.set(qeEntriesAtom, [
+    const allRows = store.get(weatherRowsAtom);
+    store.set(weatherRowsAtom, [
         ...removeQERows(allRows, key),
         ...rows,
     ]);

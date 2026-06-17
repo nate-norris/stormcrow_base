@@ -4,24 +4,23 @@ import { useAtomValue } from "jotai";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import logQE from "../actions/logQE";
-import { type QEKey } from "@/features/qe-table";
 
 import { qeCountAtom, qeTypeAtom } from "../state/derivedLoggingAtom";
-import { qeEntriesAtom } from "@/features/qe-table/state/qeEntries";
+import { weatherRowsAtom } from "@/features/qe-table";
 
 // TODO: check overwrite based off testQEsAtom
 export default function LogQE() {
     const qeCount = useAtomValue(qeCountAtom);
     const qeType = useAtomValue(qeTypeAtom);
-    const qeEntries = useAtomValue(qeEntriesAtom);
+    const weatherRows = useAtomValue(weatherRowsAtom);
 
     const qeExists = useMemo(() => {
-        return qeEntries.some(
+        return weatherRows.some(
             row =>
                 row.count === qeCount &&
                 row.qeType === qeType
         );
-    }, [qeCount, qeType, qeEntries]);
+    }, [qeCount, qeType, weatherRows]);
 
     const handleClick = async () => {
         try {
