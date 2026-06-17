@@ -20,7 +20,6 @@ function Modal({ isOpen, onClose, children }: ModalProps) {
 
   return createPortal(
     <AnimatePresence>
-      <FocusLock>
         <div
           className="fixed inset-0 z-50 flex items-center justify-center bg-black/60"
           onMouseDown={() => onClose()}
@@ -41,7 +40,6 @@ function Modal({ isOpen, onClose, children }: ModalProps) {
             {children}
           </motion.div>
         </div>
-      </FocusLock>
     </AnimatePresence>,
     document.body
   );
