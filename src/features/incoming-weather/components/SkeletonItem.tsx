@@ -10,5 +10,5 @@ export function SkeletonWeather() {
         <Skeleton className="h-3 w-[120px]" />
       </div>
     </div>
-  )
+  );
 }
