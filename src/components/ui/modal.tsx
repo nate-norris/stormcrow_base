@@ -1,5 +1,4 @@
 import { createPortal } from "react-dom";
-import FocusLock from "react-focus-lock";
 import { motion, AnimatePresence } from "framer-motion";
 import { FiX, FiArrowLeft } from "react-icons/fi";
 
