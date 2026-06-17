@@ -1,15 +1,14 @@
 import { QEFormState, defaultQEFormValues } from "../core/qe-form";
-import { QEEntry } from "../core/qe-log";
+import type { WeatherRow } from "@/features/qe-table";
+import type { QEType } from "../core/qe-types";
 
-export function updateQEFormFromLast(last: QEEntry | null): QEFormState {
-  if (!last) {
-    return structuredClone(defaultQEFormValues);
-  }
+export function updateQEFormFromLast(last: WeatherRow | null): QEFormState {
+  if (!last) return structuredClone(defaultQEFormValues);
 
   return {
-    dodic: "",
-    lot: "",
-    qeType: last.base.qeType,
-    qeCount: last.base.count + 1,
+    dodic: last.dodic,
+    lot: last.lot,
+    qeType: last.qeType as QEType,
+    qeCount: last.count + 1,
   };
 }
