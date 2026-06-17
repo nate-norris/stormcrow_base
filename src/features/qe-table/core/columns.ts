@@ -42,5 +42,8 @@ export const columns: ColumnDef<QETableRow>[] = [
     {
         accessorKey: "time",
         header: "Time",
+        cell: ({ getValue }) => {
+            return new Date(getValue<number>()).toLocaleDateString();
+        },
     },
 ];
