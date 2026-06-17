@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { useAtom } from "jotai";
 
+import { store } from "@/state/store"
 import { TestSessionSelector } from "./sessionSelectorWidget";
 import { Test, TestSession } from "../core/models";
 import { activeWindConfigAtom } from "@/features/wind-warnings"
@@ -9,7 +10,7 @@ import { Button } from "@/components/ui/button";
 import { initiateTest } from "../core/sessionService";
 import { activeTestAtom } from "../state/testAtom";
 import { activeQEFormAtom, updateQEFormFromLast } from "@/features/qe-logging"; // TODO: looks like updateQEFormFromLast will be duplicating setActiveQEForm accessibility to the atom
-import { hydrateQEs } from "@/features/qe-table";
+import { hydrateQEs, lastWeatherRowAtom, type WeatherRow } from "@/features/qe-table";
 
 // define the props
 type ContinueProps = {
@@ -40,15 +41,18 @@ export default function ContinueView({ onBack, onSubmit, tests, lastTest }: Cont
                 const testSession: TestSession =
                     await initiateTest(continuingTest.name);
 
-                setActiveTest(testSession.test);
-                setActiveConfig(testSession.config);
-                hydrateQEs(testSession.qes);
-                // TODO: retrieve last QE and pass to update qe form
-                // setActiveQEForm(updateQEFormFromLast())
-                onSubmit(); // close the modal
+                setActiveTest(testSession.test); // set test atom
+                setActiveConfig(testSession.config); // set config atom
+                hydrateQEs(testSession.qes); // load weather rows into atom
+                // update the qe-logging form from the last QE
+                const lastWeather: WeatherRow | null = store.get(lastWeatherRowAtom)
+                setActiveQEForm(updateQEFormFromLast(lastWeather));
+                // close the modal
+                onSubmit();
             }
         } catch (error) {
             alert(error);
+            //TODO: handle error
         }
     };
 
