@@ -7,7 +7,17 @@ import { QETableRow } from "../core/tableRow";
 export const columns: ColumnDef<QETableRow>[] = [
     {
         accessorKey: "qeKey",
-        header: "QE",
+        header: ({ column }) => {
+            return (
+                <Button 
+                    variant="ghost"
+                    onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+                >
+                    <ArrowUpDown className="ml-2 h-4 w-4" />
+                    QE
+                </Button>
+            )
+        },
     },
     {
         accessorKey: "dodic",
@@ -43,7 +53,17 @@ export const columns: ColumnDef<QETableRow>[] = [
     },
     {
         accessorKey: "time",
-        header: "Time",
+        header: ({ column }) => {
+            return (
+                <Button 
+                    variant="ghost"
+                    onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+                >
+                    <ArrowUpDown className="ml-2 h-4 w-4" />
+                    Time
+                </Button>
+            )
+        },
         cell: ({ getValue }) => {
             // return new Date(getValue<number>()).toLocaleTimeString();
             return new Intl.DateTimeFormat("en-US", {
