@@ -1,4 +1,6 @@
 import { ColumnDef } from "@tanstack/react-table";
+import { ArrowUpDown } from "lucide-react";
+import { Button } from "@/components/ui/button";
 
 import { QETableRow } from "../core/tableRow";
 
@@ -43,7 +45,20 @@ export const columns: ColumnDef<QETableRow>[] = [
         accessorKey: "time",
         header: "Time",
         cell: ({ getValue }) => {
-            return new Date(getValue<number>()).toLocaleDateString();
+            // return new Date(getValue<number>()).toLocaleTimeString();
+            return new Intl.DateTimeFormat("en-US", {
+                hour: "2-digit",
+                minute: "2-digit",
+                second: "2-digit",
+                hour12: false,
+            }).format(new Date(getValue<number>()));
+        },
+    },
+    {
+        id: "actions",
+        cell: ({row}) => {
+            const rowId = row.original.id
+
         },
     },
 ];
