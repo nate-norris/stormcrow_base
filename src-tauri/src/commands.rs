@@ -2,7 +2,7 @@
 //! 
 use crate::t_state::{DbState, SpeakerState};
 use crate::lib_sqlx::{QEDeleteSite, QEBase, QEEntry, TestSession, Test, WindWarningConfig, WeatherRow, 
-    delete_qe_site, delete_test, get_last_test, get_tests, initiate_test, 
+    delete_qe_site, delete_qe, delete_test, get_last_test, get_tests, initiate_test, 
     get_test_qes, insert_new_qe, update_configuration, reassign_qe};
 use utils::speaker::SpeakerNotification;
 
@@ -66,6 +66,15 @@ pub async fn delete_qe_site_command(state: tauri::State<'_, DbState>, qe_site: Q
     -> Result<(), String> {
     let pool = state.0.as_ref();
     delete_qe_site(pool, qe_site)
+        .await
+        .map_err(|_| "Failed to delete QE".to_string())
+}
+
+#[tauri::command]
+pub async fn delete_qe_command(state: tauri::State<'_, DbState>, base: QEBase)
+    -> Result<(), String> {
+    let pool = state.0.as_ref();
+    delete_qe(pool, base)
         .await
         .map_err(|_| "Failed to delete QE".to_string())
 }
