@@ -8,10 +8,9 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
 
-import type { QEKey } from "../core/qeKey";
-import { QETableRow } from "../core/tableRow";
+import type { QETableRow } from "../core/tableRow";
 import { removeQE } from "../services/removeQEEntry";
-import { QEType } from "@/features/qe-logging";
+import { parseQEKey } from "../actions/parseQEKey";
 
 export const columns: ColumnDef<QETableRow>[] = [
     {
@@ -86,15 +85,8 @@ export const columns: ColumnDef<QETableRow>[] = [
     {
         id: "actions",
         cell: ({ row }) => {
-            // create QEKey from string qeKey
-            const idx = row.original.qeKey.search(/\D/);
-            const count = Number(row.original.qeKey.slice(0, idx));
-            const qeType = row.original.qeKey.slice(idx);
-            const key: QEKey =  {
-                count: count,
-                qeType: qeType as QEType,
-            }
-        
+            const key = parseQEKey(row.original.qeKey);
+
             return (
                 <DropdownMenu>
                     <DropdownMenuTrigger asChild>
