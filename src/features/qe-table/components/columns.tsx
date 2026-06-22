@@ -1,8 +1,17 @@
 import { ColumnDef } from "@tanstack/react-table";
-import { ArrowUpDown } from "lucide-react";
+import { ArrowUpDown, MoreHorizontal } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu"
 
+import type { QEKey } from "../core/qeKey";
 import { QETableRow } from "../core/tableRow";
+import { removeQE } from "../services/removeQEEntry";
+import { QEType } from "@/features/qe-logging";
 
 export const columns: ColumnDef<QETableRow>[] = [
     {
@@ -76,9 +85,35 @@ export const columns: ColumnDef<QETableRow>[] = [
     },
     {
         id: "actions",
-        cell: ({row}) => {
-            const rowId = row.original.id
-
+        cell: ({ row }) => {
+            // create QEKey from string qeKey
+            const idx = row.original.qeKey.search(/\D/);
+            const count = Number(row.original.qeKey.slice(0, idx));
+            const qeType = row.original.qeKey.slice(idx);
+            const key: QEKey =  {
+                count: count,
+                qeType: qeType as QEType,
+            }
+        
+            return (
+                <DropdownMenu>
+                    <DropdownMenuTrigger asChild>
+                        <Button variant="ghost" className="h-8 w-8 p-0">
+                        <span className="sr-only">Open menu</span>
+                        <MoreHorizontal className="h-4 w-4" />
+                        </Button>
+                    </DropdownMenuTrigger>
+                    <DropdownMenuContent align="end">
+                        {/* <DropdownMenuLabel>Actions</DropdownMenuLabel> */}
+                        <DropdownMenuItem
+                            onClick={() => removeQE(key)}
+                        >
+                            Delete
+                        </DropdownMenuItem>
+                        <DropdownMenuItem>Reassign</DropdownMenuItem>
+                    </DropdownMenuContent>
+                </DropdownMenu>
+            )
         },
     },
 ];
