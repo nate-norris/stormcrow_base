@@ -163,3 +163,8 @@ pub async fn delete_qe_site(pool: &DbPool, qe_site: QEDeleteSite) ->
     Result<(), sqlx::Error> {
     q_qe::delete_qe_site(pool, &qe_site).await
 }
+
+pub async fn delete_qe(pool: &DbPool, base: QEBase) ->
+    Result<(), sqlx::Error> {
+    q_qe::delete_qe(pool, &base).await
+}
