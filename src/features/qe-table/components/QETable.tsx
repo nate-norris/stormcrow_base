@@ -2,7 +2,7 @@ import { useAtomValue } from "jotai";
 
 import { qeTableRowsAtom } from "../state/tableRowsAtom";
 import { DataTable } from "./DataTable";
-import { columns } from "../core/columns";
+import { columns } from "./columns";
 
 export default function QETable() {
     const rows = useAtomValue(qeTableRowsAtom);
