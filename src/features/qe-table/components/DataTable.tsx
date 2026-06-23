@@ -34,7 +34,7 @@ export function DataTable<TData, TValue>({columns, data,}:
             <TableRow key={headerGroup.id} className="hover:bg-slate-600">
               {headerGroup.headers.map((header) => {
                 return (
-                  <TableHead key={header.id} className="text-white">
+                  <TableHead key={header.id} className="text-white text-center">
                     {header.isPlaceholder
                       ? null
                       : flexRender(
@@ -53,7 +53,7 @@ export function DataTable<TData, TValue>({columns, data,}:
               <TableRow
                 key={row.id}
                 data-state={row.getIsSelected() && "selected"}
-                className="bg-slate-500 text-white"
+                className="bg-slate-500 text-white text-center"
               >
                 {row.getVisibleCells().map((cell) => (
                   <TableCell key={cell.id}>
