@@ -14,20 +14,20 @@ import {
 import type { QEKey } from "../core/qeKey";
 
 type ConfirmDeleteProps = {
-  qeKey: QEKey | null;
+  qeKey: QEKey;
   onCancel: () => void;
   onConfirm: (key: QEKey) => void;
 };
 
 export function AlertDeleteDialog({qeKey, onCancel, onConfirm}: ConfirmDeleteProps) {
   return (
-    <AlertDialog open={qeKey !== null} onOpenChange={(o) => !o && onCancel()}>
+    <AlertDialog open={!!qeKey} onOpenChange={(o) => !o && onCancel()}>
       <AlertDialogContent size="sm" className="bg-white">
         <AlertDialogHeader>
           <AlertDialogMedia className="bg-destructive/10 text-destructive dark:bg-destructive/20 dark:text-destructive">
             <Trash2Icon />
           </AlertDialogMedia>
-          <AlertDialogTitle>Delete QE {qeKey?.count}{qeKey?.qeType}?</AlertDialogTitle>
+          <AlertDialogTitle>Delete QE {qeKey.count}{qeKey.qeType}?</AlertDialogTitle>
           <AlertDialogDescription>
             This will permanently delete all site data associated with this quality evaluation.
           </AlertDialogDescription>
@@ -35,10 +35,7 @@ export function AlertDeleteDialog({qeKey, onCancel, onConfirm}: ConfirmDeletePro
         <AlertDialogFooter>
           <AlertDialogCancel variant="outline">Cancel</AlertDialogCancel>
           <AlertDialogAction 
-            onClick={() => {
-                if (!qeKey) return; 
-                onConfirm(qeKey)} 
-            }
+            onClick={() => onConfirm(qeKey)} 
             variant="destructive">
             Delete
           </AlertDialogAction>
