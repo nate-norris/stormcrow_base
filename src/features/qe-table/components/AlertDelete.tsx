@@ -27,7 +27,7 @@ export function AlertDeleteDialog({qeKey, onCancel, onConfirm}: ConfirmDeletePro
           <AlertDialogMedia className="bg-destructive/10 text-destructive dark:bg-destructive/20 dark:text-destructive">
             <Trash2Icon />
           </AlertDialogMedia>
-          <AlertDialogTitle>Delete QE {qeKey.count}{qeKey.qeType}?</AlertDialogTitle>
+          <AlertDialogTitle className="font-bold">Delete QE {qeKey.count}{qeKey.qeType}?</AlertDialogTitle>
           <AlertDialogDescription>
             This will permanently delete all site data associated with this quality evaluation.
           </AlertDialogDescription>
