@@ -1,6 +1,7 @@
 import { useState, useMemo } from "react";
 import { useAtomValue } from "jotai";
 import { ReplaceIcon } from "lucide-react"
+import { toast } from "sonner";
 
 import {
   AlertDialog,
@@ -15,15 +16,16 @@ import {
 } from "@/components/ui/alert-dialog"
 import { Badge } from "@/components/ui/badge";
 import type { QEKey } from "../core/qeKey";
-import { QEType } from "@/features/qe-logging/";
+import { type QEBase, type QEType } from "@/features/qe-logging/";
 import { QECountSpinner } from "./QECountSpinner";
 import { QETypeSelector } from "./QETypeSelector";
 import { weatherRowsAtom } from "../state/weatherRowsAtom";
+import { buildQEBaseFromKey } from "../actions/buildQEBaseFromKey";
 
 type ConfirmDeleteProps = {
   qeKey: QEKey;
   onCancel: () => void;
-  onConfirm: (key: QEKey) => void;
+  onConfirm: (source: QEBase, destination: QEBase) => void;
 };
 
 export function AlertReassignDialog({qeKey, onCancel, onConfirm}: ConfirmDeleteProps) {
@@ -32,13 +34,36 @@ export function AlertReassignDialog({qeKey, onCancel, onConfirm}: ConfirmDeleteP
   const [qet, setQet] = useState<QEType>(qeKey.qeType);
   const weatherRows = useAtomValue(weatherRowsAtom);
 
-  const isOverwriting = useMemo(() => {
+  const isOverwriting: boolean = useMemo(() => {
     return weatherRows.some(
       row =>
         row.count === count &&
         row.qeType === qet
     );
   }, [count, qet, weatherRows]);
+  
+  const isSourceDestionationSame: boolean = useMemo(() => {
+    return qeKey.count === count && qeKey.qeType === qet;
+  }, [count, qet]);
+
+  function prepareReassignment() {
+    const source = buildQEBaseFromKey(qeKey);
+    const destination = buildQEBaseFromKey({
+      count: count,
+      qeType: qet,
+    });
+    // confirm proper source and destination
+    if (!source || !destination) return;
+
+    try {
+      onConfirm(source, destination);
+      toast.success("QE reassignment success")
+
+    } catch (err) {
+      toast.error("QE reassignment failed");
+      //TODO: log error
+    }
+  }
 
   return (
     <AlertDialog open={!!qeKey} onOpenChange={(o) => !o && onCancel()}>
@@ -52,8 +77,8 @@ export function AlertReassignDialog({qeKey, onCancel, onConfirm}: ConfirmDeleteP
             This will overwrite any previous quality evalution sites at the new destination.
           </AlertDialogDescription>
         </AlertDialogHeader>
-        <div className="flex justify-center gap-x-4">
-          <div className="text-lg font-semibold">Destination</div>
+        <div className="grid grid-cols-2 gap-x-4">
+          <div className="text-lg font-semibold ml-auto">Destination</div>
           {isOverwriting && <Badge variant="destructive">Overwriting</Badge>}
         </div>
         <div className="flex gap-x-4 justify-center">
@@ -61,9 +86,11 @@ export function AlertReassignDialog({qeKey, onCancel, onConfirm}: ConfirmDeleteP
             <QETypeSelector val={qet} setVal={setQet} />
         </div>
         <AlertDialogFooter>
+          {isSourceDestionationSame && <div className="mt-1 mr-5 font-small text-red-500">Select a new destination</div>}
           <AlertDialogCancel variant="outline">Cancel</AlertDialogCancel>
-          <AlertDialogAction 
-            onClick={() => onConfirm(qeKey)}
+          <AlertDialogAction
+            disabled={isSourceDestionationSame}
+            onClick={() => prepareReassignment()}
             variant="destructive">
             Reassign
           </AlertDialogAction>
