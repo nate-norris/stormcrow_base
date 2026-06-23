@@ -13,8 +13,8 @@ export default function buildQEEntry(storeInputs: QEInputs): QEEntry {
   if (!storeInputs.test) 
     throw new Error("Test selection required to log QEs.");
 
-  const base: QEBase = buildQEBase(storeInputs.test, storeInputs.qeForm);
-  const config: QEConfiguration = buildQEConfiguration(storeInputs.qeForm, 
+  const base: QEBase = buildQEFormBase(storeInputs.test, storeInputs.qeForm);
+  const config: QEConfiguration = buildQEFormConfiguration(storeInputs.qeForm, 
     storeInputs.warnConfig);
   const sites: SiteWeatherInput[] = 
     buildSiteWeatherInputs(storeInputs.observers);
@@ -26,7 +26,7 @@ export default function buildQEEntry(storeInputs: QEInputs): QEEntry {
   };
 }
 
-function buildQEBase(test: Test, form: QEFormState): QEBase {
+function buildQEFormBase(test: Test, form: QEFormState): QEBase {
   return {
     count: form.qeCount,
     qeType: form.qeType,
@@ -34,7 +34,7 @@ function buildQEBase(test: Test, form: QEFormState): QEBase {
   };
 }
 
-function buildQEConfiguration(form: QEFormState, windConfig: WindWarningConfig): 
+function buildQEFormConfiguration(form: QEFormState, windConfig: WindWarningConfig): 
   QEConfiguration {
   return {
     dodic: form.dodic,
