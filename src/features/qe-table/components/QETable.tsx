@@ -33,7 +33,7 @@ export default function QETable() {
 
     return (
         <>
-            <div className="container mx-auto py-10">
+            <div className="container mx-auto py-5">
                 <DataTable columns={createColumns(onDeleteRequest, onReassignRequest)} data={rows} />
             </div>
 
