@@ -8,7 +8,6 @@ import logQE from "../actions/logQE";
 import { qeCountAtom, qeTypeAtom } from "../state/derivedLoggingAtom";
 import { weatherRowsAtom } from "@/features/qe-table";
 
-// TODO: check overwrite based off testQEsAtom
 export default function LogQE() {
     const qeCount = useAtomValue(qeCountAtom);
     const qeType = useAtomValue(qeTypeAtom);
