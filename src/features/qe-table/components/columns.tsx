@@ -12,7 +12,9 @@ import type { QETableRow } from "../core/tableRow";
 import type { QEKey } from "../core/qeKey";
 import { parseQEKey } from "../actions/parseQEKey";
 
-export function createColumns(onDeleteRequest: (key: QEKey) => void):
+export function createColumns(
+    onDeleteRequest: (key: QEKey) => void, 
+    onReassignRequest: (key: QEKey) => void):
     ColumnDef<QETableRow>[] {
     return [
         {
@@ -100,11 +102,13 @@ export function createColumns(onDeleteRequest: (key: QEKey) => void):
                         <DropdownMenuContent align="end">
                             {/* <DropdownMenuLabel>Actions</DropdownMenuLabel> */}
                             <DropdownMenuItem
-                                onClick={() => onDeleteRequest(key)}
-                            >
+                                onClick={() => onDeleteRequest(key)}>
                                 Delete
                             </DropdownMenuItem>
-                            <DropdownMenuItem>Reassign</DropdownMenuItem>
+                            <DropdownMenuItem
+                                onClick={() => onReassignRequest(key)}>
+                                Reassign
+                            </DropdownMenuItem>
                         </DropdownMenuContent>
                     </DropdownMenu>
                 )
