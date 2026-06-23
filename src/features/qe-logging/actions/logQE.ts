@@ -24,7 +24,6 @@ export default async function logQE() {
      // pass QEEntry to tauri command
     const weatherRows = await dbPersistQEEntry(entry);
 
-    // console.log(JSON.stringify(weatherRows, null, 2));
     updateStateUponLog(inputs.qeForm, weatherRows);
 
   } catch(err) {
