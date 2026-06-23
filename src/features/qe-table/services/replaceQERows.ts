@@ -3,7 +3,7 @@ import { weatherRowsAtom } from "../state/weatherRowsAtom";
 import type { QEType } from "@/features/qe-logging";
 import type { WeatherRow } from "../core/weatherRow";
 import type { QEKey } from "../core/qeKey";
-import { rowsNotSpecifiedByKey } from "./rowsNotByKey";
+import { rowsNotSpecifiedByKey } from "../actions/rowsNotByKey";
 
 export function replaceQERows(newRows: WeatherRow[]) {
     // no qe to delete
