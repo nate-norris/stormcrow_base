@@ -149,13 +149,12 @@ pub async fn reassign_qe(pool: &DbPool, qe_source: QEBase, qe_destination: QEBas
     //      all other values stay the same
     entry.base = qe_destination;
     // initiate transaction for all queries executed simultaneous
-    let mut tx = pool.begin().await?;
     let mut rows = Vec::new();
     for qe_site in entry.sites.iter() {
         let r = q_qe::insert_qe_site(&mut *tx, &entry.base, &entry.config, qe_site).await?;
         rows.push(r);
     } 
-
+    tx.commit().await?;
     Ok(rows)
 }
 
