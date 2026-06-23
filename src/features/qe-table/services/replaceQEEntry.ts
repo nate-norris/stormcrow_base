@@ -1,28 +1,21 @@
-import { store } from "@/state/store"
-
 import type { QEType } from "@/features/qe-logging";
 import type { WeatherRow } from "../core/weatherRow";
 import type { QEKey } from "../core/qeKey";
-import { weatherRowsAtom } from "../state/weatherRowsAtom";
-import { removeQERows } from "../actions/removeQERows";
+import { replaceQERowsWithNewRows } from "../actions/removeQERows";
 
-export function replaceQE(rows: WeatherRow[]) {
+export function replaceQEInTable(newRows: WeatherRow[]) {
     // no qe to delete
-    if (rows.length === 0) return;
-    // rows provided are not apart of the same QE
-    if (!isSingleQE(rows)) 
+    if (newRows.length === 0) return;
+    // confirm no mixing of QEs and has same QEKey
+    if (!isSingleQE(newRows)) 
         throw new Error("Test selection required to log QEs.");
     
+    // add to table row source
     const key: QEKey = {
-        count: rows[0].count,
-        qeType: rows[0].qeType as QEType,
+        count: newRows[0].count,
+        qeType: newRows[0].qeType as QEType,
     }
-    
-    const allRows = store.get(weatherRowsAtom);
-    store.set(weatherRowsAtom, [
-        ...removeQERows(allRows, key),
-        ...rows,
-    ]);
+    replaceQERowsWithNewRows(newRows, key);
 }
 
 function isSingleQE(rows: WeatherRow[]): boolean {
