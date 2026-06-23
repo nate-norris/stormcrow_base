@@ -1,22 +1,14 @@
 import { store } from "@/state/store"
-
-import { QEBase } from "@/features/qe-logging";
-import { activeTestAtom } from "@/features/test-session";
 import { type QEKey } from "../core/qeKey";
 import { weatherRowsAtom } from "../state/weatherRowsAtom";
 import { removeQERows } from "../actions/removeQERows";
 import { removeQEDatabase } from "../actions/removeQEDatabase";
+import { buildQEBaseFromKey } from "../actions/buildQEBaseFromKey";
 
 export async function removeQE(key: QEKey) {
-  const test = store.get(activeTestAtom);
-  if (!test) return;
+  const base = buildQEBaseFromKey(key);
+  if (!base) return;
 
-  // remove from database
-  const base: QEBase = {
-    count: key.count,
-    qeType: key.qeType,
-    testId: test?.id,
-  }
   await removeQEDatabase(base);
 
   // update UI table
