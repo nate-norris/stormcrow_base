@@ -1,9 +1,11 @@
+import { store } from "@/state/store"
+import { weatherRowsAtom } from "../state/weatherRowsAtom";
 import type { QEType } from "@/features/qe-logging";
 import type { WeatherRow } from "../core/weatherRow";
 import type { QEKey } from "../core/qeKey";
-import { replaceQERowsWithNewRows } from "../actions/removeQERows";
+import { rowsNotSpecifiedByKey } from "./rowsNotByKey";
 
-export function replaceQEInTable(newRows: WeatherRow[]) {
+export function replaceQERows(newRows: WeatherRow[]) {
     // no qe to delete
     if (newRows.length === 0) return;
     // confirm no mixing of QEs and has same QEKey
@@ -15,7 +17,12 @@ export function replaceQEInTable(newRows: WeatherRow[]) {
         count: newRows[0].count,
         qeType: newRows[0].qeType as QEType,
     }
-    replaceQERowsWithNewRows(newRows, key);
+
+    // drop any previous rows at QEKey and add new rows
+    store.set(weatherRowsAtom, [
+    ...rowsNotSpecifiedByKey(store.get(weatherRowsAtom), key),
+    ...newRows,
+  ]);
 }
 
 function isSingleQE(rows: WeatherRow[]): boolean {
