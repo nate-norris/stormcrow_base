@@ -91,6 +91,7 @@ pub fn run() {
             reassign_qe_command,
             speaker_command
         ])
+        .plugin(tauri_plugin_dialog::init())
         .run(tauri::generate_context!())
         .expect("error while running tauri application");
 }
