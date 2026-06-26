@@ -14,7 +14,7 @@ export function LoggingView() {
     <div className="flex h-full min-h-0">
       {/* LEFT SIDE PANEL */}
       <div className="w-1/5 max-w-96 min-w-72 p-2 min-h-0 flex flex-col bg-gray-500">
-        <Accordion type="multiple" defaultValue={["sites"]} className="flex-1 overflow-auto">
+        <Accordion type="multiple" defaultValue={["sites"]} className="flex-1 overflow-auto [scrollbar-gutter:stable]">
           <AccordionItem value="sites" className="">
             <AccordionTrigger>Weather Sites</AccordionTrigger>
             <AccordionContent className="h-96">
