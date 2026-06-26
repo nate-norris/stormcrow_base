@@ -1,9 +1,11 @@
 //! Define tauri commands that are available outside of any specific module/file
 //! 
 use crate::t_state::{DbState, SpeakerState};
-use crate::lib_sqlx::{QEDeleteSite, QEBase, QEEntry, TestSession, Test, WindWarningConfig, WeatherRow, 
-    delete_qe_site, delete_qe, delete_test, get_last_test, get_tests, initiate_test, 
-    get_test_qes, insert_new_qe, update_configuration, reassign_qe};
+use crate::lib_sqlx::{QEDeleteSite, QEBase, QEEntry, TestSession, Test, 
+    WindWarningConfig, WeatherRow, 
+    delete_qe_site, delete_qe, delete_test, get_last_test, get_tests, 
+    initiate_test, get_test_qes, insert_new_qe, update_configuration, 
+    reassign_qe, export_test_qes};
 use utils::speaker::SpeakerNotification;
 
 #[tauri::command]
@@ -105,6 +107,15 @@ pub async fn speaker_command(state: tauri::State<'_, SpeakerState>,
     tx.send(notification)
         .await
         .map_err(|e| e.to_string())
+}
+
+#[tauri::command]
+pub async fn export_test_to_path_command(state: tauri::State<'_, DbState>, 
+    test_id: i64, path: String) -> Result<(), String> {
+    let pool = state.0.as_ref();
+    export_test_qes(pool, test_id, path)
+        .await 
+        .map_err(|_| "Failed to export test data".to_string()) 
 }
 
 // #[tauri::command]

@@ -2,6 +2,9 @@
 //! returns Result<T, sqlx::Error>
 //! 
 use chrono::{Utc};
+use csv::Writer;
+use std::fs::File;
+use anyhow::Result as AnyhowResult;
 
 use super::models::{TestSession, NewTest, Test, WindWarningConfig, QEDeleteSite, QEBase, WeatherRow};//, VelocityType, DegreesCircle, Percent};
 use super::schema::DbPool;
@@ -166,4 +169,18 @@ pub async fn delete_qe_site(pool: &DbPool, qe_site: QEDeleteSite) ->
 pub async fn delete_qe(pool: &DbPool, base: QEBase) ->
     Result<(), sqlx::Error> {
     q_qe::delete_qe(pool, &base).await
+}
+
+pub async fn export_test_qes(pool: &DbPool, test_id: i64, path: String) ->
+    AnyhowResult<()> {
+    let qes = q_qe::get_test_qes(pool, test_id).await?;
+    let file = File::create(path)?;
+
+    let mut writer = Writer::from_writer(file);
+    for qe in qes {
+        writer.serialize(qe.export())?;
+    }
+    writer.flush()?;
+
+    Ok(())
 }

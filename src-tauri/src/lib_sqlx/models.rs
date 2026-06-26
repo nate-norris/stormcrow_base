@@ -7,6 +7,7 @@
 // use sqlx::FromRow;
 use serde::{Serialize, Deserialize};
 use sqlx::FromRow;
+use chrono::{DateTime, Local};
 
 /// Represents a row in `test` table
 /// 
@@ -117,6 +118,53 @@ pub struct WeatherRow {
     pub baro: f64, //inHg
     pub time: i64,
     pub test_id: i64 //FK
+}
+
+impl WeatherRow {
+    pub fn export(self) -> ExportWeatherRow {
+        let time = DateTime::from_timestamp_millis(self.time)
+            .unwrap()
+            .with_timezone(&Local)
+            .format("%m/%d/%Y %H:%M:%S")
+            .to_string();
+
+        ExportWeatherRow {
+            site_id: self.site_id,
+            altitude: self.altitude,
+            gun_orient: self.gun_orient,
+            count: self.count,
+            qe_type: self.qe_type,
+            dodic: self.dodic,
+            lot: self.lot,
+            wind_full: self.wind_full,
+            wind_direction: self.wind_direction,
+            cross: self.cross,
+            tail: self.tail,
+            temp: self.temp,
+            humidity: self.humidity,
+            baro: self.baro,
+            time,
+        }
+    }
+}
+
+#[derive(Serialize)]
+pub struct ExportWeatherRow {
+    site_id: String,
+    altitude: i64,
+    gun_orient: i64,
+    count: i64,
+    qe_type: String,
+    dodic: String,
+    lot: String,
+    wind_full: f64,
+    wind_direction: f64,
+    cross: f64,
+    tail: f64,
+    temp: f64,
+    humidity: f64,
+    baro: f64,
+    time: String,
 }
 
 #[derive(Debug, Clone, Deserialize)]
