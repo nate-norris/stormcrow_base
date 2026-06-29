@@ -1,6 +1,6 @@
 import { toast } from "sonner";
 
-import { speakerNotify, SpeakerNotification } from "@/lib/sound-notifications";
+import { speakerNotify, SpeakerNotification } from "@/tauri";
 import { gatherQEStoreInputs } from "./gatherStore";
 import { canLogQE } from "./validateQE";
 import { default as buildQEEntry } from "./buildQEEntry";
