@@ -39,8 +39,6 @@ export default class WeatherStreamProcessor {
     }
 
     private publish(obs: WeatherObservation) {
-        console.log("publishing weather observation");
-        console.log(obs);
         store.set(updateWeatherObserversAtom, {
             type: "observation",
             data: obs,
