@@ -6,7 +6,7 @@ import { ModalBackButton } from "@/components/ui/modal";
 import { Input } from "@/components/ui/input";
 import { TestSession, Test } from "../core/models";
 import { activeWindConfigAtom } from "@/features/wind-warnings";
-import { initiateTest } from "../core/sessionService";
+import { initiateTest } from "@/tauri";
 import { activeTestAtom } from "../state/testAtom";
 import { activeQEFormAtom, resetQEForm } from "@/features/qe-logging";
 

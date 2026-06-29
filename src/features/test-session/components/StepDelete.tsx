@@ -5,7 +5,7 @@ import { ModalBackButton } from "@/components/ui/modal";
 import { Button } from "@/components/ui/button";
 import { Test } from "../core/models";
 import { TestSessionSelector } from "./sessionSelectorWidget";
-import { deleteTest } from "../core/sessionService";
+import { deleteTest } from "@/tauri";
 import { activeTestAtom } from "../state/testAtom";
 
 import {

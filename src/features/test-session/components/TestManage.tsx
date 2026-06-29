@@ -7,7 +7,7 @@ import NewView from "./StepNew";
 import ContinueView from "./StepContinue";
 import DeleteView from "./StepDelete";
 import { createNavigation } from "../core/navigation";
-import * as service from "../core/sessionService";
+import { testService } from "@/tauri";
 
 /*
 TODO:
@@ -64,13 +64,13 @@ export default function TestManagement({ onComplete, allowDefaultContinue }: Pro
     // populate tests and last test
     const loadModal = async () => {
         // all test sessions
-        const t = await service.getTests();
+        const t = await testService.getTests();
         if (t) {
             setTests(t);
         }
         
         // last loaded test session for determining default step
-        const lt = await service.getLastTest();
+        const lt = await testService.getLastTest();
         if (lt) {
             setLastTest(lt);
         }

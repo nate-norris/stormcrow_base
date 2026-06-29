@@ -7,7 +7,7 @@ import { Test, TestSession } from "../core/models";
 import { activeWindConfigAtom } from "@/features/wind-warnings"
 import { ModalBackButton } from "@/components/ui/modal";
 import { Button } from "@/components/ui/button";
-import { initiateTest } from "../core/sessionService";
+import { initiateTest } from "@/tauri";
 import { activeTestAtom } from "../state/testAtom";
 import { activeQEFormAtom, updateQEFormFromLast } from "@/features/qe-logging"; // TODO: looks like updateQEFormFromLast will be duplicating setActiveQEForm accessibility to the atom
 import { hydrateQEs, lastWeatherRowAtom, type WeatherRow } from "@/features/qe-table";
