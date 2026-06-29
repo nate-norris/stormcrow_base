@@ -1,6 +1,7 @@
 import { store } from "@/state/store"
 import { WeatherPacket, WindCalcs, WeatherObservation, WeatherStatus } from "./models";
-import { updateWeatherObserversAtom, deleteWeatherObserverAtom } from "../state/weatherObserversAtom";
+import { updateWeatherObserversAtom } from "../state/weatherObserversAtom";
+import { deleteWeatherObserverAtom } from "../state/deleteWeatherObserverAtom";
 import { updateWindLogAtom, deleteWindLogAtom } from "@/features/wind-log";
 import { getWindCalculations, getWindState } from "./windCalculations";
 
