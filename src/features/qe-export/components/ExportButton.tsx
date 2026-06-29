@@ -3,8 +3,7 @@ import { useAtomValue } from "jotai";
 import { toast } from "sonner";
 
 import { Button } from "@/components/ui/button";
-import { getSavePath } from "../actions/getSavePath";
-import { saveTestQEsToPath } from "../actions/saveTestQEsToPath";
+import { saveTestQEsToPath, getSavePath } from "@/tauri";
 import { activeTestAtom } from "@/features/test-session";
 import { canExportAtom } from "../state/canExportAtom";
 
