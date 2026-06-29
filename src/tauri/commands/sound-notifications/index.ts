@@ -1,2 +1,2 @@
-export { speakerNotify } from "./service";
+export { speakerNotify } from "./speakerNotify";
 export { SpeakerNotification } from "./models";

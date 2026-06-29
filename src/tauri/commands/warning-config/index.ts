@@ -1,0 +1,1 @@
+export { persistWindWarningConfig } from "./persisteWindWarningConfig";
