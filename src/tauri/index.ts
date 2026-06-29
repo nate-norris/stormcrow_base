@@ -1,7 +1,6 @@
-export { saveTestQEsToPath } from "./commands/saveTestQEsToPath";
-export { getSavePath } from "./filesystem/getSavePath";
-export { dbPersistQEEntry } from "./commands/persisteQE";
-export { reassignQEDatabase } from "./commands/reassignQEDatabase";
+// qe commands
+export { saveTestQEsToPath, dbPersistQEEntry, reassignQEDatabase, 
+    removeQEDatabase } from "./commands/qe";
 
 // test commands
 export * as testService from "./commands/test";
@@ -12,3 +11,6 @@ export { persistWindWarningConfig } from "./commands/warning-config";
 
 // sound notifications
 export { speakerNotify, SpeakerNotification } from "./commands/sound-notifications";
+
+// tauri utilities
+export { getSavePath } from "./filesystem/getSavePath";
