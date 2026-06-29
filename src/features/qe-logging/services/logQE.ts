@@ -1,11 +1,10 @@
 import { toast } from "sonner";
 
-import { speakerNotify, SpeakerNotification } from "@/tauri";
-import { gatherQEStoreInputs } from "./gatherStore";
-import { canLogQE } from "./validateQE";
-import { default as buildQEEntry } from "./buildQEEntry";
-import { dbPersistQEEntry } from "@/tauri";
-import { updateStateUponLog } from "./updateQEState";
+import { speakerNotify, SpeakerNotification, dbPersistQEEntry } from "@/tauri";
+import { gatherQEStoreInputs } from "../actions/gatherStore";
+import { canLogQE } from "../actions/validateQE";
+import { default as buildQEEntry } from "../actions/buildQEEntry";
+import { updateStateUponLog } from "../actions/updateQEState";
 
 export default async function logQE() {
   try {
