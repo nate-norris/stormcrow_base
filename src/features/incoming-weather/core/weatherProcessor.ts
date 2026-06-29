@@ -1,3 +1,3 @@
-import { WeatherStreamProcessor } from "@/features/incoming-weather";
+import { default as WeatherStreamProcessor } from "./WeatherStreamProcessor";
 
 export const weatherProcessor = new WeatherStreamProcessor();
