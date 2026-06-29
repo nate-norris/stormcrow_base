@@ -1,5 +1,3 @@
-// import { atom } from "jotai";
-
 import { WeatherObservation, Quadrant, CrossDoctrine, WeatherStatus, WindState } from '../core/models';
 
 export const mockData = generateMockObservers();
