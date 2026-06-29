@@ -5,7 +5,7 @@ import { toast } from "sonner";
 import { Input } from "@/components/ui/input";
 import { FieldGroup, Field, FieldLabel } from "@/components/ui/field";
 import { activeWindConfigAtom } from "../state/windWarnAtom";
-import { updateConfiguration } from "../services/updateConfigInDb";
+import { persistWindWarningConfig } from "@/tauri";
 
 export default function WindWarningForm() {
   // global wind warning config atom
@@ -19,7 +19,7 @@ export default function WindWarningForm() {
 
   const handleUpdate = async () => {
     try {
-      await updateConfiguration(draftConfig);
+      await persistWindWarningConfig(draftConfig);
       setActiveWindConfig(draftConfig);
       toast.success("Configuration successfully updated.")
     } catch (err) {
