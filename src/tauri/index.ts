@@ -1,3 +1,6 @@
+// tauri events
+export { initTauriListeners } from "./events";
+
 // qe commands
 export { saveTestQEsToPath, dbPersistQEEntry, reassignQEDatabase, 
     removeQEDatabase } from "./commands/qe";
