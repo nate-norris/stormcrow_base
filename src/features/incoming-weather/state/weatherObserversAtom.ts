@@ -29,16 +29,6 @@ export const weatherSiteAtomFamily: (param: string) =>
 );
 
 
-/**
- * Supply all active siteIds tracked.
- * 
- * @returns string[] of all siteIds tracked by weatherObserversAtom
- */
-export const siteIdsAtom = atom((get) => 
-    Object.keys(get(weatherObserversAtom))
-);
-
-
 // Update the atom with either a new WeatherObservation or
 // WeatherStatus update.
 export const updateWeatherObserversAtom = atom(
@@ -88,7 +78,7 @@ export const deleteWeatherObserverAtom = atom(
 
 
 /*
-TODO: build out weatherSettingsAtom inside features/wind-warnings
+TODO:
 implement sorted derived atom for WeatherSites
 
 const [siteIds] = useAtom(sortedSiteIdsAtom);

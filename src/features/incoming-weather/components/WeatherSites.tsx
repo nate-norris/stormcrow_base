@@ -1,7 +1,7 @@
 
 import { useAtom } from "jotai";
 
-import { siteIdsAtom } from "../state/weatherObserversAtom";
+import { siteIdsAtom } from "../state/siteIdsAtom";
 import { SkeletonWeather } from "./SkeletonItem";
 import WeatherItem from "./WeatherItem";
 
