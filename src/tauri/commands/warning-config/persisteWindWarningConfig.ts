@@ -1,6 +1,6 @@
 import { invoke } from "@tauri-apps/api/core";
 
-import { WindWarningConfig } from "../core/models";
+import type { WindWarningConfig } from "@/features/wind-warnings";
 
 export async function updateConfiguration(config: WindWarningConfig): 
   Promise<void> {
