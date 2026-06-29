@@ -4,7 +4,7 @@ import { speakerNotify, SpeakerNotification } from "@/lib/sound-notifications";
 import { gatherQEStoreInputs } from "./gatherStore";
 import { canLogQE } from "./validateQE";
 import { default as buildQEEntry } from "./buildQEEntry";
-import { dbPersistQEEntry } from "./persistQE";
+import { dbPersistQEEntry } from "@/tauri";
 import { updateStateUponLog } from "./updateQEState";
 
 export default async function logQE() {
