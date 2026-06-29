@@ -1,6 +1,6 @@
 import { invoke } from "@tauri-apps/api/core";
 
-import { QEEntry } from "../core/qe-log";
+import { QEEntry } from "@/features/qe-logging/";
 import type { WeatherRow } from "@/features/qe-table";
 
 export async function dbPersistQEEntry(entry: QEEntry): Promise<WeatherRow[]> {
