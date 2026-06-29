@@ -1,4 +1,4 @@
-import { initTauriListeners } from "@/lib/tauriEvents"
+import { initTauriListeners } from "@/tauri"
 
 export async function bootstrapApp() {
     await initTauriListeners();
