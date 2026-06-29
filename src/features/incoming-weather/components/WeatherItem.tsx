@@ -5,7 +5,7 @@ import {
   HoverCardContent,
   HoverCardTrigger,
 } from "@/components/ui/hover-card"
-import { weatherSiteAtomFamily } from "../state/weatherObserversAtom";
+import { weatherSiteAtomFamily } from "../state/weatherSiteAtomFamily";
 import { formatUnixToTime, formatReceivingStatusText, getStatusColor } 
     from "./utils";
 
