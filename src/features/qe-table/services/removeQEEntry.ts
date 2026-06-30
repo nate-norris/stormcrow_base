@@ -1,6 +1,6 @@
 import { type QEKey } from "../core/qeKey";
 import { removeQERowsByKey } from "../actions/removeQERows";
-import { removeQEDatabase } from "../actions/removeQEDatabase";
+import { removeQEDatabase } from "@/tauri";
 import { buildQEBaseFromKey } from "../actions/buildQEBaseFromKey";
 
 export async function removeQE(key: QEKey) {
