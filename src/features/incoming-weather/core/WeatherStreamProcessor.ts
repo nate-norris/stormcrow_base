@@ -1,6 +1,6 @@
 import { store } from "@/state/store"
 import { WeatherPacket, WindCalcs, WeatherObservation, WeatherStatus } from "./models";
-import { updateWeatherObserversAtom } from "../state/weatherObserversAtom";
+import { updateWeatherObserverAtom } from "../state/updateWeatherObserverAtom";
 import { deleteWeatherObserverAtom } from "../state/deleteWeatherObserverAtom";
 import { updateWindLogAtom, deleteWindLogAtom } from "@/features/wind-log";
 import { getWindCalculations, getWindState } from "./windCalculations";
@@ -40,7 +40,7 @@ export default class WeatherStreamProcessor {
     }
 
     private publish(obs: WeatherObservation) {
-        store.set(updateWeatherObserversAtom, {
+        store.set(updateWeatherObserverAtom, {
             type: "observation",
             data: obs,
         });
@@ -54,7 +54,7 @@ export default class WeatherStreamProcessor {
 
     private timeoutWarn = (siteId: string) => {
         // make status stale
-        store.set(updateWeatherObserversAtom, {
+        store.set(updateWeatherObserverAtom, {
             type: "status",
             siteId: siteId,
             status: WeatherStatus.Stale,
@@ -67,7 +67,7 @@ export default class WeatherStreamProcessor {
     
     private timeoutError = (siteId: string) => {
         // make status not receiving
-        store.set(updateWeatherObserversAtom, {
+        store.set(updateWeatherObserverAtom, {
             type: "status",
             siteId: siteId,
             status: WeatherStatus.NotReceiving,
