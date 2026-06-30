@@ -13,13 +13,24 @@ export function formatUnixToTime(ms: number) {
   return `${hours}:${minutes}:${seconds}`;
 }
 
-export function getStatusColor(status: WeatherS, state: WindState): string {
-  if (status == WeatherStatus.NotReceiving || state == WindState.Critical)
-    return "bg-red-500";
-  if (status == WeatherStatus.Stale || state == WindState.Warn)
-    return "bg-yellow-500";
-  if (status == WeatherStatus.Receiving || state == WindState.Ok) 
-    return "bg-green-500";
+export function getReceivingStatusColor(status: WeatherS): string {
+  if (status == WeatherStatus.NotReceiving)
+    return "bg-red-700";
+  if (status == WeatherStatus.Stale)
+    return "bg-yellow-600";
+  if (status == WeatherStatus.Receiving) 
+    return "bg-green-600";
+  
+  return "bg-gray-500";
+}
+
+export function getWindStateColor(state: WindState): string {
+  if (state == WindState.Critical)
+    return "bg-red-700";
+  if (state == WindState.Warn)
+    return "bg-yellow-600";
+  if (state == WindState.Ok) 
+    return "bg-green-600";
   
   return "bg-gray-500";
 }
@@ -35,5 +46,4 @@ export function formatReceivingStatusText(status: WeatherS): string {
     default:
       return "Unknown";
   }
-
 }
