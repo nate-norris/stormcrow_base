@@ -1,12 +1,12 @@
 
 import { useAtom } from "jotai";
 
-import { siteIdsAtom } from "../state/siteIdsAtom";
+import { sortedSiteIdsAtom } from "../state/sortedWeatherAtom";
 import { SkeletonWeather } from "./SkeletonItem";
 import WeatherItem from "./WeatherItem";
 
 export default function WeatherSites() {
-    const [siteIds] = useAtom(siteIdsAtom);
+    const [siteIds] = useAtom(sortedSiteIdsAtom);
 
     return (
         <div>
