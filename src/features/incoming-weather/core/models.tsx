@@ -11,17 +11,18 @@ export type WeatherS =
  * Represents wind severity levels compared to user defined thresholds.
  */
 export enum WindState {
-    Ok = 2,
-    Warn = 1,
-    Critical = 0
+    Ok = 3,
+    Warn = 2,
+    Critical = 1
 }
 
 export type WeatherObservation =
     WeatherPacket &
-    WindCalcs & {
+    {
+        windCalcs: WindCalcs | null;
         time: number,
         status: WeatherS,
-        windState: WindState,
+        windState: WindState | null,
     }
 export interface WeatherPacket {
     siteId: string,
@@ -33,11 +34,6 @@ export interface WeatherPacket {
     baro: number
 }
 
-// structure for past log of wind values
-export type WindFullEvent = {
-    time: number,
-    windFull: number
-}
 
 // Defines what types atom will receive updates on:
 // "observation" -> full WeatherObservation for new weather incoming
