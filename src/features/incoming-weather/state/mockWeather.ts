@@ -28,7 +28,7 @@ function makeSiteA(siteId: string): WeatherObservation {
     crossType: CrossDoctrine.Half,
     time: Date.now(),
     status: WeatherStatus.Receiving,
-    windState: WindState.Ok
+    windState: WindState.Critical
   };
 }
 
@@ -47,7 +47,7 @@ function makeSiteB(siteId: string): WeatherObservation {
     crossFactor: 0.5,
     crossType: CrossDoctrine.Half,
     time: Date.now(),
-    status: WeatherStatus.Receiving,
+    status: WeatherStatus.Stale,
     windState: WindState.Warn
   };
 }
@@ -68,6 +68,6 @@ function makeSiteC(siteId: string): WeatherObservation {
     crossType: CrossDoctrine.Half,
     time: Date.now(),
     status: WeatherStatus.NotReceiving,
-    windState: WindState.Critical
+    windState: WindState.Ok
   };
 }
