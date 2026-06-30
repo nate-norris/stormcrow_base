@@ -1,7 +1,9 @@
 import { store } from "@/state/store"
-import { WeatherPacket, WindCalcs, WeatherObservation, WeatherStatus } from "./models";
+
+import { type WeatherPacket, type WindCalcs, type WeatherObservation, WeatherStatus } from "./models";
 import { updateWeatherObserverAtom } from "../state/updateWeatherObserverAtom";
 import { deleteWeatherObserverAtom } from "../state/deleteWeatherObserverAtom";
+import { activeWindConfigAtom } from "@/features/wind-warnings";
 import { updateWindLogAtom, deleteWindLogAtom } from "@/features/wind-log";
 import { getWindCalculations, getWindState } from "./windCalculations";
 
@@ -9,18 +11,15 @@ export default class WeatherStreamProcessor {
     private timers = new Map<string, ReturnType<typeof setTimeout>>();
 
     handlePacket(packet: WeatherPacket) {
-        const windTo = Math.round(((packet.windDir + 180) % 360) * 10) / 10;
-        // TODO: get weapon orientation from state
-        const weapon_orientation = 0;
-        const calcs: WindCalcs = getWindCalculations(weapon_orientation, packet.windFull, windTo);
+        const warnConfig = store.get(activeWindConfigAtom);
+        const calcs: WindCalcs = getWindCalculations(warnConfig.gunOrient, packet.windFull, warnConfig);
 
         const observation: WeatherObservation = {
             ...packet,
             ...calcs,
-            windDir: windTo,
             time: Date.now(),
             status: WeatherStatus.Receiving,
-            windState: getWindState(calcs, 10, .75), // TODO get from state
+            windState: getWindState(calcs, warnConfig.maxWind, warnConfig.thresholdPercent),
         }
 
         this.publish(observation);
