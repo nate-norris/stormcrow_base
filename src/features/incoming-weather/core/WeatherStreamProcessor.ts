@@ -12,7 +12,7 @@ export default class WeatherStreamProcessor {
 
     handlePacket(packet: WeatherPacket) {
         const warnConfig = store.get(activeWindConfigAtom);
-        const calcs: WindCalcs = getWindCalculations(warnConfig.gunOrient, packet.windFull, warnConfig);
+        const calcs: WindCalcs = getWindCalculations(warnConfig.gunOrient, packet.windFull, packet.windDir);
 
         const observation: WeatherObservation = {
             ...packet,
