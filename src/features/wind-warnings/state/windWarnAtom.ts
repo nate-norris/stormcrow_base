@@ -9,3 +9,8 @@ const defaultWindWarningConfig: WindWarningConfig = {
   expectedSites: 0,
 };
 export const activeWindConfigAtom = atom<WindWarningConfig>(defaultWindWarningConfig);
+
+// confirm a WindWarningConfig for a selected test has been loaded
+export const hasLoadedWindConfigAtom= atom((get) => {
+  return get(activeWindConfigAtom).id !== -1;
+});
