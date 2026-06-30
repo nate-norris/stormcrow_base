@@ -1,9 +1,9 @@
 import { store } from "@/state/store"
 
-import { type WeatherPacket, type WindCalcs, type WeatherObservation, WeatherStatus } from "./models";
+import { type WeatherPacket, type WindCalcs, type WeatherObservation, WeatherStatus, WindState } from "./models";
 import { updateWeatherObserverAtom } from "../state/updateWeatherObserverAtom";
 import { deleteWeatherObserverAtom } from "../state/deleteWeatherObserverAtom";
-import { activeWindConfigAtom } from "@/features/wind-warnings";
+import { activeWindConfigAtom, hasLoadedWindConfigAtom  } from "@/features/wind-warnings";
 import { updateWindLogAtom, deleteWindLogAtom } from "@/features/wind-log";
 import { getWindCalculations, getWindState } from "./windCalculations";
 
@@ -11,15 +11,23 @@ export default class WeatherStreamProcessor {
     private timers = new Map<string, ReturnType<typeof setTimeout>>();
 
     handlePacket(packet: WeatherPacket) {
-        const warnConfig = store.get(activeWindConfigAtom);
-        const calcs: WindCalcs = getWindCalculations(warnConfig.gunOrient, packet.windFull, packet.windDir);
+        // will be null if no activeWindConfigAtom
+        let calcs: WindCalcs | null = null;
+        let windState: WindState | null = null;
+
+        // populate rest of WeatherOb
+        if (store.get(hasLoadedWindConfigAtom)) {
+            const warnConfig = store.get(activeWindConfigAtom);
+            calcs = getWindCalculations(warnConfig.gunOrient, packet.windFull, packet.windDir);
+            windState = getWindState(calcs, warnConfig.maxWind, warnConfig.thresholdPercent);
+        }
 
         const observation: WeatherObservation = {
             ...packet,
-            ...calcs,
+            windCalcs: calcs,
             time: Date.now(),
             status: WeatherStatus.Receiving,
-            windState: getWindState(calcs, warnConfig.maxWind, warnConfig.thresholdPercent),
+            windState: windState,
         }
 
         this.publish(observation);
