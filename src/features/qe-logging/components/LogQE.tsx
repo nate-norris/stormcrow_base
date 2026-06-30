@@ -3,7 +3,7 @@ import { useAtomValue } from "jotai";
 
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import logQE from "../actions/logQE";
+import logQE from "../services/logQE";
 
 import { qeCountAtom, qeTypeAtom } from "../state/derivedLoggingAtom";
 import { weatherRowsAtom } from "@/features/qe-table";
