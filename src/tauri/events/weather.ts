@@ -26,7 +26,7 @@ namespace WeatherEventDTO {
             siteId: String.fromCharCode(dto.siteId),
             altitude: dto.altitude,
             windFull: dto.windFull,
-            windDir: dto.windDir,
+            windDir: Math.round(((dto.windDir + 180) % 360) * 10) / 10, //swap incoming direction
             temp: dto.temp,
             humidity: dto.humidity,
             baro: dto.baro,
