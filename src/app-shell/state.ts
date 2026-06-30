@@ -14,3 +14,6 @@ import { atom } from "jotai";
 // 2: Selecting the exit button within the modal
 // 3: Finilizing actions within the modal (New/Continue)
 export const isTestModalOpenAtom = atom<boolean>(true);
+
+// User selected the help modal open
+export const isHelpOpenAtom = atom<boolean>(false);
