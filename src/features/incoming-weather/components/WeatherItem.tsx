@@ -17,9 +17,6 @@ export default function WeatherItem({ siteId }: { siteId: string }) {
     // but include for undefined occurance in getWeatherSiteAtom
     if (!siteWeather) return null;
 
-    // TODO 
-    // implement windCalculations (cross/headtail/quad/cFactor/cType)
-
     return (
         <HoverCard>
             <HoverCardTrigger asChild>
@@ -38,7 +35,7 @@ export default function WeatherItem({ siteId }: { siteId: string }) {
                     <div className="mt-1 flex justify-end gap-3">
                         <div
                             className={`
-                                ${getWindStateColor(siteWeather.windState)}
+                                ${siteWeather.windState ? getWindStateColor(siteWeather.windState) : "bg-blue-400"}
                                 flex h-8 w-8 shrink-0 items-center
                                 justify-center rounded-full
                             `}>
@@ -50,8 +47,8 @@ export default function WeatherItem({ siteId }: { siteId: string }) {
                                 <span>{siteWeather.windDir}° N</span>
                             </div>
                             <div className="flex gap-2">
-                                <span>→ {siteWeather.cross.toFixed(1)} mph</span>
-                                <span>↑ {siteWeather.headTail.toFixed(1)} mph</span>
+                                <span>→ {siteWeather.windCalcs ? siteWeather.windCalcs.cross.toFixed(1) : "?"} mph</span>
+                                <span>↑ {siteWeather.windCalcs ? siteWeather.windCalcs.headTail.toFixed(1): "?"} mph</span>
                             </div>
                         </div>
                     </div>
