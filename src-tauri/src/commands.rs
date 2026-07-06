@@ -9,7 +9,7 @@ use crate::lib_sqlx::{QEDeleteSite, QEBase, QEEntry, TestSession, Test,
 use utils::speaker::SpeakerNotification;
 
 #[tauri::command]
-pub async fn initiate_test_command_deprc(state: tauri::State<'_, DbState>, name: String) -> 
+pub async fn initiate_test_command(state: tauri::State<'_, DbState>, name: String) -> 
     Result<TestSession, String> {
 
     let pool = state.0.as_ref();
@@ -18,25 +18,6 @@ pub async fn initiate_test_command_deprc(state: tauri::State<'_, DbState>, name:
         .map_err(|_| "Failed to initiate the test".to_string())?;
 
     Ok(result)
-}
-
-#[tauri::command]
-pub async fn initiate_test_command(
-    state: tauri::State<'_, DbState>,
-    name: String
-) -> Result<TestSession, String> {
-
-    let pool = state.0.as_ref();
-
-    let result = initiate_test(pool, &name).await;
-
-    match result {
-        Ok(v) => Ok(v),
-        Err(e) => {
-            println!("INITIATE TEST FAILED: {:?}", e);
-            Err(e.to_string())
-        }
-    }
 }
 
 #[tauri::command]
