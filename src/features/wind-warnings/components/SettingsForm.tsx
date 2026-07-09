@@ -35,7 +35,7 @@ export default function WindWarningForm() {
         <FieldGroup>
           <Field className="flex items-center gap-4 flex-row">
             {/* TODO: enforce positive */}
-            <FieldLabel htmlFor="max-ws">Max Wind Speed (mph)</FieldLabel>
+            <FieldLabel htmlFor="max-ws">Max Wind Speed (mps)</FieldLabel>
             <Input 
               id="max-ws"
               type="number"
