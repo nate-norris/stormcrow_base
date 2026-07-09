@@ -29,7 +29,7 @@ namespace WeatherEventDTO {
             windDir: dto.windDir, //Math.round(((dto.windDir + 180) % 360) * 10) / 10, //swap incoming direction
             temp: Math.round(((dto.temp * (9/5)) + 32) * 10) / 10, // convert celcius to fahrenheit
             humidity: dto.humidity,
-            baro: dto.baro,
+            baro: Math.round(dto.baro * 100) / 100,
         };
     }
 }
