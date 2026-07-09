@@ -3911,7 +3911,7 @@ dependencies = [
 [[package]]
 name = "stormcrow_utils"
 version = "0.1.29"
-source = "git+ssh://git@github.com/nate-norris/stormcrow_utils.git?tag=v0.1.29#8937d9982cab97ba08e3c3288b4af466cbc40d23"
+source = "git+ssh://git@github.com/nate-norris/stormcrow_utils.git?tag=v0.1.32#3d340a54f4a321fb8cd6caeeabef254b0e2e0590"
 dependencies = [
  "anyhow",
  "async-trait",
