@@ -22,6 +22,7 @@ namespace WeatherEventDTO {
     // convert siteId to string so that u8 becomes char
     // id will come in as "A"/"B"/etc for each site
     export function toDomain(dto: WeatherEventDTO): WeatherPacket {
+        console.log("DTO windDir: ", dto.windDir);
         return {
             siteId: String.fromCharCode(dto.siteId),
             altitude: dto.altitude,
