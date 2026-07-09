@@ -42,6 +42,14 @@ export type WeatherUpdate =
   | { type: "observation"; data: WeatherObservation }
   | { type: "status"; siteId: string; status: WeatherS };
 
+export interface WindCalcs {
+    cross: number;
+    headTail: number;
+    quadrant: Quadrant,
+    crossFactor: number,
+    crossType: CrossDoctrine;
+}
+
 export enum Quadrant {
     Head,
     StarboardHead,
@@ -59,12 +67,4 @@ export enum CrossDoctrine {
     Half = 0.5,
     ThreeQuarter = 0.75,
     Full = 1.0,
-}
-
-export interface WindCalcs {
-    cross: number;
-    headTail: number;
-    quadrant: Quadrant,
-    crossFactor: number,
-    crossType: CrossDoctrine;
 }
