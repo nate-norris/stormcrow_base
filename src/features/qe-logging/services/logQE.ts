@@ -25,9 +25,10 @@ export default async function logQE() {
     const weatherRows = await dbPersistQEEntry(entry);
 
     updateStateUponLog(inputs.qeForm, weatherRows);
+    toast.success("QE Log Success");
 
   } catch(err) {
-    toast.error("QE Log Error: failed to log to database.")
+    toast.error("QE Log Error: failed to log to database.");
     console.log(err);
     // TODO: log file
   }
