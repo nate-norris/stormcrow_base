@@ -33,8 +33,6 @@ impl PacketKind {
                 app.emit("boom", ())?;
             },
             PacketKind::Weather(data) => {
-                let m = format!("MM2T handle: weather packet {:?}", data);
-                logger::info(m);
                 app.emit("weather", &data)?;
             }
         }
