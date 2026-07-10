@@ -3911,13 +3911,14 @@ dependencies = [
 [[package]]
 name = "stormcrow_utils"
 version = "0.1.29"
-source = "git+ssh://git@github.com/nate-norris/stormcrow_utils.git?tag=v0.1.33#39e3b8ce0f35e13b7142d4b29a9e1528abbcd4a0"
+source = "git+ssh://git@github.com/nate-norris/stormcrow_utils.git?tag=v0.1.34#8d430ce8a88bb03c690bb6bf7eac2f0e2d6acd34"
 dependencies = [
  "anyhow",
  "async-trait",
  "log",
  "serde",
  "simplelog",
+ "time",
  "tokio",
  "tokio-serial",
 ]
