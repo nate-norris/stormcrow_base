@@ -13,7 +13,6 @@ impl PacketKind {
         match packet.packet_type {
             PACKET_BOOM => Ok(PacketKind::Boom),
             PACKET_WEATHER => {
-                println!("{:?}", &packet.payload);
                 let data = match WeatherPayload::decode_from(&packet.payload) {
                     Ok(d) => d,
                     Err(e) => {
