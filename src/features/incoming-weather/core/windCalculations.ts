@@ -1,46 +1,30 @@
-import { Quadrant, CrossDoctrine, WindCalcs, WindState } from "./models";
+import { Quadrant, CrossDoctrine, WindCalcs } from "./models";
 
 export function getWindCalculations(gunDegrees: number, windFull: number, windTo: number) : WindCalcs {
-    const relativeOffset = windTo - gunDegrees
-    const rad = relativeOffset * Math.PI / 180; // radians
-    const sin = Math.sin(rad);
+    // angle formatting
+    const relativeWind = relativeAngle(gunDegrees, windTo);
+    const rad = relativeWind * Math.PI / 180; // radians
 
+    // cross specific calculations
+    const sin = Math.sin(rad);
     const crossFactor: number = Math.abs(sin);
-    const quadrant: Quadrant = getQuadrant(relativeOffset);
 
     const calcs: WindCalcs = {
         cross: windFull * sin, // port starboard
         headTail: windFull * Math.cos(rad), // head tail
-        quadrant: quadrant,
+        quadrant: getQuadrant(relativeWind),
         crossFactor: crossFactor,
         crossType: getCrossDoctrine(crossFactor),
     }
     return calcs
 }
 
-
-/**
- * Returns the wind warning state when compared to set maximum wind and
- * warning threshold.
- * 
- * @param c WindCalcs containing cross and headTail components of the passed
- * wind reading.
- * @param maxW The maximum wind allowed compared to total cross or head/tail 
- * wind components.
- * @param thresh The percentage threshold (ex .75) where the user wants to
- * be warned if approaching the max wind.
- * @returns WindState either Ok, Warn or Critical
- */
-export function getWindState(c: WindCalcs, maxW: number, thresh: number) 
-    : WindState {
-    if (c.cross > maxW || c.headTail > maxW) {
-        return WindState.Critical;
-    } else if (c.cross > maxW * thresh || c.headTail > maxW * thresh) {
-        return WindState.Warn;
-    } else {
-        return WindState.Ok;
-    }
+export function relativeAngle(reference: number, angle: number): number {
+    const offset = angle - reference;
+    return ((offset % 360) + 360) % 360;
 }
+
+
 
 /*
 DEGREE / QUADRANT NORMALIZATION NOTE
