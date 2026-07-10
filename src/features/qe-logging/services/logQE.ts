@@ -19,6 +19,7 @@ export default async function logQE() {
     }
     // build QEEntry
     const entry = buildQEEntry(inputs);
+    console.log(entry);
 
      // pass QEEntry to tauri command
     const weatherRows = await dbPersistQEEntry(entry);
