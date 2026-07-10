@@ -89,10 +89,10 @@ pub struct WindWarningConfig {
 /// - `qe_type` — Type of QE measurement (`QEType` enum).
 /// - `dodic` — DODIC code associated with the entry.
 /// - `lot` — Lot number associated with the entry.
-/// - `wind_full` — Full wind speed in meters per second (mps).
+/// - `wind_full` — Full wind speed in meters per second (m/s).
 /// - `wind_direction` — Wind direction in floating-point degrees.
-/// - `cross` — Cross-section wind speed in mps.
-/// - `tail` — Tail-section wind speed in mps.
+/// - `cross` — Cross-section wind speed in m/s.
+/// - `tail` — Tail-section wind speed in m/s.
 /// - `temp` — Temperature in degrees Fahrenheit.
 /// - `humidity` — Relative humidity as a percentage.
 /// - `baro` — Barometric pressure in inches of mercury (inHg).
@@ -109,10 +109,10 @@ pub struct WeatherRow {
     pub qe_type: String, //QEType,
     pub dodic: String,
     pub lot: String,
-    pub wind_full: f64, // mps
+    pub wind_full: f64, // m/s
     pub wind_direction: f64, //floating point degrees
-    pub cross: f64, //mps
-    pub tail: f64, //mps
+    pub cross: f64, //m/s
+    pub tail: f64, //m/s
     pub temp: f64, //degrees farenheit
     pub humidity: f64, //percent
     pub baro: f64, //inHg
@@ -172,10 +172,10 @@ pub struct ExportWeatherRow {
 pub struct SiteWeather {
     pub site_id: String, // unique id for site
     pub altitude: i64, //meters
-    pub wind_full: f64, // mps
+    pub wind_full: f64, //m/s
     pub wind_direction: f64, //floating point degrees
-    pub cross: f64, //mps
-    pub tail: f64, //mps
+    pub cross: f64, //m/s
+    pub tail: f64, //m/s
     pub temp: f64, //degrees farenheit
     pub humidity: f64, //percent
     pub baro: f64, //inHg

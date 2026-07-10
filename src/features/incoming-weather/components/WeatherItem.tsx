@@ -43,12 +43,12 @@ export default function WeatherItem({ siteId }: { siteId: string }) {
                         </div>
                         <div className="flex flex-col items-end">
                             <div className="flex gap-2">
-                                <span>{siteWeather.windFull} mps</span>
+                                <span>{siteWeather.windFull} m/s</span>
                                 <span>{siteWeather.windDir}° N</span>
                             </div>
                             <div className="flex gap-2">
-                                <span>→ {siteWeather.windCalcs ? siteWeather.windCalcs.cross.toFixed(1) : "?"} mps</span>
-                                <span>↑ {siteWeather.windCalcs ? siteWeather.windCalcs.headTail.toFixed(1): "?"} mps</span>
+                                <span>→ {siteWeather.windCalcs ? siteWeather.windCalcs.cross.toFixed(1) : "?"} m/s</span>
+                                <span>↑ {siteWeather.windCalcs ? siteWeather.windCalcs.headTail.toFixed(1): "?"} m/s</span>
                             </div>
                         </div>
                     </div>
