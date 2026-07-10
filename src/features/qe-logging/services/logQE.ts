@@ -27,6 +27,7 @@ export default async function logQE() {
 
   } catch(err) {
     toast.error("QE Log Error: failed to log to database.")
+    console.log(err);
     // TODO: log file
   }
 }
