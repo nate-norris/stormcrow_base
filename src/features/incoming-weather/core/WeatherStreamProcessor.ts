@@ -5,7 +5,8 @@ import { updateWeatherObserverAtom } from "../state/updateWeatherObserverAtom";
 import { deleteWeatherObserverAtom } from "../state/deleteWeatherObserverAtom";
 import { activeWindConfigAtom, hasLoadedWindConfigAtom  } from "@/features/wind-warnings";
 import { updateWindLogAtom, deleteWindLogAtom } from "@/features/wind-log";
-import { getWindCalculations, getWindState } from "./windCalculations";
+import { getWindCalculations } from "./windCalculations";
+import { getWindState } from "./windState";
 
 export default class WeatherStreamProcessor {
     private timers = new Map<string, ReturnType<typeof setTimeout>>();
