@@ -27,10 +27,16 @@ export function Chart() {
                     bottom: 5,
                 }}
             >
-                <CartesianGrid vertical={false} />
+                <CartesianGrid 
+                    vertical={true}
+                    stroke="#ffffff"
+                    // horizontal={true}
+                />
                 <XAxis 
                     dataKey="time"
                     type="number"
+                    axisLine={false}
+                    stroke="#ffffff"//"#9ca3af"
                     domain={[
                         now - WIND_WINDOW,
                         now
@@ -42,13 +48,17 @@ export function Chart() {
                     }
                 />
                 <YAxis
+                    stroke="#ffffff"
+                    axisLine={false}
                     label={{
                         value: "Wind (m/s)",
                         angle: -90,
-                        position: "insideLeft"
+                        position: "insideLeft",
+                        fill: "#ffffff"
                     }}
+                    tick={{ fill: "#ffffff" }}
                     domain={[0, 'auto']}
-                    ticks={[0, 5, 10, 15, 20, 25, 30]}
+                    // ticks={[0, 5, 10, 15, 20, 25, 30]}
                 />
 
                 {siteIds.map(siteId => (
