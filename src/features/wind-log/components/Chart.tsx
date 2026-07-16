@@ -3,22 +3,24 @@ import { ResponsiveContainer, LineChart, XAxis, YAxis, Line } from "recharts";
 
 import { windChartDataAtom } from "../state/windChartDataAtom";
 import { siteIdsAtom } from "@/features/incoming-weather";
-// import { WIND_WINDOW } from "../core/constants";
+import { clockAtom } from "@/state";
+import { WIND_WINDOW } from "../core/constants";
 
 export function Chart() {
     const siteIds = useAtomValue(siteIdsAtom);
     const data = useAtomValue(windChartDataAtom);
+    const now = useAtomValue(clockAtom);
 
     return (
         <ResponsiveContainer width="100%" height="100%">
             <LineChart data={data}>
                 <XAxis 
                     dataKey="time"
-                    // type="number"
-                    // domain={[
-                    //     now - WIND_WINDOW,
-                    //     now
-                    // ]}
+                    type="number"
+                    domain={[
+                        now - WIND_WINDOW,
+                        now
+                    ]}
                 />
                 <YAxis />
 
