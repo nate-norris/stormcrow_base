@@ -67,7 +67,7 @@ export function Chart() {
                         key={siteId}
                         dataKey={siteId}
                         type="linear"
-                        stroke={LINE_COLORS[index % LINE_COLORS.length]}
+                        stroke={LINE_COLORS[index+1 % LINE_COLORS.length]}
                         dot={false}
                         connectNulls={false}
                         isAnimationActive={false}
