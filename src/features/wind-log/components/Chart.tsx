@@ -87,7 +87,7 @@ export function Chart() {
 
                 {/* theshold wind limit warning */}
                 <ReferenceLine
-                    y={config.maxWind * config.thresholdPercent}
+                    y={config.maxWind * config.thresholdPercent / 100}
                     stroke="yellow"
                     strokeDasharray="6 6"
                 />
