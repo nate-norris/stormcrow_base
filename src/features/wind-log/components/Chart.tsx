@@ -49,6 +49,7 @@ export function Chart() {
                         dot={false}
                         connectNulls={false}
                         isAnimationActive={false}
+                        strokeWidth={3}
                     />
                 ))}
             </LineChart>
@@ -58,8 +59,6 @@ export function Chart() {
 
 
 
-// ✅ One line.
-// ✅ Time axis.
 // ✅ Responsive sizing.
 // ✅ Tooltip.
 // ✅ Multiple sites.
