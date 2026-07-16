@@ -55,11 +55,11 @@ export function Chart() {
                         value: "Wind (m/s)",
                         angle: -90,
                         position: "insideLeft",
-                        fill: "#ffffff"
+                        fill: "#ffffff",
+                        dy: 40,
                     }}
                     tick={{ fill: "#ffffff" }}
                     domain={[0, 'auto']}
-                    // ticks={[0, 5, 10, 15, 20, 25, 30]}
                 />
 
                 {siteIds.map(siteId => (
