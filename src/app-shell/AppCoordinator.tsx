@@ -7,13 +7,16 @@ import { AppViewTabs } from "./AppViewTabs";
 import { AppFileMenu } from "./AppFileMenu";
 import { ViewOptions } from "./models";
 import { TestModal } from "@/features/test-session";
-import { isTestModalOpenAtom } from "./state";
+import { default as HelpPage } from "@/pages/HelpPage";
+import { isTestModalOpenAtom, isHelpOpenAtom } from "./state";
 
 export default function AppCoordinator() {
 
   // test modal open atom configued to properly close on startup and
   //    allow TestModal to open/close
   const [isTestManagementOpen, setIsTestManagementOpen] = useAtom(isTestModalOpenAtom);
+  // help page open
+  const [isHelpOpen, setIsHelpOpen] = useAtom(isHelpOpenAtom);
   // booting only once to allow continue in TestModal view
   const [isBooting, setIsBooting] = useState<boolean>(true);
   // view changes by TopNav
@@ -41,6 +44,10 @@ export default function AppCoordinator() {
           entryMode={isBooting ? "continue-if-possible" : "menu"}
           onClose={handleTestManagementClose}
         />
+
+      {/* {isHelpOpen &&
+        <HelpPage />
+      } */}
     </div>
   );
 }
