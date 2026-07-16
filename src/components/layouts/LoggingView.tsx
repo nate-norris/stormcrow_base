@@ -8,6 +8,7 @@ import { ScrollArea } from "@/components/ui/scroll-area"
 import { WeatherSites } from "@/features/incoming-weather";
 import { WindWarningForm } from "@/features/wind-warnings";
 import { QEForm } from "@/features/qe-logging";
+import { WindChart } from "@/features/wind-log";
 
 export function LoggingView() {
   return (
@@ -33,6 +34,7 @@ export function LoggingView() {
       {/* RIGHT SIDE */}
       <div className="flex-1 min-h-0">
         <QEForm />
+        <WindChart />
       </div>
     </div>
   );
