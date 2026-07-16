@@ -32,9 +32,12 @@ export function LoggingView() {
       </div>
 
       {/* RIGHT SIDE */}
-      <div className="flex-1 min-h-0">
+      <div className="flex flex-1 min-h-0 flex-col">
         <QEForm />
-        <WindChart />
+
+        <div className="flex-1 min-h-0">
+          <WindChart />
+        </div>
       </div>
     </div>
   );
