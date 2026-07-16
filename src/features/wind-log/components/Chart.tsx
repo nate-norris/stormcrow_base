@@ -84,6 +84,13 @@ export function Chart() {
                     stroke="red"
                     strokeDasharray="6 6"
                 />
+
+                {/* theshold wind limit warning */}
+                <ReferenceLine
+                    y={config.maxWind * config.thresholdPercent}
+                    stroke="yellow"
+                    strokeDasharray="6 6"
+                />
             </LineChart>
         </ResponsiveContainer>
     );
