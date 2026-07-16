@@ -1,6 +1,6 @@
 import { useAtomValue } from "jotai";
-import { ResponsiveContainer, LineChart, XAxis, YAxis, Line, CartesianGrid } 
-    from "recharts";
+import { ResponsiveContainer, LineChart, XAxis, YAxis, Line, CartesianGrid,
+    Legend } from "recharts";
 
 import { windChartDataAtom } from "../state/windChartDataAtom";
 import { siteIdsAtom } from "@/features/incoming-weather";
@@ -27,6 +27,7 @@ export function Chart() {
                     bottom: 5,
                 }}
             >
+                <Legend />
                 <CartesianGrid 
                     vertical={true}
                     stroke="#ffffff"
