@@ -10,6 +10,7 @@ export const updateWindLogAtom = atom(
     set(windLogAtom, prev => {
       const history = prev[obs.siteId] ?? [];
       const newEntry: WindEvent = { time: obs.time, windFull: obs.windFull };
+      console.log(newEntry);
 
       return {
         ...prev,
