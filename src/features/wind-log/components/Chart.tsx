@@ -5,8 +5,7 @@ import { ResponsiveContainer, LineChart, XAxis, YAxis, Line, CartesianGrid,
 import { windChartDataAtom } from "../state/windChartDataAtom";
 import { siteIdsAtom } from "@/features/incoming-weather";
 import { clockAtom } from "@/state";
-import { WIND_WINDOW } from "../core/constants";
-import { getLineColor } from "../core/lineColors";
+import { WIND_WINDOW, SITE_COLORS } from "../core/constants";
 
 export function Chart() {
     const siteIds = useAtomValue(siteIdsAtom);
@@ -68,7 +67,7 @@ export function Chart() {
                         key={siteId}
                         dataKey={siteId}
                         type="linear"
-                        stroke={getLineColor(siteId)}
+                        stroke={SITE_COLORS[siteId ?? "#ffffff"]}
                         dot={false}
                         connectNulls={false}
                         isAnimationActive={false}
@@ -80,12 +79,3 @@ export function Chart() {
         </ResponsiveContainer>
     );
 }
-
-
-
-// ✅ Responsive sizing.
-// ✅ Tooltip.
-// ✅ Multiple sites.
-// ✅ Nice colors.
-// ✅ Reference lines.
-// ✅ Stale data styling.
