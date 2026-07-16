@@ -26,7 +26,7 @@ export function QEForm() {
     }
 
     return (
-        <div className="m-12 mr-48 ml-24">
+        <div className="m-8 mr-48 ml-24">
             <h2 className="text-center text-lg font-semibold">Current QE</h2>
             <FieldSet className="gap-3">
                 <FieldLegend>Test</FieldLegend>
