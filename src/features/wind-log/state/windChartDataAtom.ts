@@ -3,8 +3,9 @@ import { atom } from 'jotai'
 import { clockAtom } from "@/state";
 import { windLogAtom } from './windLogAtom';
 import { type WindChartPoint } from "../core/windChartPoint";
+import { WIND_WINDOW } from '../core/constants';
 
-const WIND_WINDOW = 3 * 60 * 1000;
+
 
 export const windChartDataAtom = atom((get) => {
     const windLog = get(windLogAtom);
