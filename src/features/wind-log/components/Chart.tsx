@@ -5,7 +5,7 @@ import { ResponsiveContainer, LineChart, XAxis, YAxis, Line, CartesianGrid,
 import { windChartDataAtom } from "../state/windChartDataAtom";
 import { siteIdsAtom } from "@/features/incoming-weather";
 import { clockAtom } from "@/state";
-import { WIND_WINDOW } from "../core/constants";
+import { WIND_WINDOW, LINE_COLORS } from "../core/constants";
 
 export function Chart() {
     const siteIds = useAtomValue(siteIdsAtom);
@@ -62,11 +62,12 @@ export function Chart() {
                     domain={[0, 'auto']}
                 />
 
-                {siteIds.map(siteId => (
+                {siteIds.map((siteId, index) => (
                     <Line
                         key={siteId}
                         dataKey={siteId}
                         type="linear"
+                        stroke={LINE_COLORS[index % LINE_COLORS.length]}
                         dot={false}
                         connectNulls={false}
                         isAnimationActive={false}
