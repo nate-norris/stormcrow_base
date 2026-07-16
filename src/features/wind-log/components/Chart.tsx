@@ -1,5 +1,6 @@
 import { useAtomValue } from "jotai";
-import { ResponsiveContainer, LineChart, XAxis, YAxis, Line } from "recharts";
+import { ResponsiveContainer, LineChart, XAxis, YAxis, Line, CartesianGrid } 
+    from "recharts";
 
 import { windChartDataAtom } from "../state/windChartDataAtom";
 import { siteIdsAtom } from "@/features/incoming-weather";
@@ -26,6 +27,7 @@ export function Chart() {
                     bottom: 5,
                 }}
             >
+                <CartesianGrid vertical={false} />
                 <XAxis 
                     dataKey="time"
                     type="number"
@@ -39,7 +41,15 @@ export function Chart() {
                         `t-${Math.round((now - value) / 1000)}`
                     }
                 />
-                <YAxis />
+                <YAxis
+                    label={{
+                        value: "Wind (m/s)",
+                        angle: -90,
+                        position: "insideLeft"
+                    }}
+                    domain={[0, 'auto']}
+                    ticks={[0, 5, 10, 15, 20, 25, 30]}
+                />
 
                 {siteIds.map(siteId => (
                     <Line
@@ -50,6 +60,7 @@ export function Chart() {
                         connectNulls={false}
                         isAnimationActive={false}
                         strokeWidth={3}
+                        strokeOpacity={0.9}
                     />
                 ))}
             </LineChart>
