@@ -10,7 +10,15 @@ import { AppCoordinator } from "@/app-shell";
 function App() {
 
   useEffect(() => {
-    bootstrapApp();
+    let cleanup: (() => void) | undefined;
+
+    bootstrapApp().then(fn => {
+      cleanup = fn;
+    });
+
+    return () => {
+      cleanup?.();
+    };
   }, []);
 
   return (
