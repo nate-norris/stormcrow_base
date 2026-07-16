@@ -29,7 +29,7 @@ export function Chart() {
                         type="linear"
                         dot={false}
                         connectNulls={false}
-                        isAnimationActive={false}
+                        // isAnimationActive={false}
                     />
                 ))}
             </LineChart>
