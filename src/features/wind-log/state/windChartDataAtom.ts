@@ -24,6 +24,7 @@ export const windChartDataAtom = atom((get) => {
         }
     }
 
+    console.log(points);
     return Array.from(points.values())
         .sort((a, b) => a.time - b.time);
 });
