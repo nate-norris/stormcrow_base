@@ -23,7 +23,7 @@ export const windChartDataAtom = atom((get) => {
             points.set(event.time, point);
         }
     }
-
+    console.log("POINT RECEIVED");
     console.log(points);
     return Array.from(points.values())
         .sort((a, b) => a.time - b.time);
