@@ -1,9 +1,10 @@
 import { useAtomValue } from "jotai";
 import { ResponsiveContainer, LineChart, XAxis, YAxis, Line, CartesianGrid,
-    Legend } from "recharts";
+    Legend, ReferenceLine } from "recharts";
 
 import { windChartDataAtom } from "../state/windChartDataAtom";
 import { siteIdsAtom } from "@/features/incoming-weather";
+import { activeWindConfigAtom } from "@/features/wind-warnings";
 import { clockAtom } from "@/state";
 import { WIND_WINDOW, SITE_COLORS } from "../core/constants";
 
@@ -11,6 +12,7 @@ export function Chart() {
     const siteIds = useAtomValue(siteIdsAtom);
     const data = useAtomValue(windChartDataAtom);
     const now = useAtomValue(clockAtom);
+    const config = useAtomValue(activeWindConfigAtom);
 
     const xTicks = Array.from({ length: 4 }, (_, i) =>
         now - WIND_WINDOW + (WIND_WINDOW / 3) * i
@@ -75,6 +77,13 @@ export function Chart() {
                         strokeOpacity={0.9}
                     />
                 ))}
+
+                {/* maximum wind limit */}
+                <ReferenceLine
+                    y={config.maxWind}
+                    stroke="red"
+                    strokeDasharray="6 6"
+                />
             </LineChart>
         </ResponsiveContainer>
     );
