@@ -14,7 +14,7 @@ export function Chart() {
             <LineChart data={data}>
                 <XAxis 
                     dataKey="time"
-                    type="number"
+                    // type="number"
                     // domain={[
                     //     now - WIND_WINDOW,
                     //     now
@@ -27,7 +27,7 @@ export function Chart() {
                         key={siteId}
                         dataKey={siteId}
                         type="linear"
-                        dot={false}
+                        // dot={false}
                         connectNulls={false}
                         // isAnimationActive={false}
                     />
