@@ -1,10 +1,11 @@
 import { useAtomValue } from "jotai";
 import { ResponsiveContainer, LineChart, XAxis, YAxis, Line } from "recharts";
+
 import { windChartDataAtom } from "../state/windChartDataAtom";
-
-
+import { siteIdsAtom } from "@/features/incoming-weather";
 
 export function Chart() {
+    const siteIds = useAtomValue(siteIdsAtom);
     const data = useAtomValue(windChartDataAtom);
 
     return (
@@ -12,10 +13,15 @@ export function Chart() {
             <LineChart data={data}>
                 <XAxis dataKey="time" />
                 <YAxis />
-                <Line
-                    dataKey="windFull"
-                    type="linear"
-                />
+
+                {siteIds.map(siteId => (
+                    <Line
+                        key={siteId}
+                        dataKey={siteId}
+                        type="linear"
+                        connectNulls={false}
+                    />
+                ))}
             </LineChart>
         </ResponsiveContainer>
     );
