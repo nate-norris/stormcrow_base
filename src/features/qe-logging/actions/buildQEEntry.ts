@@ -48,7 +48,7 @@ function buildSiteWeatherInputs(observers: WeatherObservers):
   SiteWeatherInput[] {
   return Object.values(observers).map(obs => ({
     siteId: obs.siteId,
-    altitude: obs.altitude,
+    altitude: Math.round(obs.altitude),
     windFull: obs.windFull,
     windDirection: obs.windDir,
     cross: obs.windCalcs ? obs.windCalcs.cross : 0,
