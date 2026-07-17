@@ -3,6 +3,7 @@ import { useState } from "react";
 
 import { Input } from "@/components/ui/input";
 import { dodicAtom } from "../state/derivedLoggingAtom";
+import { cn } from "@/lib/utils"
 
 // character matching for dodic regex
 const dodicRegex: RegExp[] = [
@@ -36,9 +37,13 @@ export default function DodicInput() {
             onBlur={() => setDodicVisited(true)}
             placeholder="A062" 
             maxLength={4}
-            className={`${dodicVisited && !isCompleteDODICInput(dodic) ? "border-red-500 border-2" : ""}
-                bg-white`}
-            />
+            className={cn(
+                "bg-white",
+                "focus-visible:ring-0",
+                "transition-none",
+                dodicVisited && !isCompleteDODICInput(dodic) && "border-red-500 border-2"
+            )}
+        />
     );
 }
 
