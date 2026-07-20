@@ -118,6 +118,7 @@
   body,
   #root {
     height: 100%;
-    @apply bg-background text-foreground;
+    background: white;
+    /* @apply bg-background text-foreground; */
   }
 }
