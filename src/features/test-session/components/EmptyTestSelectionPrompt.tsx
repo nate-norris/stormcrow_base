@@ -12,7 +12,7 @@ import {
 } from "@/components/ui/empty"
 import { isTestModalOpenAtom } from "@/app-shell"
 
-export function EmptyForm() {
+export function EmptyTestSelectionPrompt() {
   const setTestModalOpen = useSetAtom(isTestModalOpenAtom);
   return (
     <Empty>
