@@ -14,6 +14,18 @@ const dodicRegex: RegExp[] = [
 ];
 
 export default function DodicInput() {
+
+    return (
+        <input
+            className="w-full h-9 rounded border bg-white px-3"
+        />
+    )
+
+
+
+}
+
+function DodicInputT() {
     const [dodic, setDodic] = useAtom(dodicAtom);
     const [dodicVisited, setDodicVisited] = useState(false);
 
