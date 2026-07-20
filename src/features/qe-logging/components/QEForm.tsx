@@ -26,9 +26,9 @@ export function QEForm() {
     }
 
     return (
-        <div className="rounded-lg bg-card text-card-foreground p-6 shadow-md">
+        <div className="rounded-lg bg-card text-card-foreground p-6 shadow-md will-change-transform">
             <h2 className="text-center text-lg font-semibold">Current QE</h2>
-            {/* <FieldSet className="gap-3">
+            <FieldSet className="gap-3">
                 <FieldGroup className="gap-3">
                     <div className="grid grid-cols-3 gap-12">
                         <Field>
@@ -63,10 +63,10 @@ export function QEForm() {
                         </Field>
                     </div>
                 </FieldGroup>
-            </FieldSet> */}
+            </FieldSet>
 
 
-
+{/* 
             <div className="flex flex-col gap-3">
                 <div className="grid grid-cols-3 gap-12">
                     <div className="flex flex-col gap-3">
@@ -116,7 +116,7 @@ export function QEForm() {
                         <LogQE />
                     </div>
                 </div>
-            </div>
+            </div> */}
 
 
 

@@ -34,7 +34,7 @@ export function LoggingView() {
       {/* RIGHT SIDE */}
     <div className="flex flex-1 min-h-0 flex-col">
       <div className="flex shrink-0 gap-6 p-8">
-          <div className="flex-1 min-w-0 will-change-transform">
+          <div className="flex-1 min-w-0">
               <QEForm />
           </div>
 
