@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { useAtom } from "jotai";
+import { useAtom, useAtomValue } from "jotai";
 
 import { LayoutRouter } from "./LayoutRouter";
 import { TopNav } from "@/components/layouts/TopNav";
@@ -9,12 +9,14 @@ import { ViewOptions } from "./models";
 import { TestModal } from "@/features/test-session";
 import { default as HelpPage } from "@/pages/HelpPage";
 import { isTestModalOpenAtom, isHelpOpenAtom } from "./state";
+import { activeTestAtom } from "@/features/test-session";
 
 export default function AppCoordinator() {
 
   // test modal open atom configued to properly close on startup and
   //    allow TestModal to open/close
   const [isTestManagementOpen, setIsTestManagementOpen] = useAtom(isTestModalOpenAtom);
+  const test = useAtomValue(activeTestAtom);
   // help page open
   const [isHelpOpen, setIsHelpOpen] = useAtom(isHelpOpenAtom);
   // booting only once to allow continue in TestModal view
@@ -33,6 +35,7 @@ export default function AppCoordinator() {
       <TopNav
         left={<AppFileMenu onOpenTestManagement={() => setIsTestManagementOpen(true)}/>}
         center={<AppViewTabs view={view} onChange={setView} />}
+        right={test? test.name : ""}
       />
 
       <main className="flex-1 min-h-0">
