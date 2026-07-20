@@ -6,7 +6,6 @@ import {
   AccordionItem,
   AccordionTrigger,
 } from "@/components/ui/accordion"
-import { ScrollArea } from "@/components/ui/scroll-area"
 import { WeatherSites } from "@/features/incoming-weather";
 import { WindWarningForm } from "@/features/wind-warnings";
 import { QEForm } from "@/features/qe-logging";
@@ -22,12 +21,12 @@ export function LoggingView() {
       {/* LEFT SIDE PANEL */}
       <div className="w-1/5 max-w-96 min-w-72 p-2 min-h-0 flex flex-col bg-sidebar">
         <Accordion type="multiple" defaultValue={["sites"]} className="flex-1 overflow-auto [scrollbar-gutter:stable]">
-          <AccordionItem value="sites" className="">
+          <AccordionItem value="sites">
             <AccordionTrigger>Weather Sites</AccordionTrigger>
-            <AccordionContent className="h-96">
-              <ScrollArea className="h-full">
+            <AccordionContent>
+              <div className="max-h-96 overflow-auto">
                 <WeatherSites />
-              </ScrollArea>
+              </div>
             </AccordionContent>
           </AccordionItem>
           <AccordionItem value="config">
