@@ -1,3 +1,5 @@
+import { useAtomValue } from "jotai";
+
 import {
   Accordion,
   AccordionContent,
@@ -9,8 +11,12 @@ import { WeatherSites } from "@/features/incoming-weather";
 import { WindWarningForm } from "@/features/wind-warnings";
 import { QEForm } from "@/features/qe-logging";
 import { WindChart } from "@/features/wind-log";
+import { activeTestAtom } from "@/features/test-session";
+import { EmptyTestSelectionPrompt } from "@/features/test-session";
 
 export function LoggingView() {
+  const test = useAtomValue(activeTestAtom);
+
   return (
     <div className="flex h-full min-h-0">
       {/* LEFT SIDE PANEL */}
@@ -32,20 +38,28 @@ export function LoggingView() {
       </div>
 
       {/* RIGHT SIDE */}
-    <div className="flex flex-1 min-h-0 flex-col">
-      <div className="flex shrink-0 gap-6 p-8">
-          <div className="flex-1 min-w-0">
-              <QEForm />
+      {!test ?
+        // display only test selection if no active test
+        <div className="flex flex-1">
+          <EmptyTestSelectionPrompt />
+        </div>
+        :
+        // display dashboard with active test selected
+        <div className="flex flex-1 min-h-0 flex-col">
+          <div className="flex shrink-0 gap-6 p-8">
+              <div className="flex-1 min-w-0">
+                  <QEForm />
+              </div>
+              <div className="w-96 shrink-0">
+                {/* TODO: placeholder for WindCompass */}
+              </div>
           </div>
 
-          <div className="w-96 shrink-0">
+          <div className="flex-1 min-h-0">
+              <WindChart />
           </div>
-      </div>
-
-      <div className="flex-1 min-h-0">
-          <WindChart />
-      </div>
+        </div>
+      }
     </div>
-</div>
   );
 }
