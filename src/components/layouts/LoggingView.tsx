@@ -14,7 +14,7 @@ export function LoggingView() {
   return (
     <div className="flex h-full min-h-0">
       {/* LEFT SIDE PANEL */}
-      <div className="w-1/5 max-w-96 min-w-72 p-2 min-h-0 flex flex-col bg-gray-500">
+      <div className="w-1/5 max-w-96 min-w-72 p-2 min-h-0 flex flex-col bg-sidebar">
         <Accordion type="multiple" defaultValue={["sites"]} className="flex-1 overflow-auto [scrollbar-gutter:stable]">
           <AccordionItem value="sites" className="">
             <AccordionTrigger>Weather Sites</AccordionTrigger>
@@ -33,8 +33,13 @@ export function LoggingView() {
 
       {/* RIGHT SIDE */}
       <div className="flex flex-1 min-h-0 flex-col">
-        <QEForm />
-
+        <div className="flex gap-6 p-8">
+          <div className="flex-1">
+            <QEForm />
+          </div>
+          <div className="w-100">
+          </div>
+        </div>
         <div className="flex-1 min-h-0">
           <WindChart />
         </div>
