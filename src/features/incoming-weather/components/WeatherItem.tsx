@@ -20,7 +20,8 @@ export default function WeatherItem({ siteId }: { siteId: string }) {
     return (
         <HoverCard>
             <HoverCardTrigger asChild>
-                <div className="shadow-md rounded-2xl w-full p-3 text-xs bg-gray-400">
+                <div className="shadow-md rounded-2xl w-full p-3 text-xs 
+                    bg-panel text-panel-foreground hover:hover:bg-panel-accent">
                     <div className="flex justify-between mx-3">
                         <span className="font-bold text-sm">{siteWeather.siteId}</span>
                         <span className="mt-0.5">{formatUnixToTime(siteWeather.time)}</span>
