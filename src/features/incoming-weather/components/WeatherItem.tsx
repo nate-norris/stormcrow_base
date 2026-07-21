@@ -36,7 +36,7 @@ export default function WeatherItem({ siteId }: { siteId: string }) {
                     <div className="mt-1 flex justify-end gap-3">
                         <div
                             className={`
-                                ${siteWeather.windState ? getWindStateColor(siteWeather.windState) : "bg-blue-400"}
+                                ${getWindStateColor(siteWeather.windState)}
                                 flex h-8 w-8 shrink-0 items-center
                                 justify-center rounded-full
                             `}>
