@@ -18,7 +18,7 @@ export default function QETypeSelector() {
       value={qet}
       onValueChange={(value) => setQet(value as QEType)}
     >
-      <SelectTrigger id="qe-type" className="w-50 bg-white">
+      <SelectTrigger id="qe-type" className="w-50 bg-input text-foreground">
         <SelectValue placeholder="Select a type" />
       </SelectTrigger>
 

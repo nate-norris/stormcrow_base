@@ -18,7 +18,7 @@ export function QETypeSelector({val, setVal}: Props) {
       value={val}
       onValueChange={(value) => setVal(value as QEType)}
     >
-      <SelectTrigger id="qe-type" className="w-50 bg-white">
+      <SelectTrigger id="qe-type" className="w-50 bg-input text-foreground">
         <SelectValue placeholder="Select a type" />
       </SelectTrigger>
 

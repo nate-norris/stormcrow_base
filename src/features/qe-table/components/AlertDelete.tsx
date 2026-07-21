@@ -22,7 +22,7 @@ type ConfirmDeleteProps = {
 export function AlertDeleteDialog({qeKey, onCancel, onConfirm}: ConfirmDeleteProps) {
   return (
     <AlertDialog open={!!qeKey} onOpenChange={(o) => !o && onCancel()}>
-      <AlertDialogContent size="sm" className="bg-white">
+      <AlertDialogContent size="sm" className="bg-popover text-popover-foreground">
         <AlertDialogHeader>
           <AlertDialogMedia className="bg-destructive/10 text-destructive dark:bg-destructive/20 dark:text-destructive">
             <Trash2Icon />
@@ -33,7 +33,7 @@ export function AlertDeleteDialog({qeKey, onCancel, onConfirm}: ConfirmDeletePro
           </AlertDialogDescription>
         </AlertDialogHeader>
         <AlertDialogFooter>
-          <AlertDialogCancel variant="outline">Cancel</AlertDialogCancel>
+          <AlertDialogCancel variant="ghost">Cancel</AlertDialogCancel>
           <AlertDialogAction 
             onClick={() => onConfirm(qeKey)} 
             variant="destructive">

@@ -1,5 +1,7 @@
 import { useAtom } from "jotai";
 import { useState } from "react";
+
+import { cn } from "@/lib/utils";
 import { Input } from "@/components/ui/input";
 import { lotAtom } from "../../state/derivedLoggingAtom";
 import { isCompleteLotInput } from "./lotParser";
@@ -17,8 +19,11 @@ export default function LotInput() {
             onBlur={() => setLotVisited(true)}
             placeholder="LS-06E071H013BDW"
             maxLength={16}
-            className={`${lotVisited && !isCompleteLotInput(lot) ? "border-red-500 border-2" : ""}
-                bg-white`}
+            className={cn(
+                "bg-input text-foreground",
+                lotVisited && !isCompleteLotInput(lot) && 
+                "border-status-danger border-2"
+                )}
             />
     );
 }

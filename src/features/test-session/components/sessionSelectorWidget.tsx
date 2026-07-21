@@ -21,7 +21,7 @@ export function TestSessionSelector({ tests, selectedId, onChange }: Props) {
                 onChange(value ? Number(value) : null);
             }}
         >
-            <SelectTrigger className="w-full">
+            <SelectTrigger className="w-full bg-input text-foreground">
                 <SelectValue placeholder="Select a test" />
             </SelectTrigger>
             <SelectContent>

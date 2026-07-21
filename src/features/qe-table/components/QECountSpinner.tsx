@@ -64,7 +64,7 @@ export function QECountSpinner({val, setVal}: Props) {
         value={input}
         onChange={handleChange}
         onBlur={handleBlur}
-        className="w-20 rounded-r-none text-center h-9 bg-white"
+        className="w-20 rounded-r-none text-center h-9 bg-input text-foreground"
       />
 
       {/* vertical button group */}
@@ -72,7 +72,7 @@ export function QECountSpinner({val, setVal}: Props) {
         <Button
           type="button"
           variant="outline"
-          className="h-4 px-2 rounded-l-none rounded-b-none bg-gray-200"
+          className="h-4 px-2 rounded-l-none rounded-b-none bg-accent text-foreground"
           onClick={qeUp}
         >
           ▲
@@ -81,7 +81,7 @@ export function QECountSpinner({val, setVal}: Props) {
         <Button
           type="button"
           variant="outline"
-          className="h-4 px-2 rounded-l-none rounded-t-none border-t-0 bg-gray-200"
+          className="h-4 px-2 rounded-l-none rounded-t-none border-t-0 bg-accent text-foreground"
           onClick={qeDown}
         >
           ▼

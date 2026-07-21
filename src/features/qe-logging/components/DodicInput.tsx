@@ -38,10 +38,10 @@ export default function DodicInput() {
             placeholder="A062" 
             maxLength={4}
             className={cn(
-                "bg-white",
+                "bg-input text-foreground",
                 "focus-visible:ring-0",
                 "transition-none",
-                dodicVisited && !isCompleteDODICInput(dodic) && "border-red-500 border-2"
+                dodicVisited && !isCompleteDODICInput(dodic) && "border-status-danger border-2"
             )}
         />
     );

@@ -3,6 +3,7 @@ import { useAtom } from "jotai";
 import { toast } from "sonner";
 
 import { Input } from "@/components/ui/input";
+import { Button } from "@/components/ui/button";
 import { FieldGroup, Field, FieldLabel } from "@/components/ui/field";
 import { activeWindConfigAtom } from "../state/windWarnAtom";
 import { persistWindWarningConfig } from "@/tauri";
@@ -47,7 +48,7 @@ export default function WindWarningForm() {
                   maxWind: Number(e.target.value)
                 }))
               }
-              className="w-25 bg-white"
+              className="w-25 bg-input text-foreground"
             />
           </Field>
           {/* TODO: 0-100 enforced; may need to be above 0 */}
@@ -64,7 +65,7 @@ export default function WindWarningForm() {
                   thresholdPercent: Number(e.target.value)
                 }))
               }
-              className="w-25 bg-white"
+              className="w-25 bg-input text-foreground"
             />
           </Field>
           {/* TODO: 0 - 359 enforced */}
@@ -81,7 +82,7 @@ export default function WindWarningForm() {
                   gunOrient: Number(e.target.value)
                 }))
               }
-              className="w-25 bg-white"
+              className="w-25 bg-input text-foreground"
             />
           </Field>
           <Field className="flex items-center gap-4 flex-row">
@@ -97,16 +98,14 @@ export default function WindWarningForm() {
                   expectedSites: Number(e.target.value)
                 }))
               }
-              className="w-25 bg-white"
+              className="w-25 bg-input text-foreground"
             />
           </Field>
           <div className="flex ml-auto">
-            <button
-              onClick={handleUpdate}
-              className="w-42 bg-blue-600 text-white p-1 rounded-xl font-semibold hover:opacity-90"
-            >
+            <Button
+              onClick={handleUpdate}>
               Update
-            </button>
+            </Button>
           </div>
         </FieldGroup>
       </form>

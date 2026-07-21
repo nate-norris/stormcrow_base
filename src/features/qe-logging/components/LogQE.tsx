@@ -32,7 +32,7 @@ export default function LogQE() {
 
     return (
         <div className="flex flex-col gap-1">
-            <Button onClick={handleClick} className="bg-blue-600">Log QE</Button>
+            <Button onClick={handleClick}>Log QE</Button>
             {qeExists && (
                 <Badge variant="destructive">Overwriting</Badge>
             )}

@@ -67,7 +67,7 @@ export function AlertReassignDialog({qeKey, onCancel, onConfirm}: ConfirmDeleteP
 
   return (
     <AlertDialog open={!!qeKey} onOpenChange={(o) => !o && onCancel()}>
-      <AlertDialogContent size="default" className="bg-white">
+      <AlertDialogContent size="default" className="bg-popover text-popover-foreground">
         <AlertDialogHeader>
           <AlertDialogMedia className="bg-destructive/10 text-destructive dark:bg-destructive/20 dark:text-destructive">
             <ReplaceIcon />
@@ -86,8 +86,8 @@ export function AlertReassignDialog({qeKey, onCancel, onConfirm}: ConfirmDeleteP
             <QETypeSelector val={qet} setVal={setQet} />
         </div>
         <AlertDialogFooter>
-          {isSourceDestionationSame && <div className="mt-1 mr-5 font-small text-red-500">Select a new destination</div>}
-          <AlertDialogCancel variant="outline">Cancel</AlertDialogCancel>
+          {isSourceDestionationSame && <div className="mt-1 mr-5 font-small text-status-danger">Select a new destination</div>}
+          <AlertDialogCancel variant="ghost">Cancel</AlertDialogCancel>
           <AlertDialogAction
             disabled={isSourceDestionationSame}
             onClick={() => prepareReassignment()}

@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { useAtom } from "jotai";
 
+import { cn } from "@/lib/utils";
 import { ModalBackButton } from "@/components/ui/modal";
 import { Button } from "@/components/ui/button";
 import { Test } from "../core/models";
@@ -54,7 +55,7 @@ export default function DeleteView({ onBack, tests }: DeleteProps) {
     }
 
     return (
-        <div className="flex flex-col items-center gap-3">
+        <div className="flex flex-col items-center gap-3 bg-popover text-popover-foreground">
             <ModalBackButton action={onBack} />
             <h2 className="text-xl font-semibold mt-5">Delete a test</h2>
 
@@ -65,7 +66,8 @@ export default function DeleteView({ onBack, tests }: DeleteProps) {
                     selectedId={selectedId}
                     onChange={setSelectedId}
                 />
-                <p className={`text-sm mt-1 text-red-900 ${isSelectionConflict ? "visible" : "invisible"}`}>
+                <p className={cn("text-sm mt-1 text-destructive",
+                    isSelectionConflict ? "visible" : "invisible")}>
                     Cannot delete a test currently in session.
                 </p>
             </div>
@@ -80,7 +82,7 @@ export default function DeleteView({ onBack, tests }: DeleteProps) {
                 open={showConfirmDialog} 
                 onOpenChange={setShowConfirmDialog}
             >
-                <AlertDialogContent className="bg-white">
+                <AlertDialogContent className="bg-popover text-popover-foreground">
                     <AlertDialogHeader>
                         <AlertDialogTitle>Are you sure?</AlertDialogTitle>
                         <AlertDialogDescription>
@@ -88,8 +90,10 @@ export default function DeleteView({ onBack, tests }: DeleteProps) {
                         </AlertDialogDescription>
                     </AlertDialogHeader>
                     <AlertDialogFooter>
-                        <AlertDialogCancel>Cancel</AlertDialogCancel>
-                        <AlertDialogAction onClick={handleDelete}>
+                        <AlertDialogCancel variant="ghost">Cancel</AlertDialogCancel>
+                        <AlertDialogAction 
+                            onClick={handleDelete}
+                            variant="destructive">
                             Delete
                         </AlertDialogAction>
                     </AlertDialogFooter>

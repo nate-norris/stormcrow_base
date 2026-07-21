@@ -29,7 +29,7 @@ export default function WeatherItem({ siteId }: { siteId: string }) {
                             ${getReceivingStatusColor(siteWeather.status)}
                             px-2 py-0.5 mb-1 rounded-full flex w-30 
                             justify-center text-status-foreground`}>
-                            <RadioTowerIcon className="h-4 w-4 mr-2 text-white" />
+                            <RadioTowerIcon className="h-4 w-4 mr-2 text-status-foreground" />
                             {formatReceivingStatusText(siteWeather.status)}
                         </span>
                     </div>

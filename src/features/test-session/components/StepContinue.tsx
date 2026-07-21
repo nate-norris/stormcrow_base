@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { useAtom } from "jotai";
 
+import { cn } from "@/lib/utils";
 import { store } from "@/state/store"
 import { TestSessionSelector } from "./sessionSelectorWidget";
 import { Test, TestSession } from "../core/models";
@@ -66,7 +67,10 @@ export default function ContinueView({ onBack, onSubmit, tests, lastTest }: Cont
                     selectedId={selectedId}
                     onChange={setSelectedId}
                 />
-                <p className={`text-sm mt-1 text-red-900 ${isSelectionConflict ? "visible" : "invisible"}`}>
+                <p className={cn(
+                    "text-sm mt-1 text-destructive",
+                    isSelectionConflict ? "visible" : "invisible"
+                    )}>
                     Please select a test not already in session.
                 </p>
             </div>

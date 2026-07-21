@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { useAtom } from "jotai";
 
+import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import { ModalBackButton } from "@/components/ui/modal";
 import { Input } from "@/components/ui/input";
@@ -61,11 +62,12 @@ export default function NewView({ onBack, onSubmit, tests }: NewProps) {
         <div className="flex items-start gap-2 mt-5">
           <div className="flex flex-col">
             <Input
-              className="w-70"
+              className="w-70 bg-input text-foreground"
               value={name}
               onChange={(e) => setName(e.target.value)}
               placeholder="Test name" />
-            <p className={`text-sm mt-1 text-red-900 ${isNameConflict ? "visible" : "invisible"}`}>
+            <p className={cn("text-sm mt-1 text-destructive", 
+              isNameConflict ? "visible" : "invisible")}>
               Test already exists.
             </p>
           </div>
