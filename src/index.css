@@ -42,6 +42,9 @@
   --color-panel: var(--panel);
   --color-panel-foreground: var(--panel-foreground);
   --color-panel-accent: var(--panel-accent);
+  --color-wind-safe: var(--wind-safe);
+  --color-wind-warning: var(--wind-warning);
+  --color-wind-danger: var(--wind-danger);
 }
 
 :root {
@@ -80,6 +83,9 @@
   --panel: oklch(0.98 0.01 250);
   --panel-foreground: var(--foreground);
   --panel-accent: oklch(0.922 0 0);
+  --wind-safe:    oklch(0.63 0.18 145);  /* ≈ green-600 */
+  --wind-warning: oklch(0.67 0.17 75);   /* ≈ amber-500/600 */
+  --wind-danger:  oklch(0.50 0.21 27);   /* ≈ red-700 */
 }
 
 .dark {
@@ -114,9 +120,6 @@
   --sidebar-accent-foreground: oklch(0.985 0 0);
   --sidebar-border: oklch(1 0 0 / 10%);
   --sidebar-ring: oklch(0.556 0 0);
-  --panel: oklch(0.488 0.243 264.376);
-  --panel-foreground: var(--foreground);
-  --panel-accent: oklch(0.922 0 0);
 }
 
 @layer base {
