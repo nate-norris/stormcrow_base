@@ -30,7 +30,6 @@ export default function ExportDataButton() {
         <div className="mt-2">
             <Button 
                 onClick={handleClick} 
-                className="bg-blue-600"
                 disabled={!canExport}>
                 Export Data
             </Button>
