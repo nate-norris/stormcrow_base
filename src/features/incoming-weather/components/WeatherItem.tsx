@@ -28,7 +28,7 @@ export default function WeatherItem({ siteId }: { siteId: string }) {
                         <span className={`
                             ${getReceivingStatusColor(siteWeather.status)}
                             px-2 py-0.5 mb-1 rounded-full flex w-30 
-                            justify-center text-white`}>
+                            justify-center text-status-foreground`}>
                             <RadioTowerIcon className="h-4 w-4 mr-2 text-white" />
                             {formatReceivingStatusText(siteWeather.status)}
                         </span>
@@ -40,7 +40,7 @@ export default function WeatherItem({ siteId }: { siteId: string }) {
                                 flex h-8 w-8 shrink-0 items-center
                                 justify-center rounded-full
                             `}>
-                            <CloudRainWindIcon className="h-5 w-5 text-white" />
+                            <CloudRainWindIcon className="h-5 w-5 text-status-foreground" />
                         </div>
                         <div className="flex flex-col items-end">
                             <div className="flex gap-2">
