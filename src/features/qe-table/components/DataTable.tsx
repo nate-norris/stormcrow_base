@@ -27,11 +27,11 @@ export function DataTable<TData, TValue>({columns, data,}:
   })
 
   return (
-    <div className="overflow-hidden rounded-md border">
-      <Table className="bg-card text-card-foreground">
-        <TableHeader className="bg-muted text-muted-foreground">
+    <div className="overflow-hidden rounded-md">
+      <Table>
+        <TableHeader className="bg-panel panel-foreground">
           {table.getHeaderGroups().map((headerGroup) => (
-            <TableRow key={headerGroup.id} className="hover:bg-muted">
+            <TableRow key={headerGroup.id} className="hover:bg-panel">
               {headerGroup.headers.map((header) => {
                 return (
                   <TableHead key={header.id} className="text-center">
@@ -53,7 +53,7 @@ export function DataTable<TData, TValue>({columns, data,}:
               <TableRow
                 key={row.id}
                 data-state={row.getIsSelected() && "selected"}
-                className="text-center hover:bg-secondary"
+                className="text-center bg-panel hover:bg-card"
               >
                 {row.getVisibleCells().map((cell) => (
                   <TableCell key={cell.id}>
@@ -64,7 +64,8 @@ export function DataTable<TData, TValue>({columns, data,}:
             ))
           ) : (
             <TableRow>
-              <TableCell colSpan={columns.length} className="h-20 text-center font-semibold text-lg">
+              <TableCell colSpan={columns.length} className="h-120 bg-panel 
+                panel-foreground text-center font-semibold text-lg"> 
                 No results.
               </TableCell>
             </TableRow>
