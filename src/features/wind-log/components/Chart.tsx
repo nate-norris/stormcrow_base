@@ -1,16 +1,20 @@
 import { useAtomValue } from "jotai";
 import { ResponsiveContainer, LineChart, XAxis, YAxis, Line, CartesianGrid,
-    Legend, ReferenceLine } from "recharts";
+    ReferenceLine } from "recharts";
 
-import { windChartDataAtom } from "../state/windChartDataAtom";
 import { siteIdsAtom } from "@/features/incoming-weather";
 import { activeWindConfigAtom } from "@/features/wind-warnings";
 import { clockAtom } from "@/state";
 import { WIND_WINDOW, SITE_COLORS } from "../core/constants";
+import type { WindChartPoint } from "../core/windChartPoint";
 
-export function Chart() {
+type ChartProps = {
+    data: WindChartPoint[];
+    label: string;
+};
+
+export function Chart({ data, label }: ChartProps) {
     const siteIds = useAtomValue(siteIdsAtom);
-    const data = useAtomValue(windChartDataAtom);
     const now = useAtomValue(clockAtom);
     const config = useAtomValue(activeWindConfigAtom);
 
@@ -29,7 +33,6 @@ export function Chart() {
                     bottom: 5,
                 }}
             >
-                <Legend />
                 <CartesianGrid 
                     vertical={true}
                     stroke="#ffffff"
@@ -54,7 +57,7 @@ export function Chart() {
                     stroke="#ffffff"
                     axisLine={false}
                     label={{
-                        value: "Wind (m/s)",
+                        value: label,
                         angle: -90,
                         position: "insideLeft",
                         fill: "#ffffff",
