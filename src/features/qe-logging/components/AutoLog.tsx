@@ -12,7 +12,7 @@ export default function AutoLog() {
             pressed={autoLog}
             onPressedChange={setAutoLog}
             aria-label="Auto Log" size="default" variant="outline"
-            className="data-[state=on]:bg-status-danger data-[state=on]:text-status-foreground"
+            className="data-[state=on]:bg-status-danger data-[state=on]:text-status-foreground min-w-30"
             >
             <Crosshair />
             Auto Log QE
