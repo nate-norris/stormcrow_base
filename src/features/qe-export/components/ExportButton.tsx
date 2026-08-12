@@ -28,7 +28,8 @@ export default function ExportDataButton() {
 
     return (
         <div className="mt-2">
-            <Button 
+            <Button
+                variant="default"
                 onClick={handleClick} 
                 disabled={!canExport}>
                 Export Data
