@@ -42,7 +42,7 @@ export function QEForm() {
                         <div></div>
                         <Field>
                             <AutoLog />
-                            <FieldDescription>logging initiated from sound trigger</FieldDescription>
+                            <FieldDescription>sound trigger initiated</FieldDescription>
                         </Field>
                         <Field>
                             <LogQE />
