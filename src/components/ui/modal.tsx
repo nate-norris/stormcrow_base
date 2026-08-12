@@ -25,7 +25,7 @@ function Modal({ isOpen, onClose, children }: ModalProps) {
         >
           <motion.div
             className="relative w-full max-w-md rounded-xl border border-border 
-              bg-card text-card-foreground p-6 shadow-xl"
+              bg-popover text-popover-foreground p-6 shadow-xl"
             onMouseDown={(e) => e.stopPropagation()}
             initial={{ opacity: 0, scale: 0.95 }}
             animate={{ opacity: 1, scale: 1 }}
