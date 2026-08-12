@@ -19,7 +19,7 @@ export enum WindState {
 export type WeatherObservation =
     WeatherPacket &
     {
-        windCalcs: WindCalcs | null;
+        windCalcs: WindCalcs;
         time: number,
         status: WeatherS,
         windState: WindState | null,
