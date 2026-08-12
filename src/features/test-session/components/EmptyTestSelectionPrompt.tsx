@@ -27,7 +27,11 @@ export function EmptyTestSelectionPrompt() {
         </EmptyDescription>
       </EmptyHeader>
       <EmptyContent className="flex-row justify-center gap-2">
-        <Button onClick={()=>setTestModalOpen(true)} variant="outline">Manage Tests</Button>
+        <Button 
+          onClick={()=>setTestModalOpen(true)} 
+          variant="outline">
+          Manage Tests
+        </Button>
       </EmptyContent>
     </Empty>
   )
