@@ -1,10 +1,17 @@
-import { Menu } from "lucide-react";
+import { Menu, Sun, Moon, Monitor } from "lucide-react";
+import { useTheme } from "next-themes";
 
 import {
     DropdownMenu,
     DropdownMenuTrigger,
     DropdownMenuContent,
     DropdownMenuItem,
+    DropdownMenuSeparator,
+    DropdownMenuSub,
+    DropdownMenuSubContent,
+    DropdownMenuSubTrigger,
+    DropdownMenuRadioGroup,
+    DropdownMenuRadioItem,
 } from "@/components/ui/dropdown-menu";
 
 import { Button } from "@/components/ui/button";
@@ -14,6 +21,7 @@ type Props = {
 }
 
 export function AppFileMenu({ onOpenTestManagement }: Props) {
+    const { theme, setTheme } = useTheme();
     return (
         <div className="w-full flex items-center px-2">
             <DropdownMenu>
@@ -30,6 +38,34 @@ export function AppFileMenu({ onOpenTestManagement }: Props) {
                     <DropdownMenuItem>
                         Help
                     </DropdownMenuItem>
+                    <DropdownMenuSub>
+                        <DropdownMenuSubTrigger>
+                            Theme
+                        </DropdownMenuSubTrigger>
+                        <DropdownMenuSubContent>
+                            <DropdownMenuRadioGroup
+                                value={theme}
+                                onValueChange={setTheme}
+                            >
+                                <DropdownMenuRadioItem value="light">
+                                    <Sun />
+                                    Light
+                                </DropdownMenuRadioItem>
+
+                                <DropdownMenuRadioItem value="dark">
+                                    <Moon />
+                                    Dark
+                                </DropdownMenuRadioItem>
+
+                                <DropdownMenuSeparator />
+
+                                <DropdownMenuRadioItem value="system">
+                                    <Monitor />
+                                    System
+                                </DropdownMenuRadioItem>
+                            </DropdownMenuRadioGroup>
+                        </DropdownMenuSubContent>
+                    </DropdownMenuSub>
                 </DropdownMenuContent>
             </DropdownMenu>
         </div>
