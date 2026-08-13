@@ -9,7 +9,14 @@ export default function WeatherSites() {
     const [siteIds] = useAtom(sortedSiteIdsAtom);
 
     return (
-        <div>
+        <div className="
+            max-h-96 overflow-auto
+            [&::-webkit-scrollbar]:w-1
+            [&::-webkit-scrollbar-thumb]:bg-transparent
+            [&::-webkit-scrollbar-track]:bg-transparent
+            hover:[&::-webkit-scrollbar-thumb]:rounded-full
+            hover:[&::-webkit-scrollbar-thumb]:bg-white/20"
+        >
             {siteIds.length === 0 ?
                 (<SkeletonWeather />) :
                 (

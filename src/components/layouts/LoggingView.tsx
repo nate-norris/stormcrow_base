@@ -25,7 +25,7 @@ export function LoggingView() {
           <AccordionItem value="sites">
             <AccordionTrigger>Weather Sites</AccordionTrigger>
             <AccordionContent>
-              <div className="max-h-96 overflow-auto">
+              <div>
                 <WeatherSites />
               </div>
             </AccordionContent>
