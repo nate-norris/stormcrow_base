@@ -1,0 +1,1 @@
+export { WindCompass } from "./components/WindCompass";
