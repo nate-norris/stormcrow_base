@@ -10,6 +10,7 @@ import { WeatherSites } from "@/features/incoming-weather";
 import { WindWarningForm } from "@/features/wind-warnings";
 import { QEForm } from "@/features/qe-logging";
 import { WindChart } from "@/features/wind-log";
+import { WindCompass } from "@/features/wind-compass";
 import { activeTestAtom } from "@/features/test-session";
 import { EmptyTestSelectionPrompt } from "@/features/test-session";
 
@@ -50,7 +51,7 @@ export function LoggingView() {
                   <QEForm />
               </div>
               <div className="w-96 shrink-0">
-                {/* TODO: placeholder for WindCompass */}
+                <WindCompass />
               </div>
           </div>
 
