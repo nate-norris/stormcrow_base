@@ -31,7 +31,6 @@ export default function WindWarningForm() {
   }, [activeWindConfig]);
 
   function validateConfig(config: WindWarningConfig): string {
-    alert(config);
     // confirm max wind
     if (config.maxWind < CONFIG_LIMITS.maxWind.min || 
       config.maxWind > CONFIG_LIMITS.maxWind.max) {
@@ -78,8 +77,6 @@ export default function WindWarningForm() {
       setActiveWindConfig(draftConfig);
       toast.success("Configuration successfully updated.")
     } catch (err) {
-      // TODO confirm why empty test is allowing updateConfiguration
-      // may just need conditional check here.... db is probably checking for update where test id is -1
       toast.error("Configuration failed to update.");
     }
   }
