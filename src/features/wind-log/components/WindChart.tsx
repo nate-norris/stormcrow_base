@@ -1,7 +1,7 @@
 import { useAtomValue } from "jotai";
 import { Chart } from "./Chart";
 import { crossWindChartDataAtom, headTailWindChartDataAtom } from "../state/windChartDataAtom";
-import { ChartLegend } from "./ChartLegend";
+import { WindLegend } from "./ChartLegend";
 
 export function WindChart() {
   const crossData = useAtomValue(crossWindChartDataAtom);
@@ -22,7 +22,7 @@ export function WindChart() {
         </div>
 
         <div className="w-14 min-h-0">
-          <ChartLegend />
+          <WindLegend />
         </div>
       </div>
     </div>

@@ -3,7 +3,7 @@ import { useAtomValue } from "jotai";
 import { siteIdsAtom } from "@/features/incoming-weather";
 import { SITE_COLORS } from "../core/constants";
 
-export function ChartLegend() {
+export function WindLegend() {
   const siteIds = useAtomValue(siteIdsAtom);
 
   return (
@@ -27,5 +27,4 @@ export function ChartLegend() {
       ))}
     </div>
   );
-
 }
