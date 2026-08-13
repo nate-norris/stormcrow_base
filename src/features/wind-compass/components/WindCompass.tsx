@@ -1,18 +1,11 @@
-import { useTheme } from "next-themes";
-import { useAtomValue } from "jotai";
+import { CompassCardinals } from "./CompassCardinals";
+import { MA5B } from "./MA5B";
+import { CompassTicks } from "./CompassTicks";
+import { WindThresholdRing } from "./WindThresholdRing";
 
-import rifleLight from "../images/rifleLight.png";
-import rifleDark from "../images/rifleDark.png";
-import { activeWindConfigAtom } from "@/features/wind-warnings";
+const INNER_RADIUS = 86;
 
 export function WindCompass() {
-    const { resolvedTheme } = useTheme();
-    const rifle = resolvedTheme === "dark" ? rifleLight : rifleDark;
-    const config = useAtomValue(activeWindConfigAtom);
-
-    const gunAzimuth = config.gunOrient * -1;
-    const max = config.maxWind;
-    const threshold = config.thresholdPercent;
 
     return (
         <div className="w-full aspect-square">
@@ -35,21 +28,14 @@ export function WindCompass() {
                 <circle
                     cx={100}
                     cy={100}
-                    r={86}
+                    r={INNER_RADIUS}
                     fill="none"
                     stroke="currentColor"
                     strokeWidth={0.5}
                 />
+                <CompassTicks />
                 {/* rifle orientation: always up */}
-                <image
-                    href={rifle}
-                    x={25}
-                    y={50}
-                    width={150}
-                    height={105}
-                    preserveAspectRatio="xMidYMid meet"
-                    transform="rotate(90 100 100)"
-                />
+                <MA5B />
                 {/* center point */}
                 <circle
                     cx={100}
@@ -58,15 +44,9 @@ export function WindCompass() {
                     fill="red"
                 />
                 {/* Cardinal directions */}
-                <text
-                    x={100}
-                    y={12}
-                    textAnchor="middle"
-                    className="font-extralight text-xs fill-current"
-                    transform={`rotate(${gunAzimuth} 100 100)`}
-                >
-                    N
-                </text>
+                <CompassCardinals />
+                {/* threshold visual indicator */}
+                <WindThresholdRing radius={INNER_RADIUS} />
             </svg>
         </div>
     );
