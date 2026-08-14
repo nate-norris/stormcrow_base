@@ -17,7 +17,7 @@ export function WindThresholdRing({ radius }: WindThresholdRingProps) {
             r={tRadius}
             fill="none"
             stroke="currentColor"
-            strokeWidth={1.5}
+            strokeWidth={1}
             strokeDasharray="4 3"
             className="text-amber-500"
         />
