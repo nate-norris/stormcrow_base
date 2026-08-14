@@ -16,6 +16,10 @@ export function CompassCardinals() {
 
     return (
         <>
+            <polygon
+                points="100,2 96,10 104,10"
+                fill="red"
+            />
             {CARDINAL_DIRECTIONS.map(({ label, x, y }) => (
                 <text
                     key={label}
