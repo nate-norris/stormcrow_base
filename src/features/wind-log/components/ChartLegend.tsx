@@ -1,7 +1,7 @@
 import { useAtomValue } from "jotai";
 
 import { siteIdsAtom } from "@/features/incoming-weather";
-import { SITE_COLORS } from "../core/constants";
+import { SITE_COLORS } from "@/lib/siteColors";
 
 export function WindLegend() {
   const siteIds = useAtomValue(siteIdsAtom);

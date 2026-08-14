@@ -5,7 +5,8 @@ import { ResponsiveContainer, LineChart, XAxis, YAxis, Line, CartesianGrid,
 import { siteIdsAtom } from "@/features/incoming-weather";
 import { activeWindConfigAtom } from "@/features/wind-warnings";
 import { clockAtom } from "@/state";
-import { WIND_WINDOW, SITE_COLORS } from "../core/constants";
+import { WIND_WINDOW } from "../core/constants";
+import { SITE_COLORS } from "@/lib/siteColors";
 import type { WindChartPoint } from "../core/windChartPoint";
 
 type ChartProps = {
