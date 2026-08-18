@@ -14,3 +14,14 @@ export const activeWindConfigAtom = atom<WindWarningConfig>(defaultWindWarningCo
 export const hasLoadedWindConfigAtom= atom((get) => {
   return get(activeWindConfigAtom).id !== -1;
 });
+
+// update only gunOrient in activeWindConfigAtom
+export const updateGunOrientAtom = atom(
+  null,
+  (get, set, gunOrient: number) => {
+    set(activeWindConfigAtom, {
+      ...get(activeWindConfigAtom),
+      gunOrient,
+    });
+  }
+);
