@@ -37,6 +37,11 @@ export function WindCompass() {
                 <CompassTicks radius={INNER_RADIUS} />
                 {/* rifle orientation: always up */}
                 <MA5B />
+                {/* Cardinal directions */}
+                <CompassCardinals />
+                {/* threshold visual indicator */}
+                <WindThresholdRing radius={INNER_RADIUS} />
+                <WindVectors radius={INNER_RADIUS} />
                 {/* center point */}
                 <circle
                     cx={100}
@@ -44,11 +49,6 @@ export function WindCompass() {
                     r={3}
                     fill="currentColor"
                 />
-                {/* Cardinal directions */}
-                <CompassCardinals />
-                {/* threshold visual indicator */}
-                <WindThresholdRing radius={INNER_RADIUS} />
-                <WindVectors radius={INNER_RADIUS} />
             </svg>
         </div>
     );
