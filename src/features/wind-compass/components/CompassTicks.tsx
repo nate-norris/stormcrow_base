@@ -1,10 +1,13 @@
 import { useAtomValue } from "jotai";
 import { activeWindConfigAtom } from "@/features/wind-warnings";
 
-const INNER_RADIUS = 86;
 const TICK_INTERVAL = 15;
 
-export function CompassTicks() {
+interface CompassTickProps {
+    radius: number;
+}
+
+export function CompassTicks({ radius }: CompassTickProps) {
     const config = useAtomValue(activeWindConfigAtom);
     const gunAzimuth = config.gunOrient * -1;
 
@@ -24,9 +27,9 @@ export function CompassTicks() {
                     <line
                         key={angle}
                         x1={100}
-                        y1={100 - INNER_RADIUS}
+                        y1={100 - radius}
                         x2={100}
-                        y2={100 - INNER_RADIUS - (isMajor ? 8 : 5)}
+                        y2={100 - radius - (isMajor ? 8 : 5)}
                         stroke="currentColor"
                         strokeWidth={isMajor ? 1 : 0.5}
                         transform={`rotate(${angle+gunAzimuth} 100 100)`}
