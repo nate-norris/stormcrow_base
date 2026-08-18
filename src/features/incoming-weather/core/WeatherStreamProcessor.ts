@@ -5,6 +5,7 @@ import { updateWeatherObserverAtom } from "../state/updateWeatherObserverAtom";
 import { deleteWeatherObserverAtom } from "../state/deleteWeatherObserverAtom";
 import { activeWindConfigAtom, hasLoadedWindConfigAtom  } from "@/features/wind-warnings";
 import { updateWindLogAtom, deleteWindLogAtom } from "@/features/wind-log";
+import { updateCompassAtom, deleteCompassAtom } from "@/features/wind-compass";
 import { getWindCalculations } from "./windCalculations";
 import { getWindState } from "./windState";
 
@@ -45,6 +46,7 @@ export default class WeatherStreamProcessor {
 
         store.set(deleteWeatherObserverAtom, siteId);
         store.set(deleteWindLogAtom, siteId);
+        store.set(deleteCompassAtom, siteId);
     }
 
     private publish(obs: WeatherObservation) {
@@ -53,6 +55,7 @@ export default class WeatherStreamProcessor {
             data: obs,
         });
         store.set(updateWindLogAtom, obs);
+        store.set(updateCompassAtom, obs)
     }
 
     private resetTimeout(siteId: string) {
