@@ -12,12 +12,12 @@ export function AppViewTabs({ view, onChange }: Props) {
     <Tabs value={view} onValueChange={(value) => onChange(value as ViewOptions)} className="w-full">
       <TabsList className="bg-card">
         <TabsTrigger 
-          className="data-[state=active]:bg-secondary"
+          className="data-[state=active]:bg-secondary dark:data-[state=active]:bg-secondary"
           value="logging">
           Logging
         </TabsTrigger>
         <TabsTrigger 
-          className="data-[state=active]:bg-secondary"
+          className="data-[state=active]:bg-secondary dark:data-[state=active]:bg-secondary"
           value="qes">
           QE Table
         </TabsTrigger>
