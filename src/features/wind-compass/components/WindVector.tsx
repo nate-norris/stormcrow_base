@@ -14,14 +14,21 @@ interface Props {
 }
 export function WindVector({ siteId, event, radius }: Props) {
     const config = useAtomValue(activeWindConfigAtom);
-    const gunAzimuth = config.gunOrient * -1;
+    const vectorAngle = (config.gunOrient * -1) + event.orientation;
+    const transform = `rotate(${vectorAngle} 100 100)`;
 
     const ratio = Math.min(event.windFull / config.maxWind, 1);
     const yShift = ratio * TRIANGLE_MAX_Y_SHIFT;
     const yShiftLine = ratio * LINE_MAX_Y_SHIFT;
+    const arrowPoints = `
+        100,${92-yShift}
+        96,${100-yShift}
+        104,${100-yShift}
+    `
 
     return (
         <>
+            {/* arrow line */}
             <line
                 key={siteId}
                 x1={100}
@@ -30,16 +37,34 @@ export function WindVector({ siteId, event, radius }: Props) {
                 y2={(186-yShiftLine-radius)}
                 stroke={SITE_COLORS[siteId]}
                 strokeWidth={2}
-                transform={`rotate(${gunAzimuth+event.orientation} 100 100)`}
+                transform={transform}
             />
+            {/* arrow tip */}
             <polygon
-                points={`
-                    100,${92-yShift}
-                    96,${100-yShift}
-                `}
+                points={arrowPoints}
                 fill={SITE_COLORS[siteId]}
-                transform={`rotate(${gunAzimuth+event.orientation} 100 100)`}
+                transform={transform}
             />
+            {/* site id bubble */}
+            <g transform={transform}>
+                <circle
+                    cx={100}
+                    cy={8}
+                    r={5}
+                    fill={SITE_COLORS[siteId]}
+                />
+
+                <text
+                    x={100}
+                    y={8}
+                    textAnchor="middle"
+                    dominantBaseline="central"
+                    className="text-[5px] font-bold text-alternate-foreground fill-current"
+                    transform={`rotate(${-vectorAngle} 100 8)`}
+                >
+                    {siteId}
+                </text>
+            </g>
         </>
     );
 }
