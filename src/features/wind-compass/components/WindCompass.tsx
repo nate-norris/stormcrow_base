@@ -2,6 +2,7 @@ import { CompassCardinals } from "./CompassCardinals";
 import { MA5B } from "./MA5B";
 import { CompassTicks } from "./CompassTicks";
 import { WindThresholdRing } from "./WindThresholdRing";
+import { WindVectors } from "./WindVectors";
 
 const INNER_RADIUS = 86;
 
@@ -33,7 +34,7 @@ export function WindCompass() {
                     stroke="currentColor"
                     strokeWidth={0.5}
                 />
-                <CompassTicks />
+                <CompassTicks radius={INNER_RADIUS} />
                 {/* rifle orientation: always up */}
                 <MA5B />
                 {/* center point */}
@@ -41,12 +42,13 @@ export function WindCompass() {
                     cx={100}
                     cy={100}
                     r={3}
-                    fill="red"
+                    fill="currentColor"
                 />
                 {/* Cardinal directions */}
                 <CompassCardinals />
                 {/* threshold visual indicator */}
                 <WindThresholdRing radius={INNER_RADIUS} />
+                <WindVectors radius={INNER_RADIUS} />
             </svg>
         </div>
     );
