@@ -9,3 +9,10 @@ export interface WindWarningConfig {
   gunOrient: number;
   expectedSites: number;
 }
+
+export type Hemisphere = "N" | "S";
+
+export type Point = {
+  easting: number;
+  northing: number;
+}
