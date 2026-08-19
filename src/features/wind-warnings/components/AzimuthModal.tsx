@@ -51,22 +51,24 @@ export function AzimuthDialog({ onCancel, onConfirm }: Props) {
                 northing: wNorthing
             };
             const t: AzimuthRawInput = {
-                utm: tUtm,
-                hemisphere: tHem,
+                utm: !enabledSyncUtm ? tUtm : wUtm,
+                hemisphere: !enabledSyncUtm ? tHem : wHem,
                 easting: tEasting,
                 northing: tNorthing
             };
-            const errorString = validateAzimuthInputs(w, !enabledSyncUtm ? t : w);
+            const errorString = validateAzimuthInputs(w, t);
             setErrorString(errorString); // will be "" if no errors
 
             if (errorString) {
-                return;
+                return false;
             }
 
             // onConfirm();
             toast.success("Azimuth updated success");
+            return true;
         } catch (err) {
             toast.error("Azimuth update failed");
+            return false;
             // TODO: log error
         }
     }
@@ -141,8 +143,11 @@ export function AzimuthDialog({ onCancel, onConfirm }: Props) {
                 <AlertDialogFooter>
                     <AlertDialogCancel variant="ghost">Cancel</AlertDialogCancel>
                     <AlertDialogAction
-                        disabled={true}
-                        onClick={() => prepareAzimuth()}
+                        onClick={(e) => {
+                            if (!prepareAzimuth()) {
+                                e.preventDefault();
+                            }
+                        }}
                         variant="default">
                         Update Weapon Orientation
                     </AlertDialogAction>
