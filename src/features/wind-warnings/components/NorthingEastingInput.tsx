@@ -4,10 +4,9 @@ import { cn } from "@/lib/utils"
 interface Props {
   val: string;
   setVal: (value: string) => void;
-  isDisabled?: boolean;
 }
 
-export function NorthingEastingInput({ val, setVal, isDisabled }: Props) {
+export function NorthingEastingInput({ val, setVal }: Props) {
 
     return (
         <Input
@@ -18,7 +17,6 @@ export function NorthingEastingInput({ val, setVal, isDisabled }: Props) {
                 "focus-visible:ring-0",
                 "transition-none",
             )}
-            disabled={isDisabled}
         />
     );
 }
