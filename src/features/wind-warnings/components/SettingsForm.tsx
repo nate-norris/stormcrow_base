@@ -5,17 +5,14 @@ import { toast } from "sonner";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { FieldGroup, Field, FieldLabel } from "@/components/ui/field";
-import type { WindWarningConfig } from "../core/models";
 import { activeWindConfigAtom } from "../state/windWarnAtom";
 import { canUpdateConfigsAtom } from "../state/canUpdateConfigsAtom";
 import { persistWindWarningConfig } from "@/tauri";
-
-const CONFIG_LIMITS = {
-  maxWind: { min: 0, max: 20 },
-  percentage: { min: 0, max: 100 },
-  direction: { min: 0, max: 359 },
-  siteCount: { min: 1, max: 26 }, // A-Z
-};
+import { isAzimuthModalOpenAtom } from "../state/isAzimuthModalOpenAtom";
+import { AzimuthDialog } from "./AzimuthModal";
+import { CONFIG_LIMITS } from "../core/constants";
+import { getWindWarningConfigError } from "../core/getWindWarningConfigError";
+import { updateGunOrientation } from "../core/calculateAzimuth";
 
 export default function WindWarningForm() {
   const canUpdateConfigs = useAtomValue(canUpdateConfigsAtom);
@@ -25,48 +22,21 @@ export default function WindWarningForm() {
   const [draftConfig, setDraftConfig] = useState(activeWindConfig);
   // display any errors upon input
   const [formError, setFormError] = useState<string>("");
+  // modal for azimuth calculations
+  //    allow TestModal to open/close
+  const [isAzimuthModalOpen, setIsAzimuthModalOpen] = useAtom(isAzimuthModalOpenAtom);
+
 
   useEffect(() => {
     setDraftConfig(activeWindConfig);
   }, [activeWindConfig]);
 
-  function validateConfig(config: WindWarningConfig): string {
-    // confirm max wind
-    if (config.maxWind < CONFIG_LIMITS.maxWind.min || 
-      config.maxWind > CONFIG_LIMITS.maxWind.max) {
-      return `Max wind must be between ${CONFIG_LIMITS.maxWind.min} and 
-        ${CONFIG_LIMITS.maxWind.max} m/s.`;
-    }
-
-    // confirm threshold percent
-    if (config.thresholdPercent < CONFIG_LIMITS.percentage.min || 
-      config.thresholdPercent > CONFIG_LIMITS.percentage.max) {
-      return `Threshold must be between ${CONFIG_LIMITS.percentage.min} and 
-        ${CONFIG_LIMITS.percentage.max} %.`;
-    }
-
-    // confirm weapon orientation
-    if (config.gunOrient < CONFIG_LIMITS.direction.min || 
-      config.gunOrient > CONFIG_LIMITS.direction.max) {
-      return `Weapon direction must be between ${CONFIG_LIMITS.direction.min}° and 
-        ${CONFIG_LIMITS.direction.max}°.`;
-    }
-  
-    // confirm site count
-    if (config.expectedSites < CONFIG_LIMITS.siteCount.min || 
-      config.expectedSites > CONFIG_LIMITS.siteCount.max) {
-      return `Site count must be between ${CONFIG_LIMITS.siteCount.min} and 
-        ${CONFIG_LIMITS.siteCount.max}.`;
-    }
-
-    return "";
-  }
 
   const handleUpdate = async () => {
 
     // update ui for any error messages
     //  return if one is present
-    const error = validateConfig(draftConfig);
+    const error = getWindWarningConfigError(draftConfig);
     setFormError(error);
     if (error != "") {
       return;
@@ -125,22 +95,33 @@ export default function WindWarningForm() {
           </Field>
           {/* direction for wind degrees */}
           <Field className="flex items-center gap-4 flex-row">
-            <FieldLabel htmlFor="weapon-deg">Weapon (° N True)</FieldLabel>
-            <Input
-              id="weapon-deg"
-              type="number"
-              min={CONFIG_LIMITS.direction.min}
-              max={CONFIG_LIMITS.direction.max}
-              step="1"
-              value={draftConfig.gunOrient}
-              onChange={(e) =>
-                setDraftConfig(prev => ({
-                  ...prev,
-                  gunOrient: Number(e.target.value)
-                }))
-              }
-              className="w-25 bg-input text-foreground"
-            />
+            <FieldLabel htmlFor="weapon-deg">Weapon <br />(° N True)</FieldLabel>
+              <span>
+                <Button 
+                  className="text-xs mb-2 h-6" 
+                  size="sm" 
+                  variant="secondary"
+                  type="button"
+                  onClick={() => setIsAzimuthModalOpen(true)}
+                >
+                  Calculate
+                </Button>
+                <Input
+                  id="weapon-deg"
+                  type="number"
+                  min={CONFIG_LIMITS.direction.min}
+                  max={CONFIG_LIMITS.direction.max}
+                  step="1"
+                  value={draftConfig.gunOrient}
+                  onChange={(e) =>
+                    setDraftConfig(prev => ({
+                      ...prev,
+                      gunOrient: Number(e.target.value)
+                    }))
+                  }
+                  className="w-25 bg-input text-foreground"
+                />
+              </span>
           </Field>
           {/* number of expected sites receiving */}
           <Field className="flex items-center gap-4 flex-row">
@@ -172,6 +153,13 @@ export default function WindWarningForm() {
           </div>
         </FieldGroup>
       </form>
+      {/* modal for auto calculating gun azimuth */}
+      {isAzimuthModalOpen && (
+          <AzimuthDialog
+              onCancel={() => setIsAzimuthModalOpen(false)}
+              onConfirm={updateGunOrientation}
+          />
+      )}
     </div>
   );
 }
