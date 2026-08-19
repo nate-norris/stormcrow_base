@@ -2,7 +2,7 @@ import { CompassIcon } from "lucide-react"
 import { useState } from "react";
 import { toast } from "sonner";
 
-import { Hemisphere, Point } from "../core/models";
+import { Hemisphere, Point, AzimuthRawInput } from "../core/models";
 import {
     AlertDialog,
     AlertDialogContent,
@@ -19,6 +19,7 @@ import { UtmZone } from "./UtmZone";
 import { SyncUtmSwitch } from "./SyncUtmSwitch";
 import { HemisphereToggle } from "./HemisphereToggle";
 import { NorthingEastingInput } from "./NorthingEastingInput";
+import { validateAzimuthInputs } from "../core/validateAzimuthInputs";
 
 
 
@@ -43,6 +44,25 @@ export function AzimuthDialog({ onCancel, onConfirm }: Props) {
 
     function prepareAzimuth() {
         try {
+            const w: AzimuthRawInput = {
+                utm: wUtm,
+                hemisphere: wHem,
+                easting: wEasting,
+                northing: wNorthing
+            };
+            const t: AzimuthRawInput = {
+                utm: tUtm,
+                hemisphere: tHem,
+                easting: tEasting,
+                northing: tNorthing
+            };
+            const errorString = validateAzimuthInputs(w, !enabledSyncUtm ? t : w);
+            setErrorString(errorString); // will be "" if no errors
+
+            if (errorString) {
+                return;
+            }
+
             // onConfirm();
             toast.success("Azimuth updated success");
         } catch (err) {
@@ -100,7 +120,7 @@ export function AzimuthDialog({ onCancel, onConfirm }: Props) {
                         <NorthingEastingInput val={wEasting} setVal={setWEasting} />
                     </div>
                     <div className="flex justify-center">
-                        <NorthingEastingInput val={!enabledSyncUtm ? tEasting : wEasting} setVal={setTEasting} isDisabled={enabledSyncUtm} />
+                        <NorthingEastingInput val={tEasting} setVal={setTEasting} />
                     </div>
 
                     {/* Northing */}
@@ -109,7 +129,7 @@ export function AzimuthDialog({ onCancel, onConfirm }: Props) {
                         <NorthingEastingInput val={wNorthing} setVal={setWNorthing} />
                     </div>
                     <div className="flex justify-center">
-                        <NorthingEastingInput val={!enabledSyncUtm ? tNorthing : wNorthing} setVal={setTNorthing} isDisabled={enabledSyncUtm} />
+                        <NorthingEastingInput val={tNorthing} setVal={setTNorthing} />
                     </div>
 
                     {/* Error Display */}
