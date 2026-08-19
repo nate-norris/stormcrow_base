@@ -137,7 +137,7 @@ export function AzimuthDialog({ onCancel, onConfirm }: Props) {
                     {/* Error Display */}
                     <div />
                     <div />
-                    <FieldLabel className="text-xs text-destructive">{errorString}</FieldLabel>
+                    <FieldLabel className="text-xs text-destructive justify-end w-full">{errorString}</FieldLabel>
                 </div>
                 
                 <AlertDialogFooter>
