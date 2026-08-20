@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import { useAtom, useAtomValue } from "jotai";
 import { toast } from "sonner";
+import { CompassIcon } from "lucide-react";
 
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
@@ -12,7 +13,6 @@ import { isAzimuthModalOpenAtom } from "../state/isAzimuthModalOpenAtom";
 import { AzimuthDialog } from "./AzimuthModal";
 import { CONFIG_LIMITS } from "../core/constants";
 import { getWindWarningConfigError } from "../core/getWindWarningConfigError";
-import { updateGunOrientation } from "../core/calculateAzimuth";
 
 export default function WindWarningForm() {
   const canUpdateConfigs = useAtomValue(canUpdateConfigsAtom);
@@ -71,7 +71,7 @@ export default function WindWarningForm() {
                   maxWind: Number(e.target.value)
                 }))
               }
-              className="w-25 bg-input text-foreground"
+              className="bg-input text-foreground"
             />
           </Field>
           {/* threshold percent of warning up to max */}
@@ -90,7 +90,7 @@ export default function WindWarningForm() {
                   thresholdPercent: Number(e.target.value)
                 }))
               }
-              className="w-25 bg-input text-foreground"
+              className="bg-input text-foreground"
             />
           </Field>
           {/* direction for wind degrees */}
@@ -105,6 +105,7 @@ export default function WindWarningForm() {
                   onClick={() => setIsAzimuthModalOpen(true)}
                 >
                   Calculate
+                  <CompassIcon />
                 </Button>
                 <Input
                   id="weapon-deg"
@@ -119,7 +120,7 @@ export default function WindWarningForm() {
                       gunOrient: Number(e.target.value)
                     }))
                   }
-                  className="w-25 bg-input text-foreground"
+                  className="bg-input text-foreground"
                 />
               </span>
           </Field>
@@ -157,7 +158,13 @@ export default function WindWarningForm() {
       {isAzimuthModalOpen && (
           <AzimuthDialog
               onCancel={() => setIsAzimuthModalOpen(false)}
-              onConfirm={updateGunOrientation}
+              onConfirm={(val) => {
+                setDraftConfig(prev => ({
+                  ...prev,
+                  gunOrient: val
+                }));
+                setIsAzimuthModalOpen(false);
+            }}
           />
       )}
     </div>
