@@ -1,6 +1,9 @@
 import { useState } from "react";
 import { useAtom, useAtomValue } from "jotai";
+import { ClipboardListIcon } from "lucide-react";
 
+import { Tooltip, TooltipTrigger, TooltipContent } from "@/components/ui/tooltip";
+import { Button } from "@/components/ui/button";
 import { LayoutRouter } from "./LayoutRouter";
 import { TopNav } from "@/components/layouts/TopNav";
 import { AppViewTabs } from "./AppViewTabs";
@@ -35,7 +38,28 @@ export default function AppCoordinator() {
       <TopNav
         left={<AppFileMenu onOpenTestManagement={() => setIsTestManagementOpen(true)}/>}
         center={<AppViewTabs view={view} onChange={setView} />}
-        right={test? test.name : ""}
+        right={
+          <span className="flex gap-2 items-center">
+            {/* only display test name if test selected */}
+            {test? test.name: ""}
+            {/* test management button/tooltip */}
+            <Tooltip>
+              <TooltipTrigger asChild>
+                  <Button
+                      variant="secondary"
+                      size="icon"
+                      className="size-7 rounded-full"
+                      onClick={() => setIsTestManagementOpen(true)}
+                  >
+                      <ClipboardListIcon className="size-4" />
+                  </Button>
+              </TooltipTrigger>
+              <TooltipContent>
+                  Test Management
+              </TooltipContent>
+            </Tooltip>
+          </span>
+        }
       />
 
       <main className="flex-1 min-h-0">
