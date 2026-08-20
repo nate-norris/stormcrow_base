@@ -45,21 +45,27 @@ function checkEasting(easting: string): string {
 }
 
 function checkNorthing(hemisphere: Hemisphere, northing: string): string {
-    // specific boundaries depending on hemisphere
-    const limits = hemisphere === "N" ? CONFIG_LIMITS.northingNorth : 
-        CONFIG_LIMITS.northingSouth;
-
     // verify empty string
     if (northing.trim() === "") {
         return "Northing is required";
     }
-
     // verify casts to number and is in range
     const northingFloat = Number(northing);
-    if (!Number.isFinite(northingFloat) ||
-        northingFloat < limits.min || 
-        northingFloat > limits.max) {
-        return "Error in Northing";
+
+    if (!Number.isFinite(northingFloat)) return "Error in Northing";
+
+    if ((hemisphere === "N") && !(
+        CONFIG_LIMITS.northingNorth.min <= northingFloat &&
+        northingFloat < CONFIG_LIMITS.northingNorth.max  
+        )) {
+        return "Error in Northing"
+    }
+
+    if ((hemisphere === "S") && !(
+        CONFIG_LIMITS.northingSouth.min < northingFloat &&
+        northingFloat <= CONFIG_LIMITS.northingSouth.max  
+        )) {
+        return "Error in Northing"
     }
 
     return ""
