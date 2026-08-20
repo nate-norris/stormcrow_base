@@ -5,8 +5,7 @@ export const mockData = generateMockObservers();
 function generateMockObservers(): Record<string, WeatherObservation> {
   const observers: Record<string, WeatherObservation> = {};
 
-  for (const siteId of "ABCDEFGH") { //ABCDEFGHIJKLMNOPQRSTUVWXYZ
-    //
+  for (const siteId of "ABCDEFGHIJKLMNOPQRSTUVWXYZ") {
     observers[siteId] = makeSiteA(siteId);
   }
 
