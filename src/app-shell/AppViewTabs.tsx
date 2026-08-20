@@ -1,5 +1,6 @@
-import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { CrosshairIcon, SheetIcon } from "lucide-react";
 
+import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { ViewOptions } from "./models";
 
 type Props = {
@@ -14,12 +15,12 @@ export function AppViewTabs({ view, onChange }: Props) {
         <TabsTrigger 
           className="data-[state=active]:bg-secondary dark:data-[state=active]:bg-secondary"
           value="logging">
-          Logging
+          Logging <CrosshairIcon />
         </TabsTrigger>
         <TabsTrigger 
           className="data-[state=active]:bg-secondary dark:data-[state=active]:bg-secondary"
           value="qes">
-          QE Table
+          QE Table <SheetIcon />
         </TabsTrigger>
       </TabsList>
     </Tabs>
