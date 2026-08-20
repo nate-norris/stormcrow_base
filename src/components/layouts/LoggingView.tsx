@@ -1,4 +1,5 @@
 import { useAtomValue } from "jotai";
+import { SettingsIcon, RadioTowerIcon } from "lucide-react";
 
 import {
   Accordion,
@@ -23,7 +24,12 @@ export function LoggingView() {
       <div className="w-1/5 max-w-96 min-w-72 p-2 min-h-0 flex flex-col bg-sidebar">
         <Accordion type="multiple" defaultValue={["sites"]} className="flex-1 overflow-auto [scrollbar-gutter:stable]">
           <AccordionItem value="sites">
-            <AccordionTrigger>Weather Sites</AccordionTrigger>
+            <AccordionTrigger className="pl-6">
+              <span className="flex items-center gap-2">
+                <RadioTowerIcon />
+                Weather Sites
+              </span>
+            </AccordionTrigger>
             <AccordionContent>
               <div>
                 <WeatherSites />
@@ -31,7 +37,12 @@ export function LoggingView() {
             </AccordionContent>
           </AccordionItem>
           <AccordionItem value="config">
-            <AccordionTrigger>Wind Configuration</AccordionTrigger>
+            <AccordionTrigger className="pl-6">
+              <span className="flex items-center gap-2">
+                <SettingsIcon />
+                Test Configuration
+              </span>
+            </AccordionTrigger>
             <AccordionContent><WindWarningForm /></AccordionContent>
           </AccordionItem>
         </Accordion>
