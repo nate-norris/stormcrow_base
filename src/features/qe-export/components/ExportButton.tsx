@@ -1,6 +1,7 @@
 
 import { useAtomValue } from "jotai";
 import { toast } from "sonner";
+import { SaveAllIcon } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
 import { saveTestQEsToPath, getSavePath } from "@/tauri";
@@ -32,7 +33,7 @@ export default function ExportDataButton() {
                 variant="default"
                 onClick={handleClick} 
                 disabled={!canExport}>
-                Export Data
+                <SaveAllIcon /> Export Data
             </Button>
         </div>
     );
