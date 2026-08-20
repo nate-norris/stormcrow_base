@@ -1,5 +1,5 @@
 import { useSetAtom } from "jotai";
-import { FileQuestionMark } from "lucide-react"
+import { FileQuestionMark, ClipboardList } from "lucide-react"
 
 import { Button } from "@/components/ui/button"
 import {
@@ -31,6 +31,7 @@ export function EmptyTestSelectionPrompt() {
           onClick={()=>setTestModalOpen(true)} 
           variant="outline">
           Manage Tests
+          <ClipboardList />
         </Button>
       </EmptyContent>
     </Empty>
