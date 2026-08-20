@@ -12,8 +12,8 @@ export const updateWindLogAtom = atom(
       const newEntry: WindEvent = { 
         time: obs.time, 
         windFull: obs.windFull,
-        cross: obs.windCalcs.cross,
-        headTail: obs.windCalcs.headTail 
+        cross: obs.windCalcs? obs.windCalcs.cross : 0,
+        headTail: obs.windCalcs? obs.windCalcs.headTail: 0 
       };
 
       return {
