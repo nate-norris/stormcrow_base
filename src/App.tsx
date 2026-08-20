@@ -2,6 +2,7 @@ import "./index.css";
 import { useEffect } from "react";
 import { Provider } from "jotai";
 import { Toaster } from "@/components/ui/sonner";
+import { TooltipProvider } from "@/components/ui/tooltip";
 
 import { store } from "@/state";
 import { bootstrapApp } from "./bootstrap";
@@ -23,8 +24,10 @@ function App() {
 
   return (
     <Provider store={store}>
-      <AppCoordinator />
-      <Toaster />
+      <TooltipProvider>
+        <AppCoordinator />
+        <Toaster />
+      </TooltipProvider>
     </Provider>
   );
 }
