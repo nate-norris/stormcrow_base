@@ -10,7 +10,8 @@ import { AzimuthInput } from "../core/models";
  * @param target 
  * @returns Number
  */
-export function calculateAzimuth(weapon: AzimuthInput, target: AzimuthInput): Number {
+export function calculateAzimuth(weapon: AzimuthInput, target: AzimuthInput): 
+    number {
     // utm position
     const weaponUtm = new Utm(weapon.utm, weapon.hemisphere, weapon.point.easting, weapon.point.northing);
     const targetUtm = new Utm(target.utm, target.hemisphere, target.point.easting, target.point.northing);
