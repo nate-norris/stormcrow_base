@@ -1,8 +1,9 @@
 import { CompassIcon } from "lucide-react"
 import { useState } from "react";
 import { toast } from "sonner";
+import { ArrowRight } from "lucide-react";
 
-import { Hemisphere, Point, AzimuthRawInput } from "../core/models";
+import { Hemisphere, AzimuthRawInput, toInput } from "../core/models";
 import {
     AlertDialog,
     AlertDialogContent,
@@ -20,12 +21,12 @@ import { SyncUtmSwitch } from "./SyncUtmSwitch";
 import { HemisphereToggle } from "./HemisphereToggle";
 import { NorthingEastingInput } from "./NorthingEastingInput";
 import { validateAzimuthInputs } from "../core/validateAzimuthInputs";
-
-
+import { calculateAzimuth } from "../core/calculateAzimuth";
+import { CONFIG_LIMITS } from "../core/constants";
 
 type Props = {
     onCancel: () => void;
-    onConfirm: (zone: number, hemisphere: Hemisphere, gun: Point, target: Point) => void;
+    onConfirm: (orient: number) => void;
 }
 
 export function AzimuthDialog({ onCancel, onConfirm }: Props) {
@@ -63,10 +64,12 @@ export function AzimuthDialog({ onCancel, onConfirm }: Props) {
                 return false;
             }
 
-            // onConfirm();
+            const azimuth = calculateAzimuth(toInput(w), toInput(t));
+            onConfirm(azimuth);
             toast.success("Azimuth updated success");
             return true;
         } catch (err) {
+            console.log(err);
             toast.error("Azimuth update failed");
             return false;
             // TODO: log error
@@ -117,6 +120,13 @@ export function AzimuthDialog({ onCancel, onConfirm }: Props) {
                     </div>
 
                     {/* Easting */}
+                    <div />
+                    <div className="flex items-center gap-0.5 text-[11px] text-muted-foreground">
+                        <span>{CONFIG_LIMITS.easting.min.toLocaleString()}</span>
+                        <ArrowRight className="size-3" />
+                        <span>{CONFIG_LIMITS.easting.max.toLocaleString()}</span>
+                    </div>
+                    <div />
                     <FieldLabel>Easting</FieldLabel>
                     <div className="flex justify-center">
                         <NorthingEastingInput val={wEasting} setVal={setWEasting} />
@@ -126,6 +136,31 @@ export function AzimuthDialog({ onCancel, onConfirm }: Props) {
                     </div>
 
                     {/* Northing */}
+                    <div />
+                    <div className="flex items-center gap-0.5 text-[11px] 
+                        text-muted-foreground">
+                        <span>{wHem === "N" ? 
+                            CONFIG_LIMITS.northingNorth.min.toLocaleString() : 
+                            CONFIG_LIMITS.northingSouth.min.toLocaleString()
+                        }</span>
+                        <ArrowRight className="size-3" />
+                        <span>{wHem === "N" ? 
+                            CONFIG_LIMITS.northingNorth.max.toLocaleString() : 
+                            CONFIG_LIMITS.northingSouth.max.toLocaleString()
+                        }</span>
+                    </div>
+                    <div className="flex items-center gap-0.5 text-[11px] 
+                        text-muted-foreground">
+                        <span>{tHem === "N" ? 
+                            CONFIG_LIMITS.northingNorth.min.toLocaleString() : 
+                            CONFIG_LIMITS.northingSouth.min.toLocaleString()
+                        }</span>
+                        <ArrowRight className="size-3" />
+                        <span>{tHem === "N" ? 
+                            CONFIG_LIMITS.northingNorth.max.toLocaleString() : 
+                            CONFIG_LIMITS.northingSouth.max.toLocaleString()
+                        }</span>
+                    </div>
                     <FieldLabel>Northing</FieldLabel>
                     <div className="flex justify-center">
                         <NorthingEastingInput val={wNorthing} setVal={setWNorthing} />
