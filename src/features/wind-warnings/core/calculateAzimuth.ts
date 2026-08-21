@@ -1,20 +1,34 @@
 import Utm from "geodesy/utm.js";
+import LatLonVincenty from 'geodesy/latlon-ellipsoidal-vincenty.js';
 
-import { store } from "@/state";
-import type { Hemisphere, Point } from "./models";
-import { updateGunOrientAtom } from "../state/windWarnAtom";
+import { AzimuthInput } from "../core/models";
 
-export function updateGunOrientation(zone: number, hemisphere: Hemisphere, gun: Point, target: Point) {
-    const gunLL = new Utm(zone, hemisphere, gun.easting, gun.northing).toLatLon();
-    const targetLL = new Utm(zone, hemisphere, target.easting, target.northing).toLatLon();
+/** Calculate azimuth using WGS 84 ellipsoidal Vincenty relative to true north
+ * 
+ * @param weapon 
+ * 
+ * @param target 
+ * @returns Number
+ */
+export function calculateAzimuth(weapon: AzimuthInput, target: AzimuthInput): Number {
+    // utm position
+    const weaponUtm = new Utm(weapon.utm, weapon.hemisphere, weapon.point.easting, weapon.point.northing);
+    const targetUtm = new Utm(target.utm, target.hemisphere, target.point.easting, target.point.northing);
 
-    gunLL.lat
-    gunLL.lon
-    // gunLL.convergence
+    // latitude/longitude of each point
+    const weaponLL = weaponUtm.toLatLon();
+    const targetLL = targetUtm.toLatLon();
 
-    targetLL.lat
-    targetLL.lon
-    // targetLL.convergence
-    // const t = 10;
-    // store.set(updateGunOrientAtom, t);
+    // vincenty ellipsoidal positions
+    const weaponVincenty = new LatLonVincenty(
+        weaponLL.lat,
+        weaponLL.lon,
+    );
+    const targetVincenty = new LatLonVincenty(
+        targetLL.lat,
+        targetLL.lon,
+    );
+
+    // azimuth bearing
+    return Number(weaponVincenty.initialBearingTo(targetVincenty).toFixed(3));
 }
