@@ -21,7 +21,7 @@ export function LoggingView() {
   return (
     <div className="flex h-full min-h-0">
       {/* LEFT SIDE PANEL */}
-      <div className="w-1/5 max-w-96 min-w-72 p-2 min-h-0 flex flex-col bg-sidebar">
+      <div className="w-1/5 max-w-150 min-w-96 p-2 min-h-0 flex flex-col bg-sidebar">
         <Accordion type="multiple" defaultValue={["sites"]} className="flex-1 overflow-auto [scrollbar-gutter:stable]">
           <AccordionItem value="sites">
             <AccordionTrigger className="pl-6">
@@ -58,7 +58,7 @@ export function LoggingView() {
         // display dashboard with active test selected
         <div className="flex flex-1 min-h-0 flex-col">
           <div className="flex shrink-0 gap-6 p-8">
-              <div className="flex-1 min-w-0">
+              <div className="flex-1 min-w-96">
                   <QEForm />
               </div>
               <div className="w-96 shrink-0">
