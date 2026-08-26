@@ -1,3 +1,5 @@
+import LatLonVincenty from 'geodesy/latlon-ellipsoidal-vincenty.js';
+
 /**
  * Represents the settings the user will provide for real-time wind comparison.
  * @interface WindWarningSettings
@@ -41,4 +43,12 @@ export function toInput(raw: AzimuthRawInput): AzimuthInput {
       northing: Number(raw.northing)
     }
   }
+}
+
+export type AzimuthOutput = {
+  weapon: LatLonVincenty;
+  target: LatLonVincenty;
+  weaponElevation: number;
+  targetElevation: number;
+  azimuth: number;
 }
