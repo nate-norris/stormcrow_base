@@ -1,0 +1,26 @@
+{
+  "db_name": "SQLite",
+  "query": "\n        SELECT last_test_name, last_initiated\n        FROM last_test\n        WHERE id = 1\n        ",
+  "describe": {
+    "columns": [
+      {
+        "name": "last_test_name",
+        "ordinal": 0,
+        "type_info": "Text"
+      },
+      {
+        "name": "last_initiated",
+        "ordinal": 1,
+        "type_info": "Integer"
+      }
+    ],
+    "parameters": {
+      "Right": 0
+    },
+    "nullable": [
+      true,
+      false
+    ]
+  },
+  "hash": "7771e373eb44e523e60ea5fb4926b82c217cd1aa44a7ab6aec0a9c6cb5796368"
+}
