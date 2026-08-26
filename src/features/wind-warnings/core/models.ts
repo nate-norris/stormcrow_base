@@ -14,7 +14,7 @@ export interface WindWarningConfig {
 
 export type Hemisphere = "N" | "S";
 
-type Point = {
+type Coordinate = {
   easting: number;
   northing: number;
 }
@@ -23,7 +23,7 @@ type Point = {
 export type AzimuthInput = {
   utm: number;
   hemisphere: Hemisphere;
-  point: Point;
+  point: Coordinate;
 }
 
 // non corrected inputs
