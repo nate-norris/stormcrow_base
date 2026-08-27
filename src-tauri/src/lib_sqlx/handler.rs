@@ -6,7 +6,8 @@ use csv::Writer;
 use std::fs::File;
 use anyhow::Result as AnyhowResult;
 
-use super::models::{TestSession, NewTest, Test, WindWarningConfig, QEDeleteSite, QEBase, WeatherRow};//, VelocityType, DegreesCircle, Percent};
+use super::models::{TestSession, NewTest, Test, LastTest, 
+    WindWarningConfig, QEDeleteSite, QEBase, WeatherRow};
 use super::schema::DbPool;
 use crate::lib_sqlx::models::QEEntry;
 use crate::lib_sqlx::q_tests;
@@ -57,16 +58,21 @@ pub async fn initiate_test(pool: &DbPool, name: &str) ->
     })
 }
 
+pub async fn get_last_test(pool: &DbPool) -> Result<Option<LastTest>, sqlx::Error> {
+    let info = q_tests::get_last_test_info(pool).await?;
 
-pub async fn get_last_test(pool: &DbPool) -> Result<Option<Test>, sqlx::Error> {
+    let Some(name) = info.last_test_name else {
+        return Ok(None);
+    };
 
-    if let Some(name) = q_tests::get_last_test_name(pool).await? {
-        // will unwrap since test must exist if was used last
-        let test = q_tests::get_test_by_name(pool, &name).await?.unwrap();
-        Ok(Some(test))
-    } else {
-        Ok(None)
-    }
+    let test = q_tests::get_test_by_name(pool, &name)
+        .await?
+        .unwrap();
+
+    Ok(Some(LastTest {
+        test: test,
+        last_initiated: info.last_initiated,
+    }))
 }
 
 pub async fn get_tests(pool: &DbPool) -> Result<Vec<Test>, sqlx::Error> {
