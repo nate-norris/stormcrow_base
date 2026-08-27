@@ -4,7 +4,7 @@ import { useAtom } from "jotai";
 import { cn } from "@/lib/utils";
 import { store } from "@/state/store"
 import { TestSessionSelector } from "./sessionSelectorWidget";
-import { Test, TestSession } from "../core/models";
+import { Test, LastTest, TestSession } from "../core/models";
 import { activeWindConfigAtom } from "@/features/wind-warnings"
 import { ModalBackButton } from "@/components/ui/modal";
 import { Button } from "@/components/ui/button";
@@ -18,11 +18,11 @@ type ContinueProps = {
     onBack: () => void;
     onSubmit: () => void;
     tests: Test[];
-    lastTest: Test | null;
+    lastTest: LastTest | null;
 };
 
 export default function ContinueView({ onBack, onSubmit, tests, lastTest }: ContinueProps) {
-    const [selectedId, setSelectedId] = useState<number | null>(lastTest?.id ?? null);
+    const [selectedId, setSelectedId] = useState<number | null>(lastTest?.test.id ?? null);
     const [isSelectionConflict, setIsSelectionConflict] = useState<boolean>(false);
     // global active test and wind warning configurations
     const [activeTest, setActiveTest] = useAtom(activeTestAtom);
@@ -74,6 +74,18 @@ export default function ContinueView({ onBack, onSubmit, tests, lastTest }: Cont
                     Please select a test not already in session.
                 </p>
             </div>
+            {lastTest && (
+                <div>
+                    <div className="text-center font-semibold">Last Test Session</div>
+                    <div>
+                        {lastTest.test.name} —{" "}
+                        {new Date(lastTest.last_initiated*1000).toLocaleString([], {
+                            dateStyle: "short",
+                            timeStyle: "short",
+                        })}
+                    </div>
+                </div>
+            )}
             <div className="w-full flex justify-end">
                 <Button className="w-1/3" onClick={handleSubmit}>
                     Go

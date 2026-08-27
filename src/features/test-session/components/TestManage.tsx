@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 
-import type { Test, StepMode } from "../core/models";
+import type { Test, LastTest, StepMode } from "../core/models";
 import { Step } from "../core/models";
 import MenuView from "./StepMenu";
 import NewView from "./StepNew";
@@ -28,7 +28,7 @@ export default function TestManagement({ onComplete, allowDefaultContinue }: Pro
     // all tests in database
     const [tests, setTests] = useState<Test[]>([]);
     // last known test
-    const [defaultLastTest, setDefaultLastTest] = useState<Test | null>(null);
+    const [defaultLastTest, setDefaultLastTest] = useState<LastTest | null>(null);
 
     /** Load all tests. On boot attempt continue to last test.
      * 
@@ -51,7 +51,7 @@ export default function TestManagement({ onComplete, allowDefaultContinue }: Pro
                 const elapsed = nowMs - lastInitiatedMs;
 
                 if (elapsed < CONTINUE_TIMEFRAME) {
-                    setDefaultLastTest(lt.test);
+                    setDefaultLastTest(lt);
                     nav.go(Step.Continue);
                     return;
                 }
