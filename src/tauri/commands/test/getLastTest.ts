@@ -1,6 +1,6 @@
 import { invoke } from "@tauri-apps/api/core";
-import type { Test } from "@/features/test-session";
+import type { LastTest } from "@/features/test-session";
 
-export async function getLastTest(): Promise<Test | null> {
-  return await invoke<Test | null>("get_last_test_command");
+export async function getLastTest(): Promise<LastTest | null> {
+  return await invoke<LastTest | null>("get_last_test_command");
 }
