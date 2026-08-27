@@ -58,6 +58,7 @@ pub async fn initiate_test(pool: &DbPool, name: &str) ->
     })
 }
 
+
 pub async fn get_last_test(pool: &DbPool) -> Result<Option<LastTest>, sqlx::Error> {
     let info = q_tests::get_last_test_info(pool).await?;
 
