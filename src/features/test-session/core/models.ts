@@ -7,6 +7,11 @@ export interface Test {
   time: number;
 }
 
+export interface LastTest {
+  test: Test;
+  last_initiated: number;
+}
+
 export interface TestSession {
   test: Test;
   config: WindWarningConfig;
@@ -21,3 +26,5 @@ export const Step = {
   Delete: "delete",
 } as const;
 export type StepMode = typeof Step[keyof typeof Step];
+
+export const CONTINUE_TIMEFRAME = 1000 * 60 * 60 * 24;
