@@ -2,7 +2,7 @@
 //! 
 use crate::t_state::{DbState, SpeakerState};
 use crate::lib_sqlx::{QEDeleteSite, QEBase, QEEntry, TestSession, Test, 
-    WindWarningConfig, WeatherRow, 
+    LastTest, WindWarningConfig, WeatherRow, 
     delete_qe_site, delete_qe, delete_test, get_last_test, get_tests, 
     initiate_test, get_test_qes, insert_new_qe, update_configuration, 
     reassign_qe, export_test_qes};
@@ -22,7 +22,7 @@ pub async fn initiate_test_command(state: tauri::State<'_, DbState>, name: Strin
 
 #[tauri::command]
 pub async fn get_last_test_command(state: tauri::State<'_, DbState>) ->
-    Result<Option<Test>, String> {
+    Result<Option<LastTest>, String> {
     let pool = state.inner().0.as_ref();
 
     get_last_test(pool).await
