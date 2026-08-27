@@ -29,7 +29,7 @@ type Props = {
     onConfirm: (orient: number) => void;
 }
 
-export function AzimuthDialog({ onCancel, onConfirm }: Props) {
+export function LocationDialog({ onCancel, onConfirm }: Props) {
 
     const [enabledSyncUtm, setEnabledSyncUtm] = useState(true); // set target to same utm as weapon
     const [wUtm, setWUtm] = useState<number>(11); // weapon utm

@@ -1,3 +1,3 @@
 import { atom } from "jotai";
 
-export const isAzimuthModalOpenAtom = atom<boolean>(false);
+export const isLocationDialogOpenAtom = atom<boolean>(false);

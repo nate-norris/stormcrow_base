@@ -9,8 +9,7 @@ import { FieldGroup, Field, FieldLabel } from "@/components/ui/field";
 import { activeWindConfigAtom } from "../state/windWarnAtom";
 import { canUpdateConfigsAtom } from "../state/canUpdateConfigsAtom";
 import { persistWindWarningConfig } from "@/tauri";
-import { isAzimuthModalOpenAtom } from "../state/isAzimuthModalOpenAtom";
-import { AzimuthDialog } from "./AzimuthModal";
+import { LocationDialog, isLocationDialogOpenAtom } from "@/features/location";
 import { CONFIG_LIMITS } from "../core/constants";
 import { getWindWarningConfigError } from "../core/getWindWarningConfigError";
 
@@ -24,7 +23,7 @@ export default function WindWarningForm() {
   const [formError, setFormError] = useState<string>("");
   // modal for azimuth calculations
   //    allow TestModal to open/close
-  const [isAzimuthModalOpen, setIsAzimuthModalOpen] = useAtom(isAzimuthModalOpenAtom);
+  const [isLocationDialogOpen, setIsLocationDialogOpen] = useAtom(isLocationDialogOpenAtom);
 
 
   useEffect(() => {
@@ -102,7 +101,7 @@ export default function WindWarningForm() {
                   size="sm" 
                   variant="secondary"
                   type="button"
-                  onClick={() => setIsAzimuthModalOpen(true)}
+                  onClick={() => setIsLocationDialogOpen(true)}
                 >
                   Calculate
                   <CompassIcon />
@@ -155,15 +154,15 @@ export default function WindWarningForm() {
         </FieldGroup>
       </form>
       {/* modal for auto calculating gun azimuth */}
-      {isAzimuthModalOpen && (
-          <AzimuthDialog
-              onCancel={() => setIsAzimuthModalOpen(false)}
+      {isLocationDialogOpen && (
+          <LocationDialog
+              onCancel={() => setIsLocationDialogOpen(false)}
               onConfirm={(val) => {
                 setDraftConfig(prev => ({
                   ...prev,
                   gunOrient: val
                 }));
-                setIsAzimuthModalOpen(false);
+                setIsLocationDialogOpen(false);
             }}
           />
       )}
