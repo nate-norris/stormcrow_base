@@ -167,6 +167,14 @@ async fn create_tables(pool: &DbPool) -> Result<(), sqlx::Error> {
             threshold_percent INTEGER NOT NULL,
             gun_orient INTEGER NOT NULL,
             expected_sites INTEGER NOT NULL,
+            weapon_zone INTEGER,
+            weapon_hem CHARACTER(1),
+            weapon_east REAL,
+            weapon_north REAL,
+            target_zone INTEGER,
+            target_hem CHARACTER(1),
+            target_east REAL,
+            target_north REAL,
             FOREIGN KEY(id) REFERENCES tests(id)
         );
         "#,
