@@ -22,7 +22,7 @@ export function LoggingView() {
     <div className="flex h-full min-h-0">
       {/* LEFT SIDE PANEL */}
       <div className="w-1/5 max-w-150 min-w-96 p-2 min-h-0 flex flex-col bg-sidebar">
-        <Accordion type="multiple" defaultValue={["sites"]} className="flex-1 overflow-auto [scrollbar-gutter:stable]">
+        <Accordion type="multiple" defaultValue={["sites", "config"]} className="flex-1 overflow-auto [scrollbar-gutter:stable]">
           <AccordionItem value="sites">
             <AccordionTrigger className="pl-6">
               <span className="flex items-center gap-2">
