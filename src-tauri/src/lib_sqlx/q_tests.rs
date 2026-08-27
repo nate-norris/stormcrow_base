@@ -2,7 +2,7 @@
 //! DDL (CREATE, ALTER, DROP) → use sqlx::query(...).execute(pool).await.
 //! DML (SELECT, INSERT, UPDATE) → use query_as! or query! when possible for compile-time checks.
 
-use super::{DbExec, Test, NewTest};
+use super::{DbExec, Test, NewTest, LastTestInfo};
 
 pub(crate) async fn get_test_by_name<'e, E>(executor: E, test_name: &str) 
     -> Result<Option<Test>, sqlx::Error> 
@@ -12,7 +12,7 @@ pub(crate) async fn get_test_by_name<'e, E>(executor: E, test_name: &str)
 	sqlx::query_as!(
     	Test,
         r#"
-        SELECT id as"id!", name, time as "time!"
+        SELECT id AS "id!", name, time AS "time!"
         FROM tests WHERE name = ?
         "#,
         test_name
@@ -26,7 +26,7 @@ pub(crate) async fn get_tests<'e, E>(executor: E) ->
     where E: DbExec<'e> {
     let tests: Vec<Test> = sqlx::query_as!(
         Test,
-        "SELECT id, name, time FROM tests"
+        "SELECT id, name, time FROM tests ORDER BY time DESC"
     )
     .fetch_all(executor)
     .await?;
@@ -58,6 +58,22 @@ pub(crate) async fn get_last_test_name<'e, E>(executor: E) ->
     sqlx::query_scalar!(
         r#"
         SELECT last_test_name FROM last_test WHERE id = 1
+        "#
+    )
+    .fetch_one(executor)
+    .await
+}
+
+pub(crate) async fn get_last_test_info<'e, E>(executor: E) ->
+    Result<LastTestInfo, sqlx::Error> 
+    where E: DbExec<'e> {
+
+    sqlx::query_as!(
+        LastTestInfo,
+        r#"
+        SELECT last_test_name, last_initiated
+        FROM last_test
+        WHERE id = 1
         "#
     )
     .fetch_one(executor)
