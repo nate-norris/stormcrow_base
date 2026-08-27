@@ -7,7 +7,7 @@ DDL (CREATE, ALTER, DROP) → use sqlx::query(...).execute(pool).await.
 DML (SELECT, INSERT, UPDATE) → use query_as! or query! when possible for compile-time checks.
 */
 
-use super::{DbExec, WindWarningConfig};
+use super::{DbExec, WindWarningConfig, AzimuthRawInput};
 
 pub(crate) async fn insert_default_test_config<'e, E>(executor: E, test_id: i64) -> 
 	Result<WindWarningConfig, sqlx::Error> 
@@ -54,6 +54,37 @@ pub(crate) async fn update_test_config<'e, E>(executor: E, config: WindWarningCo
         .await?;
 	Ok(())
 
+}
+
+pub(crate) async fn update_location_config<'e, E>(executor: E, test_id: i64, weapon: AzimuthRawInput, target: AzimuthRawInput) ->
+    Result<(), sqlx::Error>
+    where E: DbExec<'e> {
+    
+    sqlx::query!(
+        r#"UPDATE test_configs SET 
+        weapon_zone = ?,
+        weapon_hem = ?,
+        weapon_east = ?,
+        weapon_north = ?,
+        target_zone = ?,
+        target_hem = ?,
+        target_east = ?,
+        target_north = ?
+        WHERE id = ?
+        "#,
+        weapon.utm,
+        weapon.hemisphere,
+        weapon.easting,
+        weapon.northing,
+        target.utm,
+        target.hemisphere,
+        target.easting,
+        target.northing,
+        test_id
+        )
+        .execute(executor)
+        .await?;
+	Ok(())
 }
 
 pub(crate) async fn get_test_config_by_id<'e, E>(executor: E, test_id: i64) ->

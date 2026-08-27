@@ -7,7 +7,7 @@ use std::fs::File;
 use anyhow::Result as AnyhowResult;
 
 use super::models::{TestSession, NewTest, Test, LastTest, 
-    WindWarningConfig, QEDeleteSite, QEBase, WeatherRow};
+    WindWarningConfig, AzimuthRawInput, QEDeleteSite, QEBase, WeatherRow};
 use super::schema::DbPool;
 use crate::lib_sqlx::models::QEEntry;
 use crate::lib_sqlx::q_tests;
@@ -113,6 +113,12 @@ pub async fn delete_test(pool: &DbPool, name: &str) -> Result<(), sqlx::Error> {
 pub async fn update_configuration(pool: &DbPool, config: WindWarningConfig) ->
     Result<(), sqlx::Error> {
     q_configs::update_test_config(pool, config).await
+}
+
+pub async fn update_location(pool: &DbPool, test_id: i64, 
+    weapon: AzimuthRawInput, target: AzimuthRawInput) ->
+    Result<(), sqlx::Error> {
+    q_configs::update_location_config(pool, test_id, weapon, target).await
 }
 
 pub async fn get_test_qes(pool: &DbPool, test_id: i64) ->

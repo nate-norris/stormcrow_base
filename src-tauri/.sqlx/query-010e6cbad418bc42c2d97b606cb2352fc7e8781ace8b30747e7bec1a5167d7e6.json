@@ -1,0 +1,12 @@
+{
+  "db_name": "SQLite",
+  "query": "UPDATE test_configs SET \n        weapon_zone = ?,\n        weapon_hem = ?,\n        weapon_east = ?,\n        weapon_north = ?,\n        target_zone = ?,\n        target_hem = ?,\n        target_east = ?,\n        target_north = ?\n        WHERE id = ?\n        ",
+  "describe": {
+    "columns": [],
+    "parameters": {
+      "Right": 9
+    },
+    "nullable": []
+  },
+  "hash": "010e6cbad418bc42c2d97b606cb2352fc7e8781ace8b30747e7bec1a5167d7e6"
+}

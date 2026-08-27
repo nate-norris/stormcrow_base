@@ -2,10 +2,10 @@
 //! 
 use crate::t_state::{DbState, SpeakerState};
 use crate::lib_sqlx::{QEDeleteSite, QEBase, QEEntry, TestSession, Test, 
-    LastTest, WindWarningConfig, WeatherRow, 
+    LastTest, WindWarningConfig, AzimuthRawInput, WeatherRow, 
     delete_qe_site, delete_qe, delete_test, get_last_test, get_tests, 
     initiate_test, get_test_qes, insert_new_qe, update_configuration, 
-    reassign_qe, export_test_qes};
+    update_location, reassign_qe, export_test_qes};
 use utils::speaker::SpeakerNotification;
 
 #[tauri::command]
@@ -53,6 +53,17 @@ pub async fn update_configuration_command(state: tauri::State<'_, DbState>, conf
     update_configuration(pool, config)
         .await
         .map_err(|_| "Failed to update configuration".to_string())
+}
+
+#[tauri::command]
+pub async fn update_location_command(state: tauri::State<'_, DbState>, test_id: i64, 
+    weapon: AzimuthRawInput, target: AzimuthRawInput)
+    -> Result<(), String> {
+
+    let pool = state.inner().0.as_ref();
+    update_location(pool, test_id, weapon, target)
+        .await
+        .map_err(|_| "Failed to update location".to_string())
 }
 
 #[tauri::command]

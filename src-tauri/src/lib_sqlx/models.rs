@@ -96,6 +96,14 @@ pub struct WindWarningConfig {
     pub expected_sites: i64
 }
 
+#[derive(Debug, Clone, Serialize, Deserialize)]
+pub struct AzimuthRawInput {
+    pub utm: u32,
+    pub hemisphere: String,
+    pub easting: String,
+    pub northing: String,
+}
+
 /// Represents a weather measurement associated with a `test` entry.
 ///
 /// Each `NewWeather` row contains detailed environmental data recorded at a
