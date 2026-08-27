@@ -10,6 +10,7 @@ import { activeWindConfigAtom } from "@/features/wind-warnings";
 import { initiateTest } from "@/tauri";
 import { activeTestAtom } from "../state/testAtom";
 import { activeQEFormAtom, resetQEForm } from "@/features/qe-logging";
+import { hydrateQEs } from "@/features/qe-table";
 
 // define the props
 type NewProps = {
@@ -46,6 +47,7 @@ export default function NewView({ onBack, onSubmit, tests }: NewProps) {
           const testSession: TestSession= await initiateTest(n);
           setActiveTest(testSession.test);
           setActiveConfig(testSession.config);
+          hydrateQEs(testSession.qes); // reset QEs to empty
           setActiveQEForm(resetQEForm());
           // close the modal
           onSubmit();
