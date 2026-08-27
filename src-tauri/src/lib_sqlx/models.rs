@@ -24,6 +24,29 @@ pub struct Test {
     pub name: String,
     pub time: i64,
 }
+
+/// Represents a test that was last in session
+/// 
+/// # Fields
+/// - `test` - Test object
+/// - `last_initiated` - timestamp test was last ran
+#[derive(Debug, Clone, Serialize)]
+pub struct LastTest {
+    pub test: Test,
+    pub last_initiated: i64,
+}
+
+/// Info returned for last test query
+/// 
+/// # Fields
+/// - `name` - name of the test
+/// - `last_initiated` - timestamp test was last ran
+#[derive(Debug, FromRow)]
+pub struct LastTestInfo {
+    pub last_test_name: Option<String>,
+    pub last_initiated: i64,
+}
+
 /// Represents a new entry in `test`` table
 /// 
 /// Struct is deserialized from JSON
