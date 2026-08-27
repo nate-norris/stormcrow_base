@@ -8,22 +8,18 @@ import ContinueView from "./StepContinue";
 import DeleteView from "./StepDelete";
 import { createNavigation } from "../core/navigation";
 import { testService } from "@/tauri";
+import { CONTINUE_TIMEFRAME } from "../core/models";
 
 /*
 TODO:
-- document
-- error handling
 - build splash view for continue/delete showing details of selected test from dropdown
-- sorted test by recent
 */
+
 type Props = {
     onComplete: () => void;
     allowDefaultContinue: boolean;
 }
 export default function TestManagement({ onComplete, allowDefaultContinue }: Props) {
-
-    // component has initialized. stored for default to continue step
-    const [initialized, setInitialized] = useState<boolean>(false);
     // iterate through three primary selections for test management including:
     //      selection, new, continue, delete
     const [step, setStep] = useState<StepMode>(Step.Menu);
@@ -32,49 +28,40 @@ export default function TestManagement({ onComplete, allowDefaultContinue }: Pro
     // all tests in database
     const [tests, setTests] = useState<Test[]>([]);
     // last known test
-    const [lastTest, setLastTest] = useState<Test | null>(null);
     const [defaultLastTest, setDefaultLastTest] = useState<Test | null>(null);
 
-    // load modal on step change to menu
+    /** Load all tests. On boot attempt continue to last test.
+     * 
+     * If booting and the last loaded test is within the appropriate timeframe
+     * the navigation will proceed to Step.Continue. Step.Menu will default
+     * otherwise.
+     */
     useEffect(() => {
-        if (step === Step.Menu) {
-            loadModal(); // call the setup for the modal
-        }
-    }, [step]);
+        const initialize = async () => {
+            const [t, lt] = await Promise.all([
+                testService.getTests(),
+                testService.getLastTest(),
+            ]);
 
-    // Jump step to continue with default selection upon start up and
-    // if there previous last test was within the allowed time frame.
-    useEffect(() => {
-        // return if not on boot, no provided lastTest, or ran previously
-        if (!allowDefaultContinue || !lastTest || initialized) return;
+            if (t) setTests(t);
 
-        const now = Date.now();
-        const last = new Date(lastTest.time).getTime();
+            if (allowDefaultContinue && lt) {
+                const nowMs = Date.now()
+                const lastInitiatedMs = lt.last_initiated * 1000;
+                const elapsed = nowMs - lastInitiatedMs;
 
-        if (now - (last*1000) < 1000*60*60*24) {
-            alert(allowDefaultContinue + lastTest.name)
-            setDefaultLastTest(lastTest);
-            nav.go(Step.Continue);
-            setInitialized(true); // do not allow continue jump again
-            return;
-        }
-        nav.go(Step.Menu);
-    }, [lastTest, allowDefaultContinue]);
-
-    // populate tests and last test
-    const loadModal = async () => {
-        // all test sessions
-        const t = await testService.getTests();
-        if (t) {
-            setTests(t);
+                if (elapsed < CONTINUE_TIMEFRAME) {
+                    setDefaultLastTest(lt.test);
+                    nav.go(Step.Continue);
+                    return;
+                }
+            }
+            // not continuing: go to menu
+            nav.go(Step.Menu);
         }
         
-        // last loaded test session for determining default step
-        const lt = await testService.getLastTest();
-        if (lt) {
-            setLastTest(lt);
-        }
-    };
+        initialize(); // call async function
+    }, [allowDefaultContinue]);
 
     const views = {
         menu: <MenuView onSelect={nav.go}/>,
