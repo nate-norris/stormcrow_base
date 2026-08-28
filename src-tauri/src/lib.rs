@@ -25,8 +25,9 @@ use splash_animation::SplashStartup;
 use commands::{
     initiate_test_command, get_last_test_command, get_tests_command, 
     delete_test_command, update_configuration_command, update_location_command, 
-    get_test_qes_command, delete_qe_site_command, delete_qe_command, 
-    insert_new_qe_command, reassign_qe_command, export_test_to_path_command};
+    get_location_command, get_test_qes_command, delete_qe_site_command, 
+    delete_qe_command, insert_new_qe_command, reassign_qe_command, 
+    export_test_to_path_command};
 use commands::speaker_command;
 
 #[cfg_attr(mobile, tauri::mobile_entry_point)]
@@ -86,6 +87,7 @@ pub fn run() {
             delete_test_command,
             update_configuration_command,
             update_location_command,
+            get_location_command,
             get_test_qes_command,
             insert_new_qe_command,
             delete_qe_command,

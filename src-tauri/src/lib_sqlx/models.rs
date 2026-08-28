@@ -96,12 +96,30 @@ pub struct WindWarningConfig {
     pub expected_sites: i64
 }
 
-#[derive(Debug, Clone, Serialize, Deserialize)]
+#[derive(Debug, Clone, Deserialize, Serialize)]
 pub struct AzimuthRawInput {
     pub utm: u32,
     pub hemisphere: String,
     pub easting: String,
     pub northing: String,
+}
+
+pub struct LocationConfigRow {
+    pub weapon_zone: Option<i64>,
+    pub weapon_hem: Option<String>,
+    pub weapon_east: Option<f64>,
+    pub weapon_north: Option<f64>,
+
+    pub target_zone: Option<i64>,
+    pub target_hem: Option<String>,
+    pub target_east: Option<f64>,
+    pub target_north: Option<f64>,
+}
+
+#[derive(Debug, Clone, Serialize)]
+pub struct LocationConfig {
+    pub weapon: AzimuthRawInput,
+    pub target: AzimuthRawInput,
 }
 
 /// Represents a weather measurement associated with a `test` entry.

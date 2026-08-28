@@ -1,0 +1,62 @@
+{
+  "db_name": "SQLite",
+  "query": "\n        SELECT weapon_zone, weapon_hem, weapon_east, weapon_north, \n        target_zone, target_hem, target_east, target_north\n\t\tFROM test_configs WHERE id = ?\n        ",
+  "describe": {
+    "columns": [
+      {
+        "name": "weapon_zone",
+        "ordinal": 0,
+        "type_info": "Integer"
+      },
+      {
+        "name": "weapon_hem",
+        "ordinal": 1,
+        "type_info": "Text"
+      },
+      {
+        "name": "weapon_east",
+        "ordinal": 2,
+        "type_info": "Float"
+      },
+      {
+        "name": "weapon_north",
+        "ordinal": 3,
+        "type_info": "Float"
+      },
+      {
+        "name": "target_zone",
+        "ordinal": 4,
+        "type_info": "Integer"
+      },
+      {
+        "name": "target_hem",
+        "ordinal": 5,
+        "type_info": "Text"
+      },
+      {
+        "name": "target_east",
+        "ordinal": 6,
+        "type_info": "Float"
+      },
+      {
+        "name": "target_north",
+        "ordinal": 7,
+        "type_info": "Float"
+      }
+    ],
+    "parameters": {
+      "Right": 1
+    },
+    "nullable": [
+      true,
+      true,
+      true,
+      true,
+      true,
+      true,
+      true,
+      true
+    ]
+  },
+  "hash": "c42c2193bb14bead198f022cc2210a2f39abfb6f0279b2be87407d148c9f25e8"
+}

@@ -7,7 +7,8 @@ DDL (CREATE, ALTER, DROP) → use sqlx::query(...).execute(pool).await.
 DML (SELECT, INSERT, UPDATE) → use query_as! or query! when possible for compile-time checks.
 */
 
-use super::{DbExec, WindWarningConfig, AzimuthRawInput};
+use super::{DbExec, WindWarningConfig, AzimuthRawInput, LocationConfig,
+    LocationConfigRow};
 
 pub(crate) async fn insert_default_test_config<'e, E>(executor: E, test_id: i64) -> 
 	Result<WindWarningConfig, sqlx::Error> 
@@ -100,6 +101,48 @@ pub(crate) async fn get_test_config_by_id<'e, E>(executor: E, test_id: i64) ->
 	)
 	.fetch_optional(executor)
 	.await
+}
+
+pub(crate) async fn get_location_config_by_id<'e, E>(executor: E, test_id: i64) ->
+	Result<Option<LocationConfig>, sqlx::Error> 
+    where E: DbExec<'e> {
+	let row = sqlx::query_as!(
+		LocationConfigRow,
+		r#"
+        SELECT weapon_zone, weapon_hem, weapon_east, weapon_north, 
+        target_zone, target_hem, target_east, target_north
+		FROM test_configs WHERE id = ?
+        "#,
+		test_id
+	)
+	.fetch_optional(executor)
+	.await?;
+
+    // return if no row for the test
+    let Some(row) = row else {
+        return Ok(None);
+    };
+    // return if row has null location config
+    if row.weapon_zone.is_none() {
+        return Ok(None);
+    }
+
+    // location config gauranteed
+    // build the LocationConfig and return
+    Ok(Some(LocationConfig {
+        weapon: AzimuthRawInput {
+            utm: row.weapon_zone.unwrap() as u32,
+            hemisphere: row.weapon_hem.unwrap(),
+            easting: row.weapon_east.unwrap().to_string(),
+            northing: row.weapon_north.unwrap().to_string(),
+        },
+        target: AzimuthRawInput {
+            utm: row.target_zone.unwrap() as u32,
+            hemisphere: row.target_hem.unwrap(),
+            easting: row.target_east.unwrap().to_string(),
+            northing: row.target_north.unwrap().to_string(),
+        },
+    }))
 }
 
 pub(crate) async fn delete_config_by_id<'e, E>(executor: E, test_id: i64) ->
