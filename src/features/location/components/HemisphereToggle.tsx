@@ -16,7 +16,11 @@ export function HemisphereToggle({ val, setVal, isDisabled }: Props) {
       type="single"
       variant="outline"
       value={val}
-      onValueChange={setVal}
+      onValueChange={(value) => {
+          if (value === "N" || value === "S") {
+              setVal(value);
+          }
+      }}
       disabled={isDisabled}
     >
       <ToggleGroupItem className=" w-15" value="N" aria-label="North">
