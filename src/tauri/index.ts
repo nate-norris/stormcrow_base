@@ -10,7 +10,7 @@ export * as testService from "./commands/test";
 export { initiateTest, getTests, getLastTest, deleteTest } from "./commands/test";
 
 // wind warning commands
-export { persistWindWarningConfig } from "./commands/warning-config";
+export { persistWindWarningConfig, persistLocationConfig } from "./commands/config";
 
 // sound notifications
 export { speakerNotify, SpeakerNotification } from "./commands/sound-notifications";
