@@ -1,9 +1,8 @@
-import { CompassIcon } from "lucide-react"
+import { CompassIcon, ArrowRight } from "lucide-react";
 import { useState } from "react";
 import { toast } from "sonner";
-import { ArrowRight } from "lucide-react";
 
-import { Hemisphere, AzimuthRawInput, toInput } from "../core/models";
+import { type Hemisphere, type AzimuthRawInput, toInput } from "../core/models";
 import {
     AlertDialog,
     AlertDialogContent,
@@ -22,6 +21,7 @@ import { HemisphereToggle } from "./HemisphereToggle";
 import { NorthingEastingInput } from "./NorthingEastingInput";
 import { validateAzimuthInputs } from "../core/validateAzimuthInputs";
 import { calculateAzimuth } from "../core/calculateAzimuth";
+import { persistLocationConfig } from "@/tauri";
 import { CONFIG_LIMITS } from "../core/constants";
 
 type Props = {
@@ -30,7 +30,6 @@ type Props = {
 }
 
 export function LocationDialog({ onCancel, onConfirm }: Props) {
-
     const [enabledSyncUtm, setEnabledSyncUtm] = useState(true); // set target to same utm as weapon
     const [wUtm, setWUtm] = useState<number>(11); // weapon utm
     const [tUtm, setTUtm] = useState<number>(11); // target utm
@@ -40,10 +39,9 @@ export function LocationDialog({ onCancel, onConfirm }: Props) {
     const [tEasting, setTEasting] = useState<string>(""); // target easting
     const [wNorthing, setWNorthing] = useState<string>(""); // weapon northing
     const [tNorthing, setTNorthing] = useState<string>(""); // target northing
-
     const [errorString, setErrorString] = useState<string>(""); // returned error upon submission
 
-    function prepareAzimuth() {
+    async function prepareAzimuth(): Promise<boolean> {
         try {
             const w: AzimuthRawInput = {
                 utm: wUtm,
@@ -65,6 +63,7 @@ export function LocationDialog({ onCancel, onConfirm }: Props) {
             }
 
             const azimuth = calculateAzimuth(toInput(w), toInput(t));
+            await persistLocationConfig(w, t);
             onConfirm(azimuth);
             toast.success("Azimuth updated success");
             return true;
@@ -90,7 +89,6 @@ export function LocationDialog({ onCancel, onConfirm }: Props) {
                         Provide the weapon and target position details to calculate.
                     </AlertDialogDescription>
                 </AlertDialogHeader>
-
                 <div className="grid grid-cols-[auto_1fr_1fr] items-center gap-4">
                     <FieldLabel htmlFor="sync-utm">Sync Target UTM:</FieldLabel>
                     <SyncUtmSwitch tagId="sync-utm" enabled={enabledSyncUtm} setEnabled={setEnabledSyncUtm} />
@@ -119,7 +117,7 @@ export function LocationDialog({ onCancel, onConfirm }: Props) {
                         <HemisphereToggle val={!enabledSyncUtm ? tHem : wHem} setVal={setTHem} isDisabled={enabledSyncUtm} />
                     </div>
 
-                    {/* Easting */}
+                    {/* Easting min/max */}
                     <div />
                     <div className="flex items-center gap-0.5 text-[11px] text-muted-foreground">
                         <span>{CONFIG_LIMITS.easting.min.toLocaleString()}</span>
@@ -127,6 +125,8 @@ export function LocationDialog({ onCancel, onConfirm }: Props) {
                         <span>{CONFIG_LIMITS.easting.max.toLocaleString()}</span>
                     </div>
                     <div />
+
+                    {/* Easting */}
                     <FieldLabel>Easting</FieldLabel>
                     <div className="flex justify-center">
                         <NorthingEastingInput val={wEasting} setVal={setWEasting} />
@@ -135,7 +135,7 @@ export function LocationDialog({ onCancel, onConfirm }: Props) {
                         <NorthingEastingInput val={tEasting} setVal={setTEasting} />
                     </div>
 
-                    {/* Northing */}
+                    {/* Weapon Northing */}
                     <div />
                     <div className="flex items-center gap-0.5 text-[11px] 
                         text-muted-foreground">
@@ -149,18 +149,22 @@ export function LocationDialog({ onCancel, onConfirm }: Props) {
                             CONFIG_LIMITS.northingSouth.max.toLocaleString()
                         }</span>
                     </div>
+
+                    {/* Target Northing */}
                     <div className="flex items-center gap-0.5 text-[11px] 
                         text-muted-foreground">
-                        <span>{tHem === "N" ? 
+                        <span>{(!enabledSyncUtm ? tHem : wHem) === "N" ? 
                             CONFIG_LIMITS.northingNorth.min.toLocaleString() : 
                             CONFIG_LIMITS.northingSouth.min.toLocaleString()
                         }</span>
                         <ArrowRight className="size-3" />
-                        <span>{tHem === "N" ? 
+                        <span>{(!enabledSyncUtm ? tHem : wHem) === "N" ? 
                             CONFIG_LIMITS.northingNorth.max.toLocaleString() : 
                             CONFIG_LIMITS.northingSouth.max.toLocaleString()
                         }</span>
                     </div>
+
+                    {/* Northing */}
                     <FieldLabel>Northing</FieldLabel>
                     <div className="flex justify-center">
                         <NorthingEastingInput val={wNorthing} setVal={setWNorthing} />
@@ -174,12 +178,12 @@ export function LocationDialog({ onCancel, onConfirm }: Props) {
                     <div />
                     <FieldLabel className="text-xs text-destructive justify-end w-full">{errorString}</FieldLabel>
                 </div>
-                
+
                 <AlertDialogFooter>
                     <AlertDialogCancel variant="ghost">Cancel</AlertDialogCancel>
                     <AlertDialogAction
-                        onClick={(e) => {
-                            if (!prepareAzimuth()) {
+                        onClick={async (e) => {
+                            if (!(await prepareAzimuth())) {
                                 e.preventDefault();
                             }
                         }}
