@@ -26,6 +26,11 @@ export type AzimuthRawInput = {
   northing: string;
 }
 
+export type LocationConfig = {
+  weapon: AzimuthRawInput;
+  target: AzimuthRawInput;
+}
+
 export function toInput(raw: AzimuthRawInput): AzimuthInput {
   return {
     utm: raw.utm,

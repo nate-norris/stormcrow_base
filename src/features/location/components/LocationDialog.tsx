@@ -1,8 +1,9 @@
 import { CompassIcon, ArrowRight } from "lucide-react";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { toast } from "sonner";
 
-import { type Hemisphere, type AzimuthRawInput, toInput } from "../core/models";
+import { type Hemisphere, type AzimuthRawInput, toInput } 
+    from "../core/models";
 import {
     AlertDialog,
     AlertDialogContent,
@@ -11,9 +12,9 @@ import {
     AlertDialogTitle,
     AlertDialogDescription,
     AlertDialogFooter,
-    AlertDialogCancel,
-    AlertDialogAction
+    AlertDialogCancel
 } from "@/components/ui/alert-dialog";
+import { Button } from "@/components/ui/button";
 import { FieldLabel } from "@/components/ui/field";
 import { UtmZone } from "./UtmZone";
 import { SyncUtmSwitch } from "./SyncUtmSwitch";
@@ -21,7 +22,7 @@ import { HemisphereToggle } from "./HemisphereToggle";
 import { NorthingEastingInput } from "./NorthingEastingInput";
 import { validateAzimuthInputs } from "../core/validateAzimuthInputs";
 import { calculateAzimuth } from "../core/calculateAzimuth";
-import { persistLocationConfig } from "@/tauri";
+import { persistLocationConfig, getTestLocationConfig } from "@/tauri";
 import { CONFIG_LIMITS } from "../core/constants";
 
 type Props = {
@@ -40,6 +41,10 @@ export function LocationDialog({ onCancel, onConfirm }: Props) {
     const [wNorthing, setWNorthing] = useState<string>(""); // weapon northing
     const [tNorthing, setTNorthing] = useState<string>(""); // target northing
     const [errorString, setErrorString] = useState<string>(""); // returned error upon submission
+
+    useEffect(() => {
+        loadLocationConfig();
+    }, []);
 
     async function prepareAzimuth(): Promise<boolean> {
         try {
@@ -68,11 +73,37 @@ export function LocationDialog({ onCancel, onConfirm }: Props) {
             toast.success("Azimuth updated success");
             return true;
         } catch (err) {
-            console.log(err);
             toast.error("Azimuth update failed");
             return false;
             // TODO: log error
         }
+    }
+
+    async function loadLocationConfig() {
+        // get config for the selected test
+        const config = await getTestLocationConfig();
+
+        // no config available
+        if (!config) return;
+
+        // turn off utm sync if zone/hemisphere are different
+        if (!(config.weapon.utm === config.target.utm) ||
+            !(config.weapon.northing === config.target.northing)
+        ) {
+            setEnabledSyncUtm(false);
+        }
+
+        // set weapon config
+        setWUtm(config.weapon.utm);
+        setWHem(config.weapon.hemisphere);
+        setWEasting(config.weapon.easting);
+        setWNorthing(config.weapon.northing);
+
+        // set target config
+        setTUtm(config.target.utm);
+        setTHem(config.target.hemisphere);
+        setTEasting(config.target.easting);
+        setTNorthing(config.target.northing);
     }
 
     return (
@@ -181,15 +212,13 @@ export function LocationDialog({ onCancel, onConfirm }: Props) {
 
                 <AlertDialogFooter>
                     <AlertDialogCancel variant="ghost">Cancel</AlertDialogCancel>
-                    <AlertDialogAction
-                        onClick={async (e) => {
-                            if (!(await prepareAzimuth())) {
-                                e.preventDefault();
-                            }
-                        }}
-                        variant="default">
+                    <Button
+                        type="button"
+                        onClick={prepareAzimuth}
+                        variant="default"
+                    >
                         Update Weapon Orientation
-                    </AlertDialogAction>
+                    </Button>
                 </AlertDialogFooter>
             </AlertDialogContent>
         </AlertDialog>
