@@ -13,7 +13,6 @@ export function UtmZone({ utm, setUtm, isDisabled }: Props) {
     return (
         <Input
             type="number"
-            // className="w-20 bg-input text-foreground"
             className={cn(
                 "w-30 bg-input text-foreground",
                 "focus-visible:ring-0",
@@ -22,7 +21,7 @@ export function UtmZone({ utm, setUtm, isDisabled }: Props) {
             min={CONFIG_LIMITS.utmZones.min}
             max={CONFIG_LIMITS.utmZones.max}
             step="1"
-            value={utm}
+            value={Number.isFinite(utm) ? utm : 11}
             onChange={(e) => setUtm(Number(e.target.value))}
             disabled={isDisabled}
         />
