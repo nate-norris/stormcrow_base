@@ -1,7 +1,7 @@
 import Utm from "geodesy/utm.js";
 import LatLonVincenty from 'geodesy/latlon-ellipsoidal-vincenty.js';
 
-import { AzimuthInput } from "../core/models";
+import type { AzimuthInput } from "../core/models";
 
 /** Calculate azimuth using WGS 84 ellipsoidal Vincenty relative to true north
  * 
