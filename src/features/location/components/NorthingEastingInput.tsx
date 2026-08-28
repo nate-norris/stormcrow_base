@@ -7,7 +7,6 @@ interface Props {
 }
 
 export function NorthingEastingInput({ val, setVal }: Props) {
-
     return (
         <Input
             value={val}
