@@ -101,6 +101,7 @@ export default function WindWarningForm() {
                   size="sm" 
                   variant="secondary"
                   type="button"
+                  disabled={!canUpdateConfigs}
                   onClick={() => setIsLocationDialogOpen(true)}
                 >
                   Calculate
