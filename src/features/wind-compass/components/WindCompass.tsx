@@ -1,5 +1,5 @@
 import { CompassCardinals } from "./CompassCardinals";
-import { MA5B } from "./MA5B";
+import { Weapon } from "./Weapon";
 import { CompassTicks } from "./CompassTicks";
 import { WindThresholdRing } from "./WindThresholdRing";
 import { WindVectors } from "./WindVectors";
@@ -36,7 +36,7 @@ export function WindCompass() {
                 />
                 <CompassTicks radius={INNER_RADIUS} />
                 {/* rifle orientation: always up */}
-                <MA5B />
+                <Weapon />
                 {/* Cardinal directions */}
                 <CompassCardinals />
                 {/* threshold visual indicator */}
