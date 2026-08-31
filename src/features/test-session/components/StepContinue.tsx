@@ -11,6 +11,7 @@ import { Button } from "@/components/ui/button";
 import { initiateTest } from "@/tauri";
 import { activeTestAtom } from "../state/testAtom";
 import { activeQEFormAtom, updateQEFormFromLast } from "@/features/qe-logging"; // TODO: looks like updateQEFormFromLast will be duplicating setActiveQEForm accessibility to the atom
+import { initializeLoggingStatusAtom } from "@/features/logging-status";
 import { hydrateQEs, lastWeatherRowAtom, type WeatherRow } from "@/features/qe-table";
 
 // define the props
@@ -28,6 +29,7 @@ export default function ContinueView({ onBack, onSubmit, tests, lastTest }: Cont
     const [activeTest, setActiveTest] = useAtom(activeTestAtom);
     const [, setActiveConfig] = useAtom(activeWindConfigAtom);
     const [, setActiveQEForm] = useAtom(activeQEFormAtom);
+    const [, initializeLoggingStatus] = useAtom(initializeLoggingStatusAtom);
 
      const handleSubmit = async () => {
         // confirm user is not attempting to continue a test already in session
@@ -48,6 +50,7 @@ export default function ContinueView({ onBack, onSubmit, tests, lastTest }: Cont
                 // update the qe-logging form from the last QE
                 const lastWeather: WeatherRow | null = store.get(lastWeatherRowAtom)
                 setActiveQEForm(updateQEFormFromLast(lastWeather));
+                initializeLoggingStatus(lastWeather);
                 // close the modal
                 onSubmit();
             }
