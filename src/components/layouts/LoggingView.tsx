@@ -57,7 +57,7 @@ export function LoggingView() {
         :
         // display dashboard with active test selected
         <div className="flex flex-1 min-h-0 flex-col">
-          <div className="flex shrink-0 gap-6 p-8">
+          <div className="flex shrink-0 gap-6 pl-6 pr-6 pt-6">
               <div className="flex-1 min-w-96">
                   <QEForm />
               </div>
