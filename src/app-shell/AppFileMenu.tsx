@@ -1,5 +1,6 @@
 import { Menu, Sun, Moon, Monitor } from "lucide-react";
 import { useTheme } from "next-themes";
+import { useAtom } from "jotai";
 
 import {
     DropdownMenu,
@@ -13,8 +14,8 @@ import {
     DropdownMenuRadioGroup,
     DropdownMenuRadioItem,
 } from "@/components/ui/dropdown-menu";
-
 import { Button } from "@/components/ui/button";
+import { weaponSelectionAtom, WEAPONS, type WeaponKey } from "@/features/wind-compass";
 
 type Props = {
     onOpenTestManagement: () => void;
@@ -22,6 +23,7 @@ type Props = {
 
 export function AppFileMenu({ onOpenTestManagement }: Props) {
     const { theme, setTheme } = useTheme();
+    const [weapon, setWeapon]  = useAtom(weaponSelectionAtom);
     return (
         <div className="w-full flex items-center px-2">
             <DropdownMenu>
@@ -38,6 +40,7 @@ export function AppFileMenu({ onOpenTestManagement }: Props) {
                     <DropdownMenuItem>
                         Help
                     </DropdownMenuItem>
+                    {/* Light / Dark Theme */}
                     <DropdownMenuSub>
                         <DropdownMenuSubTrigger>
                             Theme
@@ -63,6 +66,29 @@ export function AppFileMenu({ onOpenTestManagement }: Props) {
                                     <Monitor />
                                     System
                                 </DropdownMenuRadioItem>
+                            </DropdownMenuRadioGroup>
+                        </DropdownMenuSubContent>
+                    </DropdownMenuSub>
+
+                    {/* Weapon Selection */}
+                    <DropdownMenuSub>
+                        <DropdownMenuSubTrigger>
+                            Weapon
+                        </DropdownMenuSubTrigger>
+                        <DropdownMenuSubContent>
+                            <DropdownMenuRadioGroup
+                                    value={weapon}
+                                    onValueChange={(value) => setWeapon(value as WeaponKey)}
+                                >
+                                {Object.entries(WEAPONS).map(([key, name]) => (
+                                    <DropdownMenuRadioItem
+                                        value={key}
+                                        key={key}
+                                        onSelect={() => setWeapon(key as WeaponKey)}
+                                    >
+                                        {name}
+                                    </DropdownMenuRadioItem>
+                                ))}
                             </DropdownMenuRadioGroup>
                         </DropdownMenuSubContent>
                     </DropdownMenuSub>
