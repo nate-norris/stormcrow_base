@@ -1,5 +1,6 @@
 import { ColumnDef } from "@tanstack/react-table";
 import { ArrowUpDown, MoreHorizontal } from "lucide-react";
+
 import { Button } from "@/components/ui/button";
 import {
   DropdownMenu,
@@ -7,9 +8,8 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
-
+import type { QEKey } from "@/features/qe-tracking";
 import type { QETableRow } from "../core/tableRow";
-import type { QEKey } from "../core/qeKey";
 import { parseQEKey } from "../actions/parseQEKey";
 
 export function createColumns(

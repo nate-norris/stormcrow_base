@@ -11,7 +11,7 @@ import {
   AlertDialogMedia,
   AlertDialogTitle,
 } from "@/components/ui/alert-dialog"
-import type { QEKey } from "../core/qeKey";
+import type { QEKey } from "@/features/qe-tracking";
 
 type ConfirmDeleteProps = {
   qeKey: QEKey;

@@ -15,9 +15,8 @@ import {
   AlertDialogTitle,
 } from "@/components/ui/alert-dialog"
 import { Badge } from "@/components/ui/badge";
-import type { QEKey } from "../core/qeKey";
 import type { QEBase } from "@/features/qe-logging/";
-import type { QEType } from "@/features/qe-tracking";
+import type { QEType, QEKey } from "@/features/qe-tracking";
 import { QECountSpinner } from "./QECountSpinner";
 import { QETypeSelector } from "./QETypeSelector";
 import { weatherRowsAtom } from "../state/weatherRowsAtom";

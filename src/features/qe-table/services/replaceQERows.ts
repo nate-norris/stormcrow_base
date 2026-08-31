@@ -1,8 +1,7 @@
 import { store } from "@/state/store"
 import { weatherRowsAtom } from "../state/weatherRowsAtom";
-import type { QEType } from "@/features/qe-tracking";
+import type { QEType, QEKey } from "@/features/qe-tracking";
 import type { WeatherRow } from "../core/weatherRow";
-import type { QEKey } from "../core/qeKey";
 import { rowsNotSpecifiedByKey } from "../actions/rowsNotByKey";
 
 export function replaceQERows(newRows: WeatherRow[]) {

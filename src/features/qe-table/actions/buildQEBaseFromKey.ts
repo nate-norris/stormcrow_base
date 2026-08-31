@@ -1,6 +1,6 @@
 import { store } from "@/state/store"
 import type { QEBase } from "@/features/qe-logging";
-import type { QEKey } from "../core/qeKey";
+import type { QEKey } from "@/features/qe-tracking";
 import { activeTestAtom } from "@/features/test-session";
 
 export function buildQEBaseFromKey(key: QEKey): QEBase | null {

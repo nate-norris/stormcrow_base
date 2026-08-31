@@ -4,7 +4,7 @@ import { useState } from "react";
 import { qeTableRowsAtom } from "../state/tableRowsAtom";
 import { DataTable } from "./DataTable";
 import { createColumns } from "./columns";
-import type { QEKey } from "../core/qeKey";
+import type { QEKey } from "@/features/qe-tracking";
 import { AlertDeleteDialog } from "./AlertDelete";
 import { AlertReassignDialog } from "./AlertReassign"
 import { removeQE } from "../services/removeQEEntry";

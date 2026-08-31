@@ -1,5 +1,5 @@
 import type { WeatherRow } from "../core/weatherRow";
-import type { QEKey } from "../core/qeKey";
+import type { QEKey } from "@/features/qe-tracking";
 
 export function rowsNotSpecifiedByKey(rows: WeatherRow[], key: QEKey): WeatherRow[] {
   return rows.filter(
