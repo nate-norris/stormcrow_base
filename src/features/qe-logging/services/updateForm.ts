@@ -1,6 +1,6 @@
 import { QEFormState, defaultQEFormValues } from "../core/qe-form";
 import type { WeatherRow } from "@/features/qe-table";
-import type { QEType } from "../core/qe-types";
+import type { QEType } from "@/features/qe-tracking";
 
 export function updateQEFormFromLast(last: WeatherRow | null): QEFormState {
   if (!last) return structuredClone(defaultQEFormValues);

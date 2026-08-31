@@ -1,10 +1,9 @@
 import { store } from "@/state/store"
 import { weatherRowsAtom } from "../state/weatherRowsAtom";
-import type { QEType } from "@/features/qe-logging";
+import type { QEType } from "@/features/qe-tracking";
 import type { WeatherRow } from "../core/weatherRow";
 import type { QEKey } from "../core/qeKey";
 import { rowsNotSpecifiedByKey } from "../actions/rowsNotByKey";
-import { updateQEChangeEvent } from "../actions/updateQEChangeEvent";
 
 export function replaceQERows(newRows: WeatherRow[]) {
     // no qe to delete
@@ -24,9 +23,6 @@ export function replaceQERows(newRows: WeatherRow[]) {
       ...rowsNotSpecifiedByKey(store.get(weatherRowsAtom), key),
       ...newRows,
     ]);
-
-    // add reasignment QEChange event
-    updateQEChangeEvent({type: "reassigned", key: key});
 }
 
 function isSingleQE(rows: WeatherRow[]): boolean {

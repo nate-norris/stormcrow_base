@@ -1,4 +1,4 @@
-import { QEType } from "./qe-types";
+import { type QEType } from "@/features/qe-tracking";
 
 export type QEBase = {
   count: number;

@@ -1,5 +1,5 @@
 import { atom } from "jotai";
-import { QEType } from "../core/qe-types";
+import type { QEType } from "@/features/qe-tracking";
 import { activeQEFormAtom } from "./loggingAtom";
 
 export const dodicAtom = atom(

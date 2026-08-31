@@ -1,5 +1,5 @@
 import type { QEKey } from "../core/qeKey";
-import type { QEType } from "@/features/qe-logging";
+import type { QEType } from "@/features/qe-tracking";
 
 export function parseQEKey(qeKey: string): QEKey {
     const idx = qeKey.search(/\D/);
