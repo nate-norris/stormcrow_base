@@ -10,6 +10,8 @@ import m249Light from "../images/dark_m249.png";
 import m249Dark from "../images/dark_m249.png";
 import shnipesLight from "../images/dark_shnipes.png";
 import shnipesDark from "../images/dark_shnipes.png";
+import mp7Light from "../images/dark_mp7.png";
+import mp7Dark from "../images/dark_mp7.png";
 
 import type { WeaponKey } from "./weaponKeys";
 
@@ -49,6 +51,17 @@ const WEAPON_IMAGES = {
         dark: {
             src: shnipesDark,
             offset: -2,
+        },
+    },
+
+    mp7: {
+        light: {
+            src: mp7Light,
+            offset: 0,
+        },
+        dark: {
+            src: mp7Dark,
+            offset: 0,
         },
     },
 
