@@ -8,7 +8,7 @@ export function WindChart() {
   const headTailData = useAtomValue(headTailWindChartDataAtom);
 
   return (
-    <div className="w-full h-full p-4">
+    <div className="w-full h-full p-6">
       <div className="w-full h-full flex shadow-md shadow-black/30 rounded-lg bg-black/10 dark:bg-black/50 overflow-hidden">
         
         <div className="flex-1 min-w-0 min-h-0 flex flex-col">
