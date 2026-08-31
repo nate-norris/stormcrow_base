@@ -5,7 +5,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select"
-import { QEType, QE_TYPES } from "@/features/qe-logging/core/qe-types";
+import { type QEType, QE_TYPES } from "@/features/qe-tracking";
 
 type Props = {
   val: QEType;

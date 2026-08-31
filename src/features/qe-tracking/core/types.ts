@@ -1,4 +1,11 @@
-import { type QEKey } from "./qeKey";
+import { QE_TYPES } from "./consts";
+
+export type QEType = keyof typeof QE_TYPES;
+
+export type QEKey = {
+  count: number;
+  qeType: QEType;
+};
 
 export type QEChange =
     | {

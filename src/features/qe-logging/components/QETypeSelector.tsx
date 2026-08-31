@@ -7,7 +7,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select"
-import { QEType, QE_TYPES } from "../core/qe-types";
+import { type QEType, QE_TYPES } from "@/features/qe-tracking";
 import { qeTypeAtom } from "../state/derivedLoggingAtom";
 
 export default function QETypeSelector() {
