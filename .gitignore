@@ -28,6 +28,3 @@ data/
 
 # rust analyzer checks
 target/rust-analyzer/
-
-#developer envirnment setup
-.env
