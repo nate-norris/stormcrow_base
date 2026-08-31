@@ -7,5 +7,9 @@ export type QEChange =
     }
     | {
         type: "reassigned";
+        oldKey: QEKey;
+        newKey: QEKey;
+    } | {
+        type: "new";
         key: QEKey;
     };
