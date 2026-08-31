@@ -8,13 +8,14 @@ import QECountSpinner from "./QECountSpinner";
 import QETypeSelector from "./QETypeSelector";
 import AutoLog from "./AutoLog";
 import LogQE from "./LogQE";
+import { LoggingStatus } from "@/features/logging-status";
 
 export function QEForm() {
 
     return (
         <div className="rounded-lg bg-card text-card-foreground p-6 shadow-md will-change-transform">
             <h2 className="text-center text-lg font-semibold pb-2">Current QE</h2>
-            <FieldSet className="gap-3">
+            <FieldSet>
                 <FieldGroup className="gap-3">
                     <div className="grid grid-cols-[auto_1fr] gap-12">
                         <Field>
@@ -50,6 +51,7 @@ export function QEForm() {
                     </div>
                 </FieldGroup>
             </FieldSet>
+            <LoggingStatus />
         </div>
     );
 }
