@@ -1,10 +1,10 @@
 import type { QEType, QEKey } from "@/features/qe-tracking";
 
-export function parseQEKey(qeKey: string): QEKey {
-    const idx = qeKey.search(/\D/);
+export function qeKeyFromString(qeString: string): QEKey {
+    const idx = qeString.search(/\D/);
 
     return {
-        count: Number(qeKey.slice(0, idx)),
-        qeType: qeKey.slice(idx) as QEType,
+        count: Number(qeString.slice(0, idx)),
+        qeType: qeString.slice(idx) as QEType,
     };
 }

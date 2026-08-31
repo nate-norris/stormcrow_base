@@ -1,4 +1,4 @@
 export type { QEType, QEKey } from "./core/types";
 export { QE_TYPES } from "./core/consts";
 
-export { parseQEKey } from "./services/parseQEKey";
+export { qeKeyFromString } from "./services/qeKeyFromString";

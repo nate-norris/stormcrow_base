@@ -10,7 +10,7 @@ import {
 } from "@/components/ui/dropdown-menu"
 import type { QEKey } from "@/features/qe-tracking";
 import type { QETableRow } from "../core/tableRow";
-import { parseQEKey } from "@/features/qe-tracking";
+import { qeKeyFromString } from "@/features/qe-tracking";
 
 export function createColumns(
     onDeleteRequest: (key: QEKey) => void, 
@@ -89,7 +89,7 @@ export function createColumns(
         {
             id: "actions",
             cell: ({ row }) => {
-                const key = parseQEKey(row.original.qeKey);
+                const key = qeKeyFromString(row.original.qeString);
 
                 return (
                     <DropdownMenu>
