@@ -1,5 +1,4 @@
 import { atom } from "jotai";
-import type { QEType } from "@/features/qe-tracking";
 import { activeQEFormAtom } from "./loggingAtom";
 
 export const dodicAtom = atom(
@@ -18,26 +17,6 @@ export const lotAtom = atom(
     set(activeQEFormAtom, {
       ...get(activeQEFormAtom),
       lot: value,
-    });
-  }
-);
-
-export const qeCountAtom = atom(
-  get => get(activeQEFormAtom).qeCount,
-  (get, set, value: number) => {
-    set(activeQEFormAtom, {
-      ...get(activeQEFormAtom),
-      qeCount: value,
-    });
-  }
-);
-
-export const qeTypeAtom = atom(
-  get => get(activeQEFormAtom).qeType,
-  (get, set, value: QEType) => {
-    set(activeQEFormAtom, {
-      ...get(activeQEFormAtom),
-      qeType: value,
     });
   }
 );
