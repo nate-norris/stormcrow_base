@@ -3,7 +3,7 @@ export type { QEType, QE } from "./core/types";
 export { QE_TYPES } from "./core/consts";
 
 // api functions
-export { qeKeyFromString } from "./services/qeKeyFromString";
+export { qeFromString } from "./services/qeKeyFromString";
 
 // components
 export { CountSpinner as QECountSpinner } from "./components/CountSpinner";
