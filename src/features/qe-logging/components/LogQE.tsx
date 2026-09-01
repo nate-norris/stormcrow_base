@@ -7,7 +7,13 @@ import logQE from "../services/logQE";
 import { doesQEExist, weatherRowsAtom } from "@/features/qe-table";
 import { activeQEAtom } from "@/features/qe";
 
-export default function LogQE() {
+/**
+ * Component initiating logging action for QE.
+ * 
+ * Warns users if current active qe already exists in previously logged
+ * QEs.
+ */
+export default function LogQEButton() {
   const activeQE = useAtomValue(activeQEAtom);
   const weatherRows = useAtomValue(weatherRowsAtom);
 
