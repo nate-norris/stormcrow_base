@@ -4,8 +4,7 @@ import { Separator } from "@/components/ui/separator"
 
 import DodicInput from "./DodicInput";
 import LotInput from "./Lot/LotInput";
-import { ActiveQECountSpinner } from "@/features/qe";
-import QETypeSelector from "./QETypeSelector";
+import { ActiveQECountSpinner, ActiveQETypeSelector } from "@/features/qe";
 import AutoLog from "./AutoLog";
 import LogQE from "./LogQE";
 import { LoggingStatus } from "@/features/logging-status";
@@ -35,7 +34,7 @@ export function QEForm() {
                         </Field>
                         <Field>
                             <FieldLabel htmlFor="qe-type" >QE Type</FieldLabel>
-                            <QETypeSelector />
+                            <ActiveQETypeSelector />
                         </Field>
                         
                     </div>
