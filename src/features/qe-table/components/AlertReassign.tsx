@@ -16,14 +16,13 @@ import {
 } from "@/components/ui/alert-dialog"
 import { Badge } from "@/components/ui/badge";
 import type { QEBase } from "@/features/qe-logging/";
-import type { QEType, QEKey } from "@/features/qe-tracking";
-import { QECountSpinner } from "@/features/qe";
-import { QETypeSelector } from "./QETypeSelector";
+import { type QEType, type QE, QECountSpinner, QETypeSelector } 
+  from "@/features/qe";
 import { weatherRowsAtom } from "../state/weatherRowsAtom";
 import { buildQEBaseFromKey } from "../actions/buildQEBaseFromKey";
 
 type ConfirmDeleteProps = {
-  qeKey: QEKey;
+  qeKey: QE;
   onCancel: () => void;
   onConfirm: (source: QEBase, destination: QEBase) => void;
 };
@@ -83,7 +82,7 @@ export function AlertReassignDialog({qeKey, onCancel, onConfirm}: ConfirmDeleteP
         </div>
         <div className="flex gap-x-4 justify-center">
           <QECountSpinner value={count} onChange={setCount}/>
-          <QETypeSelector val={qet} setVal={setQet} />
+          <QETypeSelector value={qet} onChange={setQet} />
         </div>
         <AlertDialogFooter>
           {isSourceDestionationSame && <div className="mt-1 mr-5 font-small text-status-danger">Select a new destination</div>}
