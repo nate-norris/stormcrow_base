@@ -11,12 +11,12 @@ import {
   AlertDialogMedia,
   AlertDialogTitle,
 } from "@/components/ui/alert-dialog"
-import type { QEKey } from "@/features/qe-tracking";
+import type { QE } from "@/features/qe";
 
 type ConfirmDeleteProps = {
-  qeKey: QEKey;
+  qeKey: QE;
   onCancel: () => void;
-  onConfirm: (key: QEKey) => void;
+  onConfirm: (key: QE) => void;
 };
 
 export function AlertDeleteDialog({qeKey, onCancel, onConfirm}: ConfirmDeleteProps) {
