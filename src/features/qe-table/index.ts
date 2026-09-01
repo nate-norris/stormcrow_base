@@ -1,5 +1,6 @@
 export { hydrateQEs } from "./services/hydrateQEs";
 export { replaceQERows } from "./services/replaceQERows";
+export { doesQEExist } from "./services/doesQEExist";
 
 export { type WeatherRow } from "./core/weatherRow";
 
