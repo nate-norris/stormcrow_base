@@ -6,7 +6,7 @@ import DodicInput from "./DodicInput";
 import LotInput from "./Lot/LotInput";
 import { ActiveQECountSpinner, ActiveQETypeSelector } from "@/features/qe";
 import AutoLog from "./AutoLog";
-import LogQE from "./LogQE";
+import LogQEButton from "./LogQEButton";
 import { LoggingStatus } from "@/features/logging-status";
 
 export function QEForm() {
@@ -45,7 +45,7 @@ export function QEForm() {
                             <FieldDescription>sound trigger initiated</FieldDescription>
                         </Field>
                         <Field>
-                            <LogQE />
+                            <LogQEButton />
                         </Field>
                     </div>
                 </FieldGroup>
