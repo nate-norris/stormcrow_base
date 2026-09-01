@@ -8,13 +8,12 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
-import type { QEKey } from "@/features/qe-tracking";
 import type { QETableRow } from "../core/tableRow";
-import { qeKeyFromString } from "@/features/qe-tracking";
+import { type QE, qeFromString } from "@/features/qe";
 
 export function createColumns(
-    onDeleteRequest: (key: QEKey) => void, 
-    onReassignRequest: (key: QEKey) => void):
+    onDeleteRequest: (qe: QE) => void, 
+    onReassignRequest: (qe: QE) => void):
     ColumnDef<QETableRow>[] {
     return [
         {
@@ -89,7 +88,7 @@ export function createColumns(
         {
             id: "actions",
             cell: ({ row }) => {
-                const key = qeKeyFromString(row.original.qeString);
+                const qe: QE = qeFromString(row.original.qeString);
 
                 return (
                     <DropdownMenu>
@@ -100,13 +99,12 @@ export function createColumns(
                             </Button>
                         </DropdownMenuTrigger>
                         <DropdownMenuContent align="end">
-                            {/* <DropdownMenuLabel>Actions</DropdownMenuLabel> */}
                             <DropdownMenuItem
-                                onClick={() => onDeleteRequest(key)}>
+                                onClick={() => onDeleteRequest(qe)}>
                                 Delete
                             </DropdownMenuItem>
                             <DropdownMenuItem
-                                onClick={() => onReassignRequest(key)}>
+                                onClick={() => onReassignRequest(qe)}>
                                 Reassign
                             </DropdownMenuItem>
                         </DropdownMenuContent>
