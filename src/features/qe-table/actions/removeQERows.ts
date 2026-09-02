@@ -1,14 +1,16 @@
 import { store } from "@/state/store"
-import { weatherRowsAtom } from "../state/weatherRowsAtom";
-import type { QEKey } from "@/features/qe-tracking";
-import { rowsNotSpecifiedByKey } from "./rowsNotByKey";
+import type { QE } from "@/features/qe";
 
-export function removeQERowsByKey(key: QEKey) {
+import { weatherRowsAtom } from "../state/weatherRowsAtom";
+import { rowsNotSpecifiedByQE } from "./rowsNotSpecifiedByQE";
+
+export function removeQETableRows(qe: QE) {
   // remove from weather rows
   store.set(weatherRowsAtom,
-    rowsNotSpecifiedByKey(
+    rowsNotSpecifiedByQE(
       store.get(weatherRowsAtom),
-      key
+      qe
     )
   );
 }
+
