@@ -2,7 +2,7 @@ import { atom } from "jotai";
 
 import { loggingStatusAtom } from "./loggingStatusAtom";
 import { type WeatherRow } from "@/features/qe-table";
-import { type QEType } from "@/features/qe-tracking";
+import type { QEType } from "@/features/qe";
 
 export const initializeLoggingStatusAtom = atom(
     null,
