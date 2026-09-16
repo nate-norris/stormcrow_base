@@ -3,9 +3,10 @@ import { useAtomValue } from "jotai";
 
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import logQE from "../services/logQE";
 import { doesQEExist, weatherRowsAtom } from "@/features/qe-table";
 import { activeQEAtom } from "@/features/qe";
+
+import { logQE } from "../services/logQE";
 
 /**
  * Component initiating logging action for QE.
@@ -23,17 +24,13 @@ export default function LogQEButton() {
     [weatherRows, activeQE]
   );
 
-  const handleClick = async () => {
-    try {
-      await logQE();
-    } catch (e) {
-      console.log(e);
-    }
+  async function handleConfirm() {
+    await logQE();
   }
 
   return (
     <div className="flex flex-col gap-1">
-      <Button onClick={handleClick}>Log QE</Button>
+      <Button onClick={handleConfirm}>Log QE</Button>
       {qeExists && (
         <Badge variant="destructive">Overwriting</Badge>
       )}
