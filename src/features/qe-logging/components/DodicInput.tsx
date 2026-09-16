@@ -2,7 +2,7 @@ import { useAtom } from "jotai";
 import { useState } from "react";
 
 import { Input } from "@/components/ui/input";
-import { dodicAtom } from "../state/derivedLoggingAtom";
+import { dodicAtom } from "../state/dodicAtom";
 import { cn } from "@/lib/utils"
 
 // character matching for dodic regex
