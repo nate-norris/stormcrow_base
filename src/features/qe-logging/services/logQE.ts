@@ -1,36 +1,25 @@
 import { toast } from "sonner";
 
-import { speakerNotify, SpeakerNotification, dbPersistQEEntry } from "@/tauri";
-import { gatherQEStoreInputs } from "../actions/gatherStore";
-import { canLogQE } from "../actions/validateQE";
-import { default as buildQEEntry } from "../actions/buildQEEntry";
-import { updateStateUponLog } from "../actions/updateQEState";
+import { processQECommand, QE_COMMANDS } from "@/features/qe";
 
-export default async function logQE() {
-  try {
-    // gather atoms in store
-    const inputs = gatherQEStoreInputs();
+import { gatherLoggingFormState } from "../actions/gatherLoggingFormState";
+import { validateLoggingInputs } from "../actions/validateLoggingInputs";
 
-    // verify if clear to log
-    if (!canLogQE(inputs)) {
-      toast.error("QE Log Error: There are missing inputs or no weather available");
-      await speakerNotify(SpeakerNotification.GeneralError);
-      return;
-    }
-    // build QEEntry
-    const entry = buildQEEntry(inputs);
-    console.log(entry);
+export async function logQE() {
+  const loggingForm = gatherLoggingFormState();
 
-     // pass QEEntry to tauri command
-    const weatherRows = await dbPersistQEEntry(entry);
+  if (!validateLoggingInputs(loggingForm)) {
+      toast.error("QE log error: There are missing/invalid form inputs");
+  }
 
-    updateStateUponLog(inputs.qeForm, weatherRows);
-    toast.success("QE Log Success");
+  const isQEPersisted = await processQECommand({
+      type: QE_COMMANDS.CREATE,
+      loggingForm: loggingForm
+  });
 
-  } catch(err) {
-    toast.error("QE Log Error: failed to log to database.");
-    console.log(err);
-    // TODO: log file
+  if (!isQEPersisted) {
+      toast.error("QE log error: confirm weather is receiving")
+  } else {
+      toast.error("QE log success")
   }
 }
-
