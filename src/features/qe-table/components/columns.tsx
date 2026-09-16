@@ -17,7 +17,7 @@ export function createColumns(
     ColumnDef<QETableRow>[] {
     return [
         {
-            accessorKey: "qeKey",
+            accessorKey: "qeString",
             header: ({ column }) => {
                 return (
                     <Button 
