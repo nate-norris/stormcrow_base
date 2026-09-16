@@ -3,7 +3,7 @@ import { useState } from "react";
 
 import { cn } from "@/lib/utils";
 import { Input } from "@/components/ui/input";
-import { lotAtom } from "../../state/derivedLoggingAtom";
+import { lotAtom } from "../../state/lotAtom";
 import { isCompleteLotInput } from "./lotParser";
 
 export default function LotInput() {
