@@ -2,7 +2,7 @@
 export { initTauriListeners } from "./events";
 
 // qe commands
-export { saveTestQEsToPath, dbPersistQEEntry, reassignQEDatabase, 
+export { saveTestQEsToPath, persistQEDatabase, reassignQEDatabase, 
     removeQEDatabase } from "./commands/qe";
 
 // test commands
