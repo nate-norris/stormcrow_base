@@ -15,24 +15,25 @@ import {
   AlertDialogTitle,
 } from "@/components/ui/alert-dialog"
 import { Badge } from "@/components/ui/badge";
-import type { QEBase } from "@/features/qe-logging/";
-import { type QEType, type QE, QECountSpinner, QETypeSelector } 
-  from "@/features/qe";
+import { type QEType, type QE, QECountSpinner, QETypeSelector, QE_COMMANDS, 
+  processQECommand } from "@/features/qe";
+  
 import { weatherRowsAtom } from "../state/weatherRowsAtom";
-import { buildQEBaseFromKey } from "../actions/buildQEBaseFromKey";
 
 type ConfirmDeleteProps = {
-  qeKey: QE;
+  qe: QE;
   onCancel: () => void;
-  onConfirm: (source: QEBase, destination: QEBase) => void;
 };
 
-export function AlertReassignDialog({qeKey, onCancel, onConfirm}: ConfirmDeleteProps) {
+export function AlertReassignDialog({qe, onCancel }: ConfirmDeleteProps) {
   
-  const [count, setCount] = useState<number>(qeKey.count);
-  const [qet, setQet] = useState<QEType>(qeKey.qeType);
+  const [open, setOpen] = useState<boolean>(true);
+  const [count, setCount] = useState<number>(qe.count);
+  const [qet, setQet] = useState<QEType>(qe.qeType);
   const weatherRows = useAtomValue(weatherRowsAtom);
+  const [error, setError] = useState<string>("");
 
+  // new distination will be overwritten
   const isOverwriting: boolean = useMemo(() => {
     return weatherRows.some(
       row =>
@@ -41,37 +42,44 @@ export function AlertReassignDialog({qeKey, onCancel, onConfirm}: ConfirmDeleteP
     );
   }, [count, qet, weatherRows]);
   
-  const isSourceDestionationSame: boolean = useMemo(() => {
-    return qeKey.count === count && qeKey.qeType === qet;
+  // attempting to overwrite the same qe
+  const isSourceDestinationSame: boolean = useMemo(() => {
+    return qe.count === count && qe.qeType === qet;
   }, [count, qet]);
+  
+  async function handleConfirm() {
+    setError("");
 
-  function prepareReassignment() {
-    const source = buildQEBaseFromKey(qeKey);
-    const destination = buildQEBaseFromKey({
-      count: count,
-      qeType: qet,
+    const isReassigned = await processQECommand({
+      type: QE_COMMANDS.REASSIGN,
+      base: qe,
+      destination: {count: count, qeType: qet},
     });
-    // confirm proper source and destination
-    if (!source || !destination) return;
 
-    try {
-      onConfirm(source, destination);
-      toast.success("QE reassignment success")
-
-    } catch (err) {
-      toast.error("QE reassignment failed");
-      //TODO: log error
+    if (!isReassigned) {
+      setError("QE failed to reassign");
+      return;
     }
+
+    toast.success("QE reassignment success")
+    setOpen(false);
   }
 
   return (
-    <AlertDialog open={!!qeKey} onOpenChange={(o) => !o && onCancel()}>
+    <AlertDialog 
+      open={!!qe && open}
+      onOpenChange={(open) => {
+        if (!open) {
+          onCancel();
+        }
+      }}
+    >
       <AlertDialogContent size="default" className="bg-popover text-popover-foreground">
         <AlertDialogHeader>
           <AlertDialogMedia className="bg-destructive/10 text-destructive dark:bg-destructive/20 dark:text-destructive">
             <ReplaceIcon />
           </AlertDialogMedia>
-          <AlertDialogTitle className="font-bold">Reassign QE {qeKey.count}{qeKey.qeType}?</AlertDialogTitle>
+          <AlertDialogTitle className="font-bold">Reassign QE {qe.count}{qe.qeType}?</AlertDialogTitle>
           <AlertDialogDescription>
             This will overwrite any previous quality evalution sites at the new destination.
           </AlertDialogDescription>
@@ -84,12 +92,13 @@ export function AlertReassignDialog({qeKey, onCancel, onConfirm}: ConfirmDeleteP
           <QECountSpinner value={count} onChange={setCount}/>
           <QETypeSelector value={qet} onChange={setQet} />
         </div>
+        <div className="text-destructive">{error}</div>
         <AlertDialogFooter>
-          {isSourceDestionationSame && <div className="mt-1 mr-5 font-small text-status-danger">Select a new destination</div>}
+          {isSourceDestinationSame && <div className="mt-1 mr-5 font-small text-status-danger">Select a new destination</div>}
           <AlertDialogCancel variant="ghost">Cancel</AlertDialogCancel>
           <AlertDialogAction
-            disabled={isSourceDestionationSame}
-            onClick={() => prepareReassignment()}
+            disabled={isSourceDestinationSame}
+            onClick={handleConfirm}
             variant="destructive">
             Reassign
           </AlertDialogAction>
