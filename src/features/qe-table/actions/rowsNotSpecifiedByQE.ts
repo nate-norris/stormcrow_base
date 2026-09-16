@@ -1,12 +1,12 @@
 import type { WeatherRow } from "../core/weatherRow";
-import type { QEKey } from "@/features/qe-tracking";
+import type { QE } from "@/features/qe";
 
-export function rowsNotSpecifiedByKey(rows: WeatherRow[], key: QEKey): WeatherRow[] {
+export function rowsNotSpecifiedByQE(rows: WeatherRow[], qe: QE): WeatherRow[] {
   return rows.filter(
     row =>
       !(
-        row.count === key.count &&
-        row.qeType === key.qeType
+        row.count === qe.count &&
+        row.qeType === qe.qeType
       )
   );
 }
