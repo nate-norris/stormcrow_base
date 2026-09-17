@@ -8,7 +8,6 @@ import { QE_COMMANDS, QE_EVENTS } from "../core/consts";
 import { emitQEEventAtom } from "../state/qeEventAtom";
 
 export async function processQECommand(command: QECommand): Promise<boolean> {
-  console.log('process qe command');
 
   switch (command.type) {
 
@@ -49,7 +48,5 @@ export async function processQECommand(command: QECommand): Promise<boolean> {
         return true;
       }
       return false;
-
   }
-  return false;
 }
