@@ -1,4 +1,4 @@
-import { type QEType } from "@/features/qe-tracking";
+import { type QEType } from "@/features/qe";
 
 export type LoggingStatus = {
     qeCount: number | null;

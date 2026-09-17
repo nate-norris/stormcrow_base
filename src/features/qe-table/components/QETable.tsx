@@ -1,34 +1,33 @@
 import { useAtomValue } from "jotai";
 import { useState } from "react";
 
+import { QE } from "@/features/qe";
+
 import { qeTableRowsAtom } from "../state/tableRowsAtom";
 import { DataTable } from "./DataTable";
-import { createColumns } from "./columns";
-import type { QEKey } from "@/features/qe-tracking";
 import { AlertDeleteDialog } from "./AlertDelete";
 import { AlertReassignDialog } from "./AlertReassign"
-import { removeQE } from "../services/removeQEEntry";
-import { reassignQE } from "../services/reassignQE";
+import { createColumns } from "./columns";
 
 export default function QETable() {
     const rows = useAtomValue(qeTableRowsAtom);
-    const [deleteQE, setDeleteKey] = useState<QEKey | null>(null);
-    const [reassign, setReassignKey] = useState<QEKey | null>(null);
+    const [deleteQE, setDeleteQE] = useState<QE | null>(null);
+    const [reassign, setReassignQE] = useState<QE | null>(null);
 
-    function onDeleteRequest(key: QEKey) {
-        setDeleteKey(key);
+    function onDeleteRequest(qe: QE) {
+        setDeleteQE(qe);
     }
 
     function cancelDeleteRequest() {
-        setDeleteKey(null);
+        setDeleteQE(null);
     }
 
-    function onReassignRequest(key: QEKey) {
-        setReassignKey(key);
+    function onReassignRequest(qe: QE) {
+        setReassignQE(qe);
     }
 
     function cancelReassignRequest() {
-        setReassignKey(null);
+        setReassignQE(null);
     }
 
     return (
@@ -39,16 +38,14 @@ export default function QETable() {
 
             {deleteQE && (
                 <AlertDeleteDialog 
-                    qeKey={deleteQE}
+                    qe={deleteQE}
                     onCancel={cancelDeleteRequest}
-                    onConfirm={removeQE}
                 />
             )}
             {reassign && (
                 <AlertReassignDialog
-                    qeKey={reassign}
+                    qe={reassign}
                     onCancel={cancelReassignRequest}
-                    onConfirm={reassignQE}
                 />
             )}
         </>

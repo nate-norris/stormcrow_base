@@ -7,7 +7,7 @@ export const qeTableRowsAtom = atom<QETableRow[]>((get) => {
     return get(weatherRowsAtom).map((obs) => {
         return {
             id: `${obs.count}${obs.qeType}-${obs.siteId}`,
-            qeKey: `${obs.count}${obs.qeType}`,
+            qeString: `${obs.count}${obs.qeType}`,
             dodic: obs.dodic,
             lot: obs.lot,
             siteId: obs.siteId,

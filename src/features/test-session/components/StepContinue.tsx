@@ -10,7 +10,7 @@ import { ModalBackButton } from "@/components/ui/modal";
 import { Button } from "@/components/ui/button";
 import { initiateTest } from "@/tauri";
 import { activeTestAtom } from "../state/testAtom";
-import { activeQEFormAtom, updateQEFormFromLast } from "@/features/qe-logging"; // TODO: looks like updateQEFormFromLast will be duplicating setActiveQEForm accessibility to the atom
+import { updateQEFormFromLast } from "@/features/qe-logging";
 import { initializeLoggingStatusAtom } from "@/features/logging-status";
 import { hydrateQEs, lastWeatherRowAtom, type WeatherRow } from "@/features/qe-table";
 
@@ -28,10 +28,9 @@ export default function ContinueView({ onBack, onSubmit, tests, lastTest }: Cont
     // global active test and wind warning configurations
     const [activeTest, setActiveTest] = useAtom(activeTestAtom);
     const [, setActiveConfig] = useAtom(activeWindConfigAtom);
-    const [, setActiveQEForm] = useAtom(activeQEFormAtom);
     const [, initializeLoggingStatus] = useAtom(initializeLoggingStatusAtom);
 
-     const handleSubmit = async () => {
+    const handleSubmit = async () => {
         // confirm user is not attempting to continue a test already in session
         if (activeTest?.id === selectedId) {
             setIsSelectionConflict(true);
@@ -49,7 +48,7 @@ export default function ContinueView({ onBack, onSubmit, tests, lastTest }: Cont
                 hydrateQEs(testSession.qes); // load weather rows into atom
                 // update the qe-logging form from the last QE
                 const lastWeather: WeatherRow | null = store.get(lastWeatherRowAtom)
-                setActiveQEForm(updateQEFormFromLast(lastWeather));
+                updateQEFormFromLast(lastWeather);
                 initializeLoggingStatus(lastWeather);
                 // close the modal
                 onSubmit();
