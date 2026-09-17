@@ -10,7 +10,6 @@ import { activeWindConfigAtom } from "@/features/wind-warnings";
 import { initiateTest } from "@/tauri";
 import { activeTestAtom } from "../state/testAtom";
 import {resetQEForm } from "@/features/qe-logging";
-import { initializeLoggingStatusAtom } from "@/features/logging-status";
 import { hydrateQEs } from "@/features/qe-table";
 
 // define the props
@@ -26,7 +25,6 @@ export default function NewView({ onBack, onSubmit, tests }: NewProps) {
     // global active test and wind warning configurations
     const [, setActiveTest] = useAtom(activeTestAtom);
     const [, setActiveConfig] = useAtom(activeWindConfigAtom);
-    const [, initializeLoggingStatus] = useAtom(initializeLoggingStatusAtom);
 
     const handleSubmit = async () => {
         
@@ -50,7 +48,6 @@ export default function NewView({ onBack, onSubmit, tests }: NewProps) {
           setActiveConfig(testSession.config);
           hydrateQEs(testSession.qes); // reset QEs to empty
           resetQEForm();
-          initializeLoggingStatus(null);
           // close the modal
           onSubmit();
         } catch (error) {
