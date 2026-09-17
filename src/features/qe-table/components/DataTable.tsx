@@ -1,9 +1,10 @@
 import { useState } from "react"
-import { ColumnDef, flexRender, getCoreRowModel, useReactTable,
-  SortingState, getSortedRowModel } from "@tanstack/react-table";
+import { type ColumnDef, flexRender, getCoreRowModel, useReactTable,
+  type SortingState, type ColumnFiltersState, getSortedRowModel } from "@tanstack/react-table";
 
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow,
 } from "@/components/ui/table";
+import { Input } from "@/components/ui/input"
 
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[],
@@ -14,6 +15,11 @@ export function DataTable<TData, TValue>({columns, data,}:
   DataTableProps<TData, TValue>) {
 
   const [sorting, setSorting] = useState<SortingState>([]);
+  const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>(
+    []
+  )
+
+  console.log(columnFilters);
     
   const table = useReactTable({
     data,
@@ -21,13 +27,27 @@ export function DataTable<TData, TValue>({columns, data,}:
     getCoreRowModel: getCoreRowModel(),
     onSortingChange: setSorting,
     getSortedRowModel: getSortedRowModel(),
+    onColumnFiltersChange: setColumnFilters,
     state: {
       sorting,
+      columnFilters,
     },
   })
 
   return (
     <div className="overflow-hidden rounded-md">
+      {/* Sort by QE */}
+      <div className="pb-4">
+        <Input
+          placeholder="Filter QE..."
+          value={(table.getColumn("qeString")?.getFilterValue() as string) ?? ""}
+          onChange={(event) =>
+            table.getColumn("qeString")?.setFilterValue(event.target.value)
+          }
+          className="max-w-sm"
+        />
+      </div>
+      {/* Table */}
       <Table>
         <TableHeader className="bg-panel panel-foreground">
           {table.getHeaderGroups().map((headerGroup) => (
