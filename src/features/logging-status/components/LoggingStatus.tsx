@@ -1,13 +1,16 @@
-import { useAtomValue } from "jotai";
+import { LastQE } from "./LastQE";
+import { SitesConnectionStatus } from "./SitesConnectionStatus";
+import { SitesOverThreshold } from "./SitesOverThreshold";
+import { SitesOverMax } from "./SitesOverMax";
 
-import { loggingStatusAtom } from "../state/loggingStatusAtom";
+export function LoggingStatusView() {
 
-export function LoggingStatus() {
-    const status = useAtomValue(loggingStatusAtom);
-
-    return (
-        <div>
-            <div>Last QE {status.qeCount}{status.qeType}</div>
-        </div>
-    );
+  return (
+    <div className="flex flex-row gap-2 items-center justify-center">
+      <LastQE />
+      <SitesConnectionStatus />
+      <SitesOverThreshold />
+      <SitesOverMax />
+    </div>
+  );
 }
