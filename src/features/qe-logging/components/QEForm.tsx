@@ -2,7 +2,7 @@ import { FieldSet, FieldGroup, Field, FieldLabel,
     FieldDescription } from "@/components/ui/field";
 import { Separator } from "@/components/ui/separator"
 import { ActiveQECountSpinner, ActiveQETypeSelector } from "@/features/qe";
-import { LoggingStatus } from "@/features/logging-status";
+import { LoggingStatusView } from "@/features/logging-status";
 import DodicInput from "./DodicInput";
 import LotInput from "./Lot/LotInput";
 import AutoLog from "./AutoLog";
@@ -55,7 +55,7 @@ export function QEForm() {
           </div>
         </FieldGroup>
       </FieldSet>
-      <LoggingStatus />
+      <LoggingStatusView />
     </div>
   );
 }
