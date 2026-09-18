@@ -29,8 +29,12 @@ export function getColumns({ onDeleteRequest, onReassignRequest}: Props):
         <Button
           variant="ghost"
           onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+          className="hover:!bg-primary hover:!text-primary-foreground"
         >
-          <ArrowUpDown className="ml-2 h-4 w-4" />
+          {column.getIsSorted() ? 
+            <ArrowUpDown className="ml-2 h-4 w-4" /> : 
+            <></>
+          }
           QE
         </Button>
       ),
@@ -64,8 +68,12 @@ export function getColumns({ onDeleteRequest, onReassignRequest}: Props):
         <Button
           variant="ghost"
           onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+          className="hover:!bg-primary hover:!text-primary-foreground"
         >
-          <ArrowUpDown className="ml-2 h-4 w-4" />
+          {column.getIsSorted() ? 
+            <ArrowUpDown className="ml-2 h-4 w-4" /> : 
+            <></>
+          }
           Time
         </Button>
       ),
