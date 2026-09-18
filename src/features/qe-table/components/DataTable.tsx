@@ -1,6 +1,5 @@
-import { useState } from "react"
 import { useTable, type ColumnDef, type RowData, type SortingState, 
-  type ColumnFiltersState } from "@tanstack/react-table"
+  type ColumnFiltersState, OnChangeFn } from "@tanstack/react-table"
 
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow,
 } from "@/components/ui/table";
@@ -9,24 +8,26 @@ import { Input } from "@/components/ui/input"
 import { features, type DataTableFeatures } from "../core/tableFeatures";
 
 interface DataTableProps<TData extends RowData> {
-  columns: ColumnDef<DataTableFeatures, TData>[],
-  data: TData[],
+  columns: ColumnDef<DataTableFeatures, TData>[];
+  data: TData[];
+
+  sorting: SortingState;
+  onSortingChange: OnChangeFn<SortingState>;
+
+  columnFilters: ColumnFiltersState;
+  onFiltersChange: OnChangeFn<ColumnFiltersState>;
 }
 
-export function DataTable<TData extends RowData>({columns, data}: 
+export function DataTable<TData extends RowData>(
+  {columns, data, sorting, onSortingChange, columnFilters, onFiltersChange}: 
   DataTableProps<TData>) {
-
-  const [sorting, setSorting] = useState<SortingState>([]);
-  const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>(
-    []
-  );
 
   const table = useTable({
     features,
     data,
     columns,
-    onSortingChange: setSorting,
-    onColumnFiltersChange: setColumnFilters,
+    onSortingChange: onSortingChange,
+    onColumnFiltersChange: onFiltersChange,
     state: {
       sorting,
       columnFilters,
