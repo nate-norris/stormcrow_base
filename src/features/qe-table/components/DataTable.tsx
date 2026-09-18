@@ -1,43 +1,42 @@
 import { useState } from "react"
-import { type ColumnDef, flexRender, getCoreRowModel, useReactTable,
-  type SortingState, type ColumnFiltersState, getSortedRowModel } from "@tanstack/react-table";
+import { useTable, type ColumnDef, type RowData, type SortingState, 
+  type ColumnFiltersState } from "@tanstack/react-table"
 
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow,
 } from "@/components/ui/table";
 import { Input } from "@/components/ui/input"
 
-interface DataTableProps<TData, TValue> {
-  columns: ColumnDef<TData, TValue>[],
+import { features, type DataTableFeatures } from "../core/tableFeatures";
+
+interface DataTableProps<TData extends RowData> {
+  columns: ColumnDef<DataTableFeatures, TData>[],
   data: TData[],
 }
 
-export function DataTable<TData, TValue>({columns, data,}: 
-  DataTableProps<TData, TValue>) {
+export function DataTable<TData extends RowData>({columns, data}: 
+  DataTableProps<TData>) {
 
   const [sorting, setSorting] = useState<SortingState>([]);
   const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>(
     []
-  )
+  );
 
-  console.log(columnFilters);
-    
-  const table = useReactTable({
+  const table = useTable({
+    features,
     data,
     columns,
-    getCoreRowModel: getCoreRowModel(),
     onSortingChange: setSorting,
-    getSortedRowModel: getSortedRowModel(),
     onColumnFiltersChange: setColumnFilters,
     state: {
       sorting,
       columnFilters,
     },
-  })
+  });
 
   return (
     <div className="overflow-hidden rounded-md">
-      {/* Sort by QE */}
-      <div className="pb-4">
+      {/* Input Filter QE */}
+      <div className="flex items-center py-4">
         <Input
           placeholder="Filter QE..."
           value={(table.getColumn("qeString")?.getFilterValue() as string) ?? ""}
@@ -47,45 +46,41 @@ export function DataTable<TData, TValue>({columns, data,}:
           className="max-w-sm"
         />
       </div>
-      {/* Table */}
       <Table>
-        <TableHeader className="bg-panel panel-foreground">
+        {/* Column header */}
+        <TableHeader>
           {table.getHeaderGroups().map((headerGroup) => (
-            <TableRow key={headerGroup.id} className="hover:bg-panel">
+            <TableRow key={headerGroup.id}>
               {headerGroup.headers.map((header) => {
                 return (
-                  <TableHead key={header.id} className="text-center">
-                    {header.isPlaceholder
-                      ? null
-                      : flexRender(
-                          header.column.columnDef.header,
-                          header.getContext()
-                        )}
+                  <TableHead key={header.id}>
+                    {header.isPlaceholder ? null : (
+                      <table.FlexRender header={header} />
+                    )}
                   </TableHead>
                 )
               })}
             </TableRow>
           ))}
         </TableHeader>
+        {/* Table body */}
         <TableBody>
           {table.getRowModel().rows?.length ? (
             table.getRowModel().rows.map((row) => (
               <TableRow
                 key={row.id}
                 data-state={row.getIsSelected() && "selected"}
-                className="text-center bg-panel hover:bg-card"
               >
                 {row.getVisibleCells().map((cell) => (
                   <TableCell key={cell.id}>
-                    {flexRender(cell.column.columnDef.cell, cell.getContext())}
+                    <table.FlexRender cell={cell} />
                   </TableCell>
                 ))}
               </TableRow>
             ))
           ) : (
             <TableRow>
-              <TableCell colSpan={columns.length} className="h-120 bg-panel 
-                panel-foreground text-center font-semibold text-lg"> 
+              <TableCell colSpan={columns.length} className="h-24 text-center">
                 No results.
               </TableCell>
             </TableRow>
@@ -93,5 +88,5 @@ export function DataTable<TData, TValue>({columns, data,}:
         </TableBody>
       </Table>
     </div>
-  )
+  );
 }

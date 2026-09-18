@@ -1,4 +1,4 @@
-import { ColumnDef } from "@tanstack/react-table";
+import { ColumnDef, createColumnHelper } from "@tanstack/react-table";
 import { ArrowUpDown, MoreHorizontal } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
@@ -7,110 +7,106 @@ import {
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu"
-import type { QETableRow } from "../core/tableRow";
+} from "@/components/ui/dropdown-menu";
 import { type QE, qeFromString } from "@/features/qe";
 
-export function createColumns(
-    onDeleteRequest: (qe: QE) => void, 
-    onReassignRequest: (qe: QE) => void):
-    ColumnDef<QETableRow>[] {
-    return [
-        {
-            accessorKey: "qeString",
-            header: ({ column }) => {
-                return (
-                    <Button 
-                        variant="ghost"
-                        onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
-                    >
-                        <ArrowUpDown className="ml-2 h-4 w-4" />
-                        QE
-                    </Button>
-                )
-            },
-        },
-        {
-            accessorKey: "dodic",
-            header: "DODIC",
-        },
-        {
-            accessorKey: "lot",
-            header: "LOT",
-        },
-        {
-            accessorKey: "siteId",
-            header: "Site",
-        },
-        {
-            accessorKey: "windFull",
-            header: "Wind",
-        },
-        {
-            accessorKey: "windDirection",
-            header: "Wind \u00b0",
-        },
-        {
-            accessorKey: "temp",
-            header: "\u00b0 F",
-        },
-        {
-            accessorKey: "humidity",
-            header: "Hum",
-        },
-        {
-            accessorKey: "baro",
-            header: "inHg",
-        },
-        {
-            accessorKey: "time",
-            header: ({ column }) => {
-                return (
-                    <Button 
-                        variant="ghost"
-                        onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
-                    >
-                        <ArrowUpDown className="ml-2 h-4 w-4" />
-                        Time
-                    </Button>
-                )
-            },
-            cell: ({ getValue }) => {
-                // return new Date(getValue<number>()).toLocaleTimeString();
-                return new Intl.DateTimeFormat("en-US", {
-                    hour: "2-digit",
-                    minute: "2-digit",
-                    second: "2-digit",
-                    hour12: false,
-                }).format(new Date(getValue<number>()));
-            },
-        },
-        {
-            id: "actions",
-            cell: ({ row }) => {
-                const qe: QE = qeFromString(row.original.qeString);
+import type { QETableRow } from "../core/tableRow";
+import { type DataTableFeatures } from "../core/tableFeatures";
 
-                return (
-                    <DropdownMenu>
-                        <DropdownMenuTrigger asChild>
-                            <Button variant="ghost" className="h-8 w-8 p-0">
-                            <span className="sr-only">Open menu</span>
-                            <MoreHorizontal className="h-4 w-4" />
-                            </Button>
-                        </DropdownMenuTrigger>
-                        <DropdownMenuContent align="end">
-                            <DropdownMenuItem
-                                onClick={() => onDeleteRequest(qe)}>
-                                Delete
-                            </DropdownMenuItem>
-                            <DropdownMenuItem
-                                onClick={() => onReassignRequest(qe)}>
-                                Reassign
-                            </DropdownMenuItem>
-                        </DropdownMenuContent>
-                    </DropdownMenu>
-                )
-            },
-        },
-    ];
+interface Props {
+  onDeleteRequest: (qe: QE) => void,
+  onReassignRequest: (qe: QE) => void,
+}
+
+export function getColumns({ onDeleteRequest, onReassignRequest}: Props): 
+  ColumnDef<DataTableFeatures, QETableRow>[] {
+
+  const columnHelper = createColumnHelper<DataTableFeatures, QETableRow>();
+
+  const columns = columnHelper.columns([
+    columnHelper.accessor("qeString", {
+      header: ({ column }) => (
+        <Button
+          variant="ghost"
+          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+        >
+          <ArrowUpDown className="ml-2 h-4 w-4" />
+          QE
+        </Button>
+      ),
+    }),
+    columnHelper.accessor("dodic", {
+      header: "DODIC",
+    }),
+    columnHelper.accessor("lot", {
+      header: "LOT",
+    }),
+    columnHelper.accessor("siteId", {
+      header: "Site",
+    }),
+    columnHelper.accessor("windFull", {
+      header: "Wind",
+    }),
+    columnHelper.accessor("windDirection", {
+      header: "Wind \u00b0",
+    }),
+    columnHelper.accessor("temp", {
+      header: "\u00b0 F",
+    }),
+    columnHelper.accessor("humidity", {
+      header: "Hum",
+    }),
+    columnHelper.accessor("baro", {
+      header: "inHg",
+    }),
+    columnHelper.accessor("time", {
+      header: ({ column }) => (
+        <Button
+          variant="ghost"
+          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+        >
+          <ArrowUpDown className="ml-2 h-4 w-4" />
+          Time
+        </Button>
+      ),
+      cell: ({row }) => {
+        return new Intl.DateTimeFormat("en-US", {
+            hour: "2-digit",
+            minute: "2-digit",
+            second: "2-digit",
+            hour12: false,
+        }).format(new Date(row.getValue<number>("time")));
+      },
+    }),
+    columnHelper.display({
+      id: "actions",
+      cell: ({ row }) => {
+        const qe: QE = qeFromString(row.original.qeString);
+
+        return (
+          <DropdownMenu>
+            <DropdownMenuTrigger asChild>
+              <Button variant="ghost" className="h-8 w-8 p-0">
+              <span className="sr-only">Open menu</span>
+              <MoreHorizontal className="h-4 w-4" />
+              </Button>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent align="end">
+                <DropdownMenuItem
+                    onClick={() => onDeleteRequest(qe)}>
+                    Delete
+                </DropdownMenuItem>
+                <DropdownMenuItem
+                    onClick={() => onReassignRequest(qe)}>
+                    Reassign
+                </DropdownMenuItem>
+            </DropdownMenuContent>
+          </DropdownMenu>
+      )
+
+      },
+    }),
+  ]);
+  
+  return columns;
 }
