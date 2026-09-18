@@ -10,11 +10,6 @@ import { createNavigation } from "../core/navigation";
 import { testService } from "@/tauri";
 import { CONTINUE_TIMEFRAME } from "../core/models";
 
-/*
-TODO:
-- build splash view for continue/delete showing details of selected test from dropdown
-*/
-
 type Props = {
     onComplete: () => void;
     allowDefaultContinue: boolean;

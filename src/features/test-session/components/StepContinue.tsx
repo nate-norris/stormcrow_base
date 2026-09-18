@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { useAtom } from "jotai";
+import { toast } from "sonner";
 
 import { cn } from "@/lib/utils";
 import { store } from "@/state/store"
@@ -51,8 +52,7 @@ export default function ContinueView({ onBack, onSubmit, tests, lastTest }: Cont
                 onSubmit();
             }
         } catch (error) {
-            alert(error);
-            //TODO: handle error
+            toast.error("Failed to initiate test.");
         }
     };
 

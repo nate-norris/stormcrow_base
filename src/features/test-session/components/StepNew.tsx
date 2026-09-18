@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { useAtom } from "jotai";
+import { toast } from "sonner";
 
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
@@ -51,8 +52,7 @@ export default function NewView({ onBack, onSubmit, tests }: NewProps) {
           // close the modal
           onSubmit();
         } catch (error) {
-          // TODO handle error
-          alert('error');
+          toast.error("Failed to initiate test");
         }
     };
 

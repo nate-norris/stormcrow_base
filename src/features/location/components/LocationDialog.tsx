@@ -75,7 +75,6 @@ export function LocationDialog({ onCancel, onConfirm }: Props) {
         } catch (err) {
             toast.error("Azimuth update failed");
             return false;
-            // TODO: log error
         }
     }
 
