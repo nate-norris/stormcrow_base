@@ -44,7 +44,8 @@ export function DataTable<TData extends RowData>(
           onChange={(event) =>
             table.getColumn("qeString")?.setFilterValue(event.target.value)
           }
-          className="max-w-sm"
+          className="bg-input text-foreground focus-visible:ring-0 
+            transition-none max-w-sm"
         />
       </div>
       <Table>
