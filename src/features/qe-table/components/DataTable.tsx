@@ -48,14 +48,15 @@ export function DataTable<TData extends RowData>(
             transition-none max-w-sm"
         />
       </div>
+
       <Table>
         {/* Column header */}
-        <TableHeader>
+        <TableHeader className="bg-panel panel-foreground">
           {table.getHeaderGroups().map((headerGroup) => (
-            <TableRow key={headerGroup.id}>
+            <TableRow key={headerGroup.id} className="hover:bg-panel">
               {headerGroup.headers.map((header) => {
                 return (
-                  <TableHead key={header.id}>
+                  <TableHead key={header.id} className="text-center">
                     {header.isPlaceholder ? null : (
                       <table.FlexRender header={header} />
                     )}
@@ -72,6 +73,7 @@ export function DataTable<TData extends RowData>(
               <TableRow
                 key={row.id}
                 data-state={row.getIsSelected() && "selected"}
+                className="text-center bg-panel hover:bg-card"
               >
                 {row.getVisibleCells().map((cell) => (
                   <TableCell key={cell.id}>
@@ -82,7 +84,8 @@ export function DataTable<TData extends RowData>(
             ))
           ) : (
             <TableRow>
-              <TableCell colSpan={columns.length} className="h-24 text-center">
+              <TableCell colSpan={columns.length} className="h-120 bg-panel 
+                panel-foreground text-center font-semibold text-lg"> 
                 No results.
               </TableCell>
             </TableRow>
