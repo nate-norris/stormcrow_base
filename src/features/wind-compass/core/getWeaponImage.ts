@@ -18,6 +18,7 @@ import type { WeaponKey } from "./weaponKeys";
 export interface SvgImage {
     src: string,
     offset: number,
+    scale: number,
 }
 
 const WEAPON_IMAGES = {
@@ -25,10 +26,12 @@ const WEAPON_IMAGES = {
         light: {
             src: hk416Light,
             offset: -1,
+            scale: 14,
         },
         dark: {
             src: hk416Dark,
             offset: -1,
+            scale: 14,
         },
     },
 
@@ -36,10 +39,12 @@ const WEAPON_IMAGES = {
         light: {
             src: m249Light,
             offset: 4,
+            scale: 18,
         },
         dark: {
             src: m249Dark,
             offset: 4,
+            scale: 18,
         },
     },
 
@@ -47,10 +52,12 @@ const WEAPON_IMAGES = {
         light: {
             src: shnipesLight,
             offset: -2,
+            scale: 15,
         },
         dark: {
             src: shnipesDark,
             offset: -2,
+            scale: 15,
         },
     },
 
@@ -58,10 +65,12 @@ const WEAPON_IMAGES = {
         light: {
             src: mp7Light,
             offset: 0,
+            scale: 5,
         },
         dark: {
             src: mp7Dark,
             offset: 0,
+            scale: 5,
         },
     },
 
@@ -69,10 +78,12 @@ const WEAPON_IMAGES = {
         light: {
             src: ma5bLight,
             offset: 0,
+            scale: 0,
         },
         dark: {
             src: ma5bDark,
             offset: 0,
+            scale: 0,
         },
     },
 
@@ -80,10 +91,12 @@ const WEAPON_IMAGES = {
         light: {
             src: swordLight,
             offset: 0,
+            scale: 0,
         },
         dark: {
             src: swordDark,
             offset: -6,
+            scale: 0,
         },
     },
 } satisfies Record<WeaponKey, Record<"light" | "dark", SvgImage>>;

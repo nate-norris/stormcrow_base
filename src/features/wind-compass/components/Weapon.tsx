@@ -18,9 +18,9 @@ export function Weapon() {
         <>
             <image
                 href={weaponImage?.src}
-                x={25}
+                x={25 - (weaponImage?.scale ?? 0)/2}
                 y={54 + (weaponImage?.offset ?? 0)}
-                width={150}
+                width={150 + (weaponImage?.scale ?? 0)}
                 height={105}
                 preserveAspectRatio="xMidYMid meet"
                 transform="rotate(90 100 100)"
