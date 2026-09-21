@@ -8,3 +8,6 @@ export { logQE } from "./services/logQE";
 
 // subscriptions
 export { initQELoggingSubscribers } from "./actions/initQELoggingSubscribers";
+
+// state
+export { autoLogAtom } from "./state/autoLogAtom";
