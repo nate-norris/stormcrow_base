@@ -37,9 +37,12 @@ namespace WeatherEventDTO {
 
 export const weatherHandler: TauriEventHandler = {
     async register() {
-        await listen<WeatherEventDTO>("weather", (event) => {
+       const unlisten =  await listen<WeatherEventDTO>("weather", (event) => {
             const packet: WeatherPacket = WeatherEventDTO.toDomain(event.payload);
             weatherProcessor.handlePacket(packet);
         });
+        return () => {
+            unlisten();
+        }
     }
 }

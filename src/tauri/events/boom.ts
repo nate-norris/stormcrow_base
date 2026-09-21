@@ -5,9 +5,13 @@ import { TauriEventHandler } from "./models";
 
 export const boomHandler: TauriEventHandler = {
     async register() {
-        return await listen<null>("boom", async (_event) => {
+        const unlisten = await listen<null>("boom", async (_event) => {
             console.log('boom came');
             //await logQE();
         });
+
+        return () => {
+            unlisten();
+        }
     },
 }
