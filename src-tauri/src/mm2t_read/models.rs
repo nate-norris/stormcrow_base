@@ -11,7 +11,10 @@ pub(crate) enum PacketKind {
 impl PacketKind {
     pub(crate) fn from_decode(packet: DecodedPacket) -> anyhow::Result<Self> {
         match packet.packet_type {
-            PACKET_BOOM => Ok(PacketKind::Boom),
+            PACKET_BOOM => {
+                println!("boom in rust");
+                Ok(PacketKind::Boom)
+            },
             PACKET_WEATHER => {
                 let data = match WeatherPayload::decode_from(&packet.payload) {
                     Ok(d) => d,
