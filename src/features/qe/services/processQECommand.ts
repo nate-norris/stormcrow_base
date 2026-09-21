@@ -12,7 +12,6 @@ export async function processQECommand(command: QECommand): Promise<boolean> {
   switch (command.type) {
 
     case QE_COMMANDS.CREATE:
-      console.log('create command');
       const rowsAdded = await persistQEDatabase(command.loggingForm);
       if (rowsAdded) {
         store.set(emitQEEventAtom, {

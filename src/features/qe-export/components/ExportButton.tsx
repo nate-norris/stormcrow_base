@@ -22,7 +22,6 @@ export default function ExportDataButton() {
             }
         } catch (e) {
             toast.error("Exporting table data failed")
-            console.log(e);
         }
     }
 
