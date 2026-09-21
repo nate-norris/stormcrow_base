@@ -6,7 +6,8 @@ import { TauriEventHandler } from "./models";
 export const boomHandler: TauriEventHandler = {
     async register() {
         await listen<null>("boom", async (_event) => {
-            await logQE();
+            console.log('boom came');
+            //await logQE();
         });
     },
 }
