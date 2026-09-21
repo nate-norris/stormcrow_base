@@ -22,7 +22,11 @@ export async function initTauriListeners() {
         weatherHandler,
         boomHandler,
     ];
-    await Promise.all(
+    const cleanups = await Promise.all(
         handlers.map(handler => handler.register())
     );
+
+    return () => {
+        cleanups.forEach(cleanup => cleanup());
+    }
 }

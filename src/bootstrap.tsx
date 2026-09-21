@@ -3,7 +3,7 @@ import { initTauriListeners } from "@/tauri"
 import { initSubscribers } from "./initSubscribers";
 
 export async function bootstrapApp() {
-    await initTauriListeners();
+    const cleanupListeners = await initTauriListeners();
     const cleanupSubscribers = initSubscribers();
     
     const time = setInterval(() => {
@@ -11,6 +11,7 @@ export async function bootstrapApp() {
     }, 1000);
 
     return () => {
+        cleanupListeners();
         cleanupSubscribers();
         clearInterval(time);
     };

@@ -11,13 +11,20 @@ import { AppCoordinator } from "@/app-shell";
 function App() {
 
   useEffect(() => {
+    let cancelled = false;
     let cleanup: (() => void) | undefined;
 
     bootstrapApp().then(fn => {
-      cleanup = fn;
+      if (cancelled) {
+        fn();
+      } else {
+        cleanup = fn;
+      }
+      
     });
 
     return () => {
+      cancelled = true;
       cleanup?.();
     };
   }, []);
